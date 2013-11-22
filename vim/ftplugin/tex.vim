@@ -1,0 +1,31 @@
+" this is mostly a matter of taste. but LaTeX looks good with just a bit
+" of indentation.
+set sw=4
+" TIP: if you write your \label's as \label{fig:something}, then if you
+" type in \ref{fig: and press <C-n> you will automatically cycle through
+" all the figure labels. Very useful!
+set iskeyword+=:
+
+let g:Tex_DefaultTargetFormat = 'pdf'
+" A comma seperated list of formats which need multiple compilations to be
+" correctly compiled.
+"let g:Tex_MultipleCompileFormats = 'dvi'
+"
+let g:Tex_ViewRule_pdf = 'epdfview'
+inoremap <space><space> <CR>
+set number
+set numberwidth=5
+set spell
+set spelllang=en,pl
+setlocal wrap linebreak textwidth=0
+setlocal showbreak=…
+
+imap <M-j> <Plug>TexJMotionForward
+nmap <M-j> <Plug>TexJMotionForward
+imap <M-k> <Plug>TexJMotionBackward
+nmap <M-k> <Plug>TexJMotionBackward
+
+nmap <F10>			<Plug>Texdoc
+imap <F10> 			<Plug>iTexdoc
+let g:atp_tab_map = 1
+let maplocalleader = ",,"
