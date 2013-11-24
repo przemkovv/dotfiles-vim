@@ -13,13 +13,37 @@ let s:running_windows = has("win16") || has("win32") || has("win64")
 filetype off
 
 
- 
+if s:running_windows
+    if has("multi_byte")
+        if &termencoding == ""
+            let &termencoding = &encoding
+        endif
+        set encoding=utf-8
+        setglobal fileencoding=utf-8
+        "setglobal bomb
+        set fileencodings=ucs-bom,utf-8,latin1
+    endif
+    set langmenu=pl_PL.UTF-8
+    let $LANG = 'pl_PL.UTF-8'
+    if has('gui_running')
+        set encoding=utf-8
+        set guifont=Powerline\ Consolas:h10
+    endif
+    if has("gui_running")
+        au GUIEnter * simalt ~x "x on an English Windows version. n on a French one
+    endif
+endif
+
+
+"let g:ctrlp_map = '<leader>t'
 
 call pathogen#runtime_append_all_bundles()
 "call pathogen#infect()
 filetype plugin indent on
 
-let g:Powerline_symbols = "fancy"
+if !s:running_windows
+    let g:Powerline_symbols = "fancy"
+endif
 
 " Uncomment the next line to make Vim more Vi-compatible
 " NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
@@ -241,6 +265,11 @@ nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F12>
 
+nnoremap <leader>f :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>m :CtrlPMRUFiles<CR>
+nnoremap <leader>t :CtrlPTag<CR>
+
 noremap cn <esc>:cn<cr>
 noremap cp <esc>:cp<cr>
 noremap <Leader>g. :TTags<cr>
@@ -296,6 +325,6 @@ inoremap <right> <nop>
 
 " Odds n Ends
 if has("mouse")
-   set mouse=a " use mouse everywhere
-   set ttymouse=xterm2 " makes it work in everything
+    set mouse=a " use mouse everywhere
+    set ttymouse=xterm2 " makes it work in everything
 endif 
