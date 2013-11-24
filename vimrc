@@ -10,15 +10,14 @@ set t_Co=256
 set t_ut=
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
-
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-runtime! debian.vim
-
 filetype off
+
+
+ 
+
 call pathogen#runtime_append_all_bundles()
-filetype plugin indent on
 "call pathogen#infect()
+filetype plugin indent on
 
 let g:Powerline_symbols = "fancy"
 
@@ -120,17 +119,6 @@ let mapleader = ","
 let maplocalleader = "\\"
 nnoremap <leader><space> :noh<cr>
 set colorcolumn=85
-
-
-" Source a global configuration file if available
-" XXX Deprecated, please move your changes here in /etc/vim/vimrc
-if filereadable("/etc/vim/vimrc.local")
-    source /etc/vim/vimrc.local
-endif
-
-
-" set tags=./tags;/usr/src/linux-source-2.6.35/tags;/home/przemkovv/opnex/olsrd6/src/TAGS;/home/przemkovv/opnex/olsrd6/lib/opnex/src/TAGS
-" /home/users/przemkovv/ns2/ns-allinone-2.33/ns-2.33/
 
 let g:pymode_rope = 0
 
