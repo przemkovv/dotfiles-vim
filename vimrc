@@ -7,6 +7,7 @@
 " 'compatible' option.
 
 set t_Co=256
+set t_ut=
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
@@ -262,6 +263,7 @@ noremap <Leader>g? :call ttags#List(1, "*", tlib#rx#Escape(expand("<cword>")))<c
 "nnoremap k gk
 nnoremap ; :
 inoremap jk <ESC>
+vnoremap jk <ESC>
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>a :Ack
 nnoremap <leader><tab> :Scratch<cr>
