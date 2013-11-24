@@ -101,7 +101,10 @@ set mouse=a		" Enable mouse usage (all modes) in terminals
 set hlsearch      " highlight search terms
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
-set wildignore=*.swp,*.bak,*.pyc,*.class
+set wildignore+=*.swp,*.bak,*.pyc,*.class
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
+set wildignore+=*.doc,*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.wmv  " Windows
 set wildmode=list:longest
 set title
 set relativenumber
@@ -110,6 +113,7 @@ set ttyfast
 set showmode
 set wildmenu
 set laststatus=2
+set scrolloff=5 " Keep 5 lines (top/bottom) 
 set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
