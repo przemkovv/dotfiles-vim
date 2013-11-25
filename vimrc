@@ -105,6 +105,7 @@ set wildignore+=*.swp,*.bak,*.pyc,*.class
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
 set wildignore+=*.doc,*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.wmv  " Windows
+set wildignore+=*.bbl,*.synctex.gz,*.blg,*.aux
 set wildmode=list:longest
 set title
 set relativenumber
@@ -119,6 +120,10 @@ set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 
+" Set no max file limit
+let g:ctrlp_max_files = 0
+" Search from current directory instead of project root
+let g:ctrlp_working_path_mode = 0
 
 " Set the command window height to 2 lines, to avoid many cases of having to
 " "press <Enter> to continue"
@@ -233,11 +238,17 @@ nmap <leader><F3>   <Plug>ATP_ViewOutput_sync
 nmap <A-Space> :call CursorPing()<CR>
 highlight SpellBad term=reverse ctermbg=1
 
+vmap  <expr>  <LEFT>   DVB_Drag('left')  
+vmap  <expr>  <RIGHT>  DVB_Drag('right') 
+vmap  <expr>  <DOWN>   DVB_Drag('down')  
+vmap  <expr>  <UP>     DVB_Drag('up')    
+vmap  <expr>  D        DVB_Duplicate()   
+
 "map <A-DOWN> gj
 "map <A-UP> gk
 "imap <A-DOWN> <ESC>gji
 "imap <A-UP> <ESC>gki
-
+nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>
