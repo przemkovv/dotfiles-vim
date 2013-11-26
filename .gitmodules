@@ -37,3 +37,6 @@
 [submodule "vim/bundle/vim-markdown.vim"]
 	path = vim/bundle/vim-markdown.vim
 	url = https://github.com/tpope/vim-markdown.git
+[submodule "vim/bundle/utl.vim"]
+	path = vim/bundle/utl.vim
+	url = https://github.com/vim-scripts/utl.vim.git
