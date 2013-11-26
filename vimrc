@@ -703,6 +703,9 @@ let g:secure_modelines_allowed_items = [
             \ ]
 
 " }}}
+" Better digraphs {{{
+inoremap <expr>  <C-K>   BDG_GetDigraph() 
+" }}}
 
 " }}}
 " Text objects ------------------------------------------------------------ {{{
