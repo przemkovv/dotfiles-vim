@@ -26,8 +26,9 @@ if s:running_windows
     set langmenu=pl_PL.UTF-8
     let $LANG = 'pl_PL.UTF-8'
 endif
-call pathogen#runtime_append_all_bundles()
-"call pathogen#infect()
+"call pathogen#runtime_append_all_bundles()
+call pathogen#infect()
+call pathogen#helptags()
 filetype plugin indent on
 
 if !s:running_windows
@@ -236,7 +237,7 @@ vmap  <expr>  D        DVB_Duplicate()
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
-nnoremap <Leader>l :s/\.\ /\.\r/g<CR>
+nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 
 imap <M-j> <Plug>IMAP_JumpForward
 nmap <M-j> <Plug>IMAP_JumpForward
@@ -254,7 +255,7 @@ cnoremap w!! w !sudo tee % >/dev/null
 let notabs = 1
 nnoremap <silent> <F118> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<Bar>:tab ball<Bar>:tabn<Bar>:endif<CR>
 
-nnoremap <Tab>  %
+"nnoremap <Tab>  %  " disabled because of the conflict with Ctrl-I
 noremap <F1> :tabprev<CR>
 noremap <F2> :tabnext<CR>
 noremap <F3> :TlistToggle<CR>
@@ -266,11 +267,6 @@ nnoremap <F4> :GundoToggle<CR>
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F12>
-
-nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>m :CtrlPMRUFiles<CR>
-nnoremap <leader>t :CtrlPTag<CR>
 
 nnoremap <leader>z zMzvzz
 
@@ -285,7 +281,7 @@ noremap <Leader>g? :call ttags#List(1, "*", tlib#rx#Escape(expand("<cword>")))<c
 "nnoremap k gk
 nnoremap ; :
 inoremap jk <ESC>
-vnoremap jk <ESC>
+"vnoremap jk <ESC>
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>a :Ack
 inoremap <Esc> <Esc>`^
@@ -657,6 +653,12 @@ augroup END
 " Plugin settings --------------------------------------------------------- {{{
 
 " Ctrl-P {{{
+
+nnoremap <leader>f :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>m :CtrlPMRUFiles<CR>
+nnoremap <leader>t :CtrlPTag<CR>
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:100'
 
 " Set no max file limit
 let g:ctrlp_max_files = 0
