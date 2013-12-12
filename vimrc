@@ -271,6 +271,8 @@ set pastetoggle=<F12>
 nnoremap <leader>z zMzvzz
 
 
+noremap CN <esc>:lne<cr>
+noremap CP <esc>:lN<cr>
 noremap cn <esc>:cn<cr>
 noremap cp <esc>:cp<cr>
 noremap <Leader>g. :TTags<cr>
@@ -456,6 +458,13 @@ augroup ft_html
     " Django variables
     au FileType jinja,htmldjango inoremap <buffer> <c-b> {{<space><space>}}<left><left><left>
 augroup END
+
+" }}}
+" Haskell {{{
+
+" use ghc functionality for haskell files
+au Bufenter *.hs compiler ghc
+let g:haddock_browser = "w3m"
 
 " }}}
 " Java {{{
@@ -652,6 +661,17 @@ augroup END
 " }}}
 " Plugin settings --------------------------------------------------------- {{{
 
+" ATP {{{
+
+" This is only valid for Xpdf viewer. If set to 1 it will reload the file even
+" if compelation returned with non zero exit code (the default is 1).
+    let b:atp_ReloadOnError		= 1
+
+" If you set this variable to 1 (defult is 0) after each compelation errors in
+" the tex buffer will be highlighted.
+    let g:atp_HighlightErrors 		= 1
+
+" }}}
 " Ctrl-P {{{
 
 nnoremap <leader>f :CtrlP<CR>
@@ -663,7 +683,8 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:100'
 " Set no max file limit
 let g:ctrlp_max_files = 0
 " Search from current directory instead of project root
-let g:ctrlp_working_path_mode = 0
+"let g:ctrlp_working_path_mode = 0
+let g:ctrlp_working_path_mode = 'ra'
 
 " }}}
 " EasyMotion {{{
@@ -705,6 +726,7 @@ let g:secure_modelines_allowed_items = [
             \ ]
 
 " }}}
+"
 " Better digraphs {{{
 inoremap <expr>  <C-K>   BDG_GetDigraph() 
 " }}}

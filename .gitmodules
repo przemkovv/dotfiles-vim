@@ -40,3 +40,9 @@
 [submodule "vim/bundle/utl.vim"]
 	path = vim/bundle/utl.vim
 	url = https://github.com/vim-scripts/utl.vim.git
+[submodule "vim/bundle/vim-localvimrc"]
+	path = vim/bundle/vim-localvimrc
+	url = https://github.com/embear/vim-localvimrc
+[submodule "vim/bundle/haskellmode-vim"]
+	path = vim/bundle/haskellmode-vim
+	url = https://github.com/lukerandall/haskellmode-vim.git
