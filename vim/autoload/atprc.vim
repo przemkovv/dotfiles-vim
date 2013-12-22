@@ -109,7 +109,7 @@ endif
 
 " If you set this variable to 1 (defult is 0) after each compelation errors in
 " the tex buffer will be highlighted.
-"     let g:atp_HighlightErrors 		= 0
+    let g:atp_HighlightErrors 		= 1
 
 " You can set the highlighting group. Errors are devided into to two groups:
 " errors and all the others. If you set it to "" the corresponding type of
@@ -853,7 +853,7 @@ au FileType toc_atp		nnoremap <buffer> dd :DeleteSection<CR>
 
 " If set to 1 messages in QuickFix list will be highlighted after each
 " compelation. By default this feature is turned off.
-" 	let g:atp_HightlighErrors 		= 0
+     let g:atp_HightlighErrors 		= 1
 " Only two groups are supported. The first is for errors, while the second for
 " all other QuickFix messages. If you set "" the corresponing messages will
 " not be highlighted. By default only error messages are highlighted.

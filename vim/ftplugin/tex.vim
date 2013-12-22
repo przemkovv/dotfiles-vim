@@ -29,3 +29,7 @@ nmap <F10>			<Plug>Texdoc
 imap <F10> 			<Plug>iTexdoc
 let g:atp_tab_map = 1
 let maplocalleader = ",,"
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_check_on_open = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_loc_list_height = 5
