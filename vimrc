@@ -61,7 +61,8 @@ let g:jellybeans_overrides = {
 let g:badwolf_tabline=1
 " Make the gutters darker than the background.
 let g:badwolf_darkgutter = 0
-colorscheme badwolf 
+"colorscheme badwolf 
+colorscheme solarized 
 set cursorline
 
 " Uncomment the following to have Vim jump to the last position when
