@@ -52,3 +52,9 @@
 [submodule "vim/bundle/vim-signify.git"]
         path = vim/bundle/vim-signify.git
         url = https://github.com/mhinz/vim-signify.git
+[submodule "vim/bundle/vim-online-thesaurus.git"]
+	path = vim/bundle/vim-online-thesaurus.git
+	url = https://github.com/beloglazov/vim-online-thesaurus.git
+[submodule "vim/bundle/vim-easy-align.git"]
+	path = vim/bundle/vim-easy-align.git
+	url = https://github.com/junegunn/vim-easy-align.git

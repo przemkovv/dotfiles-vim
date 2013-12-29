@@ -230,7 +230,7 @@ highlight SpellBad term=reverse ctermbg=1
 
 vmap  <expr>  <LEFT>   DVB_Drag('left')  
 vmap  <expr>  <RIGHT>  DVB_Drag('right') 
-vmap  <expr>  <DOWN>   DVB_Drag('down')  
+vmap <expr>  <DOWN>   DVB_Drag('down')  
 vmap  <expr>  <UP>     DVB_Drag('up')    
 vmap  <expr>  D        DVB_Duplicate()   
 
@@ -696,8 +696,9 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:EasyMotion_grouping = 1
 let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
 
-hi EasyMotionTarget ctermbg=none ctermfg=red
-"hi EasyMotionShade  ctermbg=none ctermfg=blue
+hi EasyMotionTarget ctermbg=none ctermfg=red guifg=red 
+hi EasyMotionShade  ctermbg=none ctermfg=blue guifg=#777777
+
 function! g:QuickMotion()
     let s=&scrolloff
     setlocal scrolloff=0
@@ -739,6 +740,12 @@ inoremap <expr>  <C-K>   BDG_GetDigraph()
 " }}}
 " Signify {{{
     let g:signify_vcs_list = [ 'git', 'svn' ]
+" EasyAlign {{{
+" Start interactive EasyAlign in visual mode
+vmap <Enter> <Plug>(EasyAlign)
+
+" Start interactive EasyAlign with a Vim movement
+nmap <Leader>a <Plug>(EasyAlign)
 " }}}
 
 " }}}
