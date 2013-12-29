@@ -211,6 +211,8 @@ endfunction
 set switchbuf=useopen,usetab,newtab
 set showtabline=2
 set tabpagemax=15
+
+set cryptmethod=blowfish
 "au BufAdd,BufNewFile,BufRead * nested tab sball
 
 "let g:CommandTAcceptSelectionMap = '<C-t>'
@@ -691,6 +693,7 @@ let g:ctrlp_working_path_mode = 'ra'
 " EasyMotion {{{
 
 let g:EasyMotion_grouping = 1
+let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
 function! g:QuickMotion()
     let s=&scrolloff
     setlocal scrolloff=0
@@ -727,9 +730,11 @@ let g:secure_modelines_allowed_items = [
             \ ]
 
 " }}}
-"
 " Better digraphs {{{
 inoremap <expr>  <C-K>   BDG_GetDigraph() 
+" }}}
+" Signify {{{
+    let g:signify_vcs_list = [ 'git', 'svn' ]
 " }}}
 
 " }}}
