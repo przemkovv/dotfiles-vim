@@ -696,8 +696,10 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:EasyMotion_grouping = 1
 let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
 
-hi EasyMotionTarget ctermbg=none ctermfg=red guifg=red 
+hi EasyMotionTarget cterm=none ctermbg=none ctermfg=yellow guifg=yellow 
 hi EasyMotionShade  ctermbg=none ctermfg=blue guifg=#777777
+          "hi link EasyMotionTarget ErrorMsg
+          "hi link EasyMotionShade  Comment
 
 function! g:QuickMotion()
     let s=&scrolloff
