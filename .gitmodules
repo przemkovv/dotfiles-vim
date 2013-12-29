@@ -46,3 +46,6 @@
 [submodule "vim/bundle/haskellmode-vim"]
 	path = vim/bundle/haskellmode-vim
 	url = https://github.com/lukerandall/haskellmode-vim.git
+[submodule "vim/bundle/vim-signify.git"]
+	path = vim/bundle/vim-signify.git
+	url = https://github.com/mhinz/vim-signify.git
