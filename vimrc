@@ -6,7 +6,7 @@
 " make changes after sourcing debian.vim since it alters the value of the
 " 'compatible' option.
 
-set t_Co=256
+set t_Co=16
 set t_ut=
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
@@ -35,6 +35,7 @@ if !s:running_windows
     let g:Powerline_symbols = "fancy"
 endif
 
+let g:Powerline_colorscheme = 'solarized16'
 " Uncomment the next line to make Vim more Vi-compatible
 " NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
 " options, so any other options should be set AFTER setting 'compatible'.
@@ -694,6 +695,9 @@ let g:ctrlp_working_path_mode = 'ra'
 
 let g:EasyMotion_grouping = 1
 let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
+
+hi EasyMotionTarget ctermbg=none ctermfg=red
+"hi EasyMotionShade  ctermbg=none ctermfg=blue
 function! g:QuickMotion()
     let s=&scrolloff
     setlocal scrolloff=0
