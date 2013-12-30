@@ -36,35 +36,14 @@ if !s:running_windows
 endif
 
 let g:Powerline_colorscheme = 'solarized16'
-" Uncomment the next line to make Vim more Vi-compatible
-" NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
-" options, so any other options should be set AFTER setting 'compatible'.
-"set compatible
 
-" Vim5 and later versions support syntax highlighting. Uncommenting the next
-" line enables syntax highlighting by default.
 syntax on
 
-" If using a dark backgr"ound within the editing area and syntax highlighting
-" turn on this option as well
+let g:solarized_termcolors = 16
 set background=dark
-"set background=light
-"colorscheme evening
-
-let g:jellybeans_overrides = {
-            \    'LineNr': { 'guifg': '605950', 'guibg': '252525',
-            \              'ctermfg': 'none', 'ctermbg': '243',
-            \              'attr': '' },
-            \}
-"colorscheme molokai 
-"colorscheme mustang 
-"colorscheme jellybeans
-let g:badwolf_tabline=1
-" Make the gutters darker than the background.
-let g:badwolf_darkgutter = 0
-"colorscheme badwolf 
-colorscheme solarized 
+colorscheme solarized
 set cursorline
+call togglebg#map("<F11>")
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
@@ -89,7 +68,7 @@ set smartcase		" Do smart case matching
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
-set mouse=a		" Enable mouse usage (all modes) in terminals
+set mouse=a         " Enable mouse usage (all modes) in terminals
 set hlsearch      " highlight search terms
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
@@ -696,7 +675,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:EasyMotion_grouping = 1
 let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
 
-hi EasyMotionTarget cterm=none ctermbg=none ctermfg=yellow guifg=yellow 
+hi EasyMotionTarget cterm=bold ctermbg=none ctermfg=red guifg=yellow 
 hi EasyMotionShade  ctermbg=none ctermfg=blue guifg=#777777
           "hi link EasyMotionTarget ErrorMsg
           "hi link EasyMotionShade  Comment
@@ -738,16 +717,23 @@ let g:secure_modelines_allowed_items = [
 
 " }}}
 " Better digraphs {{{
-inoremap <expr>  <C-K>   BDG_GetDigraph() 
+"inoremap <expr>  <C-K>   BDG_GetDigraph() 
 " }}}
 " Signify {{{
     let g:signify_vcs_list = [ 'git', 'svn' ]
+" }}}
 " EasyAlign {{{
 " Start interactive EasyAlign in visual mode
 vmap <Enter> <Plug>(EasyAlign)
 
 " Start interactive EasyAlign with a Vim movement
 nmap <Leader>a <Plug>(EasyAlign)
+" }}}
+" SmoothScroll {{{
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 " }}}
 
 " }}}

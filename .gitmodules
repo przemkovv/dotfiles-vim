@@ -58,3 +58,6 @@
 [submodule "vim/bundle/vim-easy-align.git"]
 	path = vim/bundle/vim-easy-align.git
 	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "vim/bundle/vim-smooth-scroll"]
+	path = vim/bundle/vim-smooth-scroll
+	url = https://github.com/terryma/vim-smooth-scroll.git
