@@ -268,7 +268,6 @@ nnoremap ; :
 inoremap jk <ESC>
 "vnoremap jk <ESC>
 nnoremap <leader>w <C-w>v<C-w>l
-nnoremap <leader>a :Ack
 inoremap <Esc> <Esc>`^
 nnoremap H  g^
 nnoremap L  g$
@@ -730,10 +729,10 @@ vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
 " }}}
 " SmoothScroll {{{
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
+nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 " }}}
 
 " }}}
@@ -934,8 +933,9 @@ endfunction
 nnoremap <silent> <localleader>A :set opfunc=<SID>AckMotion<CR>g@
 xnoremap <silent> <localleader>A :<C-U>call <SID>AckMotion(visualmode())<CR>
 
-nnoremap <bs> :Ack! '\b<c-r><c-w>\b'<cr>
-xnoremap <silent> <bs> :<C-U>call <SID>AckMotion(visualmode())<CR>
+"nnoremap <bs> :Ack! '\b<c-r><c-w>\b'<cr>
+"xnoremap <silent> <bs> :<C-U>call <SID>AckMotion(visualmode())<CR>
+nnoremap <leader>a :Ack
 
 function! s:CopyMotionForType(type)
     if a:type ==# 'v'
@@ -992,8 +992,17 @@ endfunction " }}}
 command! -nargs=0 Pulse call s:Pulse()
 
 " }}}
+" TMUX {{{
+augroup Tmux
+    au!
+
+    autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim - ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
+    autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
+augroup END
+" }}}
 "
 " }}}
+"
 " Environments (GUI/Console) ---------------------------------------------- {{{
 
 if has('gui_running')
