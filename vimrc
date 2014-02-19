@@ -37,6 +37,10 @@ endif
 
 let g:Powerline_colorscheme = 'solarized16'
 
+let g:airline_powerline_fonts = 1
+"let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='powerlineish'
+
 syntax on
 
 let g:solarized_termcolors = 16
@@ -497,6 +501,7 @@ augroup ft_markdown
 
     au Filetype markdown nnoremap <buffer> <localleader>p VV:'<,'>!python -m json.tool<cr>
     au Filetype markdown vnoremap <buffer> <localleader>p :!python -m json.tool<cr>
+    au Filetype markdown setlocal textwidth=80
 augroup END
 
 " }}}
