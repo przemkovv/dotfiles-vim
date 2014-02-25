@@ -58,3 +58,6 @@
 [submodule "vim/bundle/vim-smooth-scroll"]
 	path = vim/bundle/vim-smooth-scroll
 	url = https://github.com/terryma/vim-smooth-scroll.git
+[submodule "vim/bundle/vim-airline"]
+	path = vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline.git
