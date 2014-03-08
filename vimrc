@@ -245,7 +245,7 @@ nnoremap <silent> <F118> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<
 "nnoremap <Tab>  %  " disabled because of the conflict with Ctrl-I
 noremap <F1> :tabprev<CR>
 noremap <F2> :tabnext<CR>
-noremap <F3> :TlistToggle<CR>
+noremap <F3> :TagbarToggle<CR>
 "noremap <F4> :NERDTreeToggle<CR>
 nnoremap <silent> <F5> :YRShow<cr>
 inoremap <silent> <F5> <ESC>:YRShow<cr>
@@ -672,6 +672,23 @@ let g:ctrlp_max_files = 0
 " Search from current directory instead of project root
 "let g:ctrlp_working_path_mode = 0
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ 'file': '\v\.(exe|so|dll)$',
+    \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+    \ }
+
+  " Multiple VCS's:
+  "let g:ctrlp_user_command = {
+    "\ 'types': {
+      "\ 1: ['.git', 'cd %s && git ls-files'],
+      "\ 2: ['.hg', 'hg --cwd %s locate -I .'],
+      "\ },
+    "\ 'fallback': 'find %s -type f'
+    "\ }
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 
 " }}}
 " EasyMotion {{{
@@ -734,10 +751,21 @@ vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
 " }}}
 " SmoothScroll {{{
-nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
+"nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
+"nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
+"nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
+"nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
+" }}}
+
+" Tagbar {{{
+  let g:tagbar_left = 1
+  let g:tagbar_width = 33
+  let g:tagbar_compact = 1
+" }}}
+
+" Syntastic {{{
+    let g:syntastic_cpp_auto_refresh_includes = 1
+    let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
 " }}}
 
 " }}}

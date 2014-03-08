@@ -11,13 +11,13 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 " correctly compiled.
 "let g:Tex_MultipleCompileFormats = 'dvi'
 "
-let g:Tex_ViewRule_pdf = 'epdfview'
+let g:Tex_ViewRule_pdf = 'okular'
 inoremap <space><space> <CR>
 set number
 set numberwidth=5
 set spell
 set spelllang=en,pl
-setlocal wrap linebreak textwidth=0
+setlocal wrap linebreak textwidth=79
 setlocal showbreak=…
 
 imap <M-j> <Plug>TexJMotionForward

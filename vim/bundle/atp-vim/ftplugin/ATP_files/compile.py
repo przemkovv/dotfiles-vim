@@ -23,6 +23,9 @@ from collections import deque
 import latex_log
 import locale
 encoding = locale.getpreferredencoding()
+if not encoding:
+    encoding = 'UTF-8'
+PY3 = sys.version_info[0] == 3
 
 # readlink is not available on Windows.
 readlink=True
@@ -180,7 +183,7 @@ def write_pbf(string):
 
     cond = False
     try:
-        if sys.version_info.major < 3:
+        if not PY3:
             with open(pb_fname, 'r') as fobj:
                 pb_file = fobj.read().decode(encoding, errors="replace")
         else:
@@ -366,10 +369,17 @@ try:
     # /except the log file/
     # os.chdir(mainfile_dir)
     os.chdir(options.output_dir)
-    for ext in filter(lambda x: x != "log", keep):
+    for ext in filter(lambda x: x != "log" and x != "bib", keep):
         file_cp=basename+"."+ext
         if os.path.exists(file_cp):
             shutil.copy(file_cp, tmpdir)
+    if 'bib' in keep:
+        bibs = filter(lambda p: p.endswith('.bib'), os.listdir(mainfile_dir))
+        for bib in bibs:
+            if hasattr(os, 'symlink'):
+                os.symlink(os.path.join(mainfile_dir, bib), os.path.join(tmpdir, bib))
+            else:
+                shutil.copy(os.path.join(mainfile_dir, bib), tmpdir)
     os.chdir(mainfile_dir)
 
     tempdir_list = os.listdir(tmpdir)

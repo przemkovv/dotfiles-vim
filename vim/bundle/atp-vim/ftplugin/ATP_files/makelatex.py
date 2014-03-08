@@ -28,6 +28,9 @@ import atexit
 import locale
 
 encoding = locale.getpreferredencoding()
+if not encoding:
+    encoding = 'UTF-8'
+PY3 = sys.version_info[0] == 3
 
 import latex_log
 
@@ -305,10 +308,17 @@ try:
 
     cdir = os.curdir
     os.chdir(outdir)
-    for ext in filter(lambda x: x != 'log', keep):
+    for ext in filter(lambda x: x != 'log' and x != 'bib', keep):
         file_cp=basename+"."+ext
         if os.path.exists(file_cp):
             shutil.copy(file_cp, tmpdir)
+    if 'bib' in keep:
+        bibs = filter(lambda p: p.endswith('.bib'), os.listdir(texfile_dir))
+        for bib in bibs:
+            if hasattr(os, 'symlink'):
+                os.symlink(os.path.join(texfile_dir, bib), os.path.join(tmpdir, bib))
+            else:
+                shutil.copy(os.path.join(texfile_dir, bib), tmpdir)
     os.chdir(texfile_dir)
 
     debug_file.write("bibliographies = %s\n" % bibliographies)
@@ -355,7 +365,7 @@ try:
 
         need_runs = [0]
 
-        if sys.version_info.major < 3:
+        if not PY3:
             with open(tmplog, "r") as log_file:
                 log = log_file.read().decode(encoding, errors='replace')
         else:
@@ -420,7 +430,7 @@ try:
 
         debug_file.write("AUXFILE: %s\n" % tmpaux)
         try:
-            if sys.version_info.major < 3:
+            if not PY3:
                 with open(tmpaux, "r") as aux_file:
                     aux=aux_file.read().decode(encoding, errors="replace")
             else:
@@ -434,7 +444,7 @@ try:
         #         bibtex=re.search('No file '+basename+'\.bbl\.', log)
         if not bibtex:
             # Then search for biblatex package. Alternatively, I can search for biblatex messages in log file.
-            if sys.version_info.major < 3:
+            if not PY3:
                 with open(texfile, 'r') as sock:
                     tex_lines = sock.read().decode(encoding=encoding, errors="replace").split("\n")
             else:
@@ -501,7 +511,7 @@ try:
 
             #CONDITION
             try:
-                if sys.version_info.major < 3:
+                if not PY3:
                     with open(tmplog, "r") as sock:
                         log=sock.read().decode(encoding, errors='replace')
                 else:

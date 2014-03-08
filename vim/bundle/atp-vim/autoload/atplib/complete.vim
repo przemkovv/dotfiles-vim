@@ -497,10 +497,10 @@ function! atplib#complete#CloseLastEnvironment(...)
 	" Find the begining line if it was not given.
 	if l:bpos_env == [0, 0]
 	    " Find line where the environment is opened and not closed:
-	    let l:bpos_env		= searchpairpos('\\begin\s*{', '', '\\end\s*{', 'bnW', 'searchpair("\\\\begin\s*{\s*".matchstr(getline("."),"\\\\begin\s*{\\zs[^}]*\\ze\}"), "", "\\\\end\s*{\s*".matchstr(getline("."), "\\\\begin\s*{\\zs[^}]*\\ze}"), "nW", "", "line(".")+g:atp_completion_limits[2]")',max([ 1, (line(".")-g:atp_completion_limits[2])]))
+	    let l:bpos_env = searchpairpos('\\begin\s*{', '', '\\end\s*{', 'bnW', 'searchpair("\\\\begin\s*{\s*".matchstr(getline("."),"\\\\begin\s*{\\zs[^}]*\\ze\}"), "", "\\\\end\s*{\s*".matchstr(getline("."), "\\\\begin\s*{\\zs[^}]*\\ze}"), "nW", "", "line(".")+g:atp_completion_limits[2]")',max([ 1, (line(".")-g:atp_completion_limits[2])]))
 	endif
 
-	let l:env_name		= matchstr(strpart(getline(l:bpos_env[0]),l:bpos_env[1]-1), '\\begin\s*{\s*\zs[^}]*\ze*\s*}')
+	let l:env_name = matchstr(strpart(getline(l:bpos_env[0]),l:bpos_env[1]-1), '\\begin\s*{\s*\zs[^}]*\ze\s*}')
 
     " if a:3 (environment name) was given:
     elseif l:env_name != "0" && l:close == "environment" 
@@ -1907,7 +1907,7 @@ function! atplib#complete#TabCompletion(expert_mode,...)
 		call atplib#Log("TabCompletion.log", "b:comp_method=".b:comp_method)
 	    endif
     "{{{3 --------- labels
-    elseif l =~ '\\\%(eq\|page\|auto\|autopage\)\?ref\*\={[^}]*$\|\\hyperref\s*\[[^\]]*$' && !normal_mode &&
+    elseif l =~ '\\\%(eq\|page\|auto\|autopage\|c\)\?ref\*\={[^}]*$\|\\hyperref\s*\[[^\]]*$' && !normal_mode &&
 		\ index(g:atp_completion_active_modes, 'labels') != -1 
 	    let g:atp_completion_method='labels'
 	    " DEBUG:
@@ -3309,11 +3309,11 @@ function! atplib#complete#TabCompletion(expert_mode,...)
 		
 		let aux_data	= atplib#tools#GrepAuxFile()
 		let completion_dict = []
-		let pattern 	= matchstr(l, '\\\%(eq\|page\|auto\|autopage\)\=ref\*\=\s*{\zs\S*$\|\\hyperref\s*\[\zs\S*$')
+		let pattern 	= matchstr(l, '\\\%(eq\|page\|auto\|autopage\|c\)\=ref\*\=\s*{\zs\S*$\|\\hyperref\s*\[\zs\S*$')
 		for data in aux_data
 		    " match label by string or number
 		    if ( data[0] =~ '^' . pattern || data[1] =~ '^'. pattern ) && a:expert_mode || ( data[0] =~ pattern || data[1] =~ pattern ) && !a:expert_mode
-			if l =~ '\\\%(eq\|page\|auto\|autopage\)\=ref\*\=\s*{\S*$'
+			if l =~ '\\\%(eq\|page\|auto\|autopage\|c\)\=ref\*\=\s*{\S*$'
 			    let close = ( nchar == '}' ? '' : '}' )
 			else
 			    let close = ( nchar == ']' ? '' : ']' )
@@ -3393,7 +3393,7 @@ function! atplib#complete#TabCompletion(expert_mode,...)
 	let column=col
     "{{{3 labels
     elseif g:atp_completion_method == 'labels'
-	let col=match(l, '\\\(eq\|page\|auto\|autopage\)\=ref\*\=\s*{\zs\S*$\|\\hyperref\s*\[\zs\S*$')+1
+	let col=match(l, '\\\(eq\|page\|auto\|autopage\|c\)\=ref\*\=\s*{\zs\S*$\|\\hyperref\s*\[\zs\S*$')+1
 	call complete(col, completion_dict)
 	let column=col
 	return ''

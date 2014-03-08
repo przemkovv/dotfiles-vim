@@ -1,69 +1,104 @@
 [submodule "vim/bundle/vim-easymotion"]
 	path = vim/bundle/vim-easymotion
 	url = git://github.com/Lokaltog/vim-easymotion.git
+    ignore = dirty
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
+    ignore = dirty
 [submodule "vim/bundle/python-mode"]
 	path = vim/bundle/python-mode
 	url = https://github.com/klen/python-mode.git
+    ignore = dirty
 [submodule "vim/bundle/ack.vim"]
 	path = vim/bundle/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
+    ignore = dirty
 [submodule "vim/bundle/clam.vim"]
 	path = vim/bundle/clam.vim
 	url = https://github.com/sjl/clam.vim.git
+    ignore = dirty
 [submodule "vim/bundle/jedi-vim"]
 	path = vim/bundle/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
+    ignore = dirty
 [submodule "vim/bundle/nerdcommenter"]
 	path = vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
+    ignore = dirty
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
+    ignore = dirty
 [submodule "vim/bundle/ctrlp.vim"]
 	path = vim/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim.git
+    ignore = dirty
 [submodule "vim/bundle/securemodelines"]
 	path = vim/bundle/securemodelines
 	url = https://github.com/ciaranm/securemodelines.git
+    ignore = dirty
 [submodule "vim/bundle/vim-orgmode.git"]
 	path = vim/bundle/vim-orgmode.git
 	url = https://github.com/jceb/vim-orgmode.git
+    ignore = dirty
 [submodule "vim/bundle/vim-markdown.vim"]
 	path = vim/bundle/vim-markdown.vim
 	url = https://github.com/tpope/vim-markdown.git
+    ignore = dirty
 [submodule "vim/bundle/utl.vim"]
 	path = vim/bundle/utl.vim
 	url = https://github.com/vim-scripts/utl.vim.git
+    ignore = dirty
 [submodule "vim/bundle/vim-localvimrc"]
 	path = vim/bundle/vim-localvimrc
 	url = https://github.com/embear/vim-localvimrc
+    ignore = dirty
 [submodule "vim/bundle/haskellmode-vim"]
 	path = vim/bundle/haskellmode-vim
 	url = https://github.com/lukerandall/haskellmode-vim.git
+    ignore = dirty
 [submodule "vim/bundle/vim-colors-solarized"]
 	path = vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
+    ignore = dirty
 [submodule "vim/bundle/vim-signify.git"]
         path = vim/bundle/vim-signify.git
         url = https://github.com/mhinz/vim-signify.git
+    ignore = dirty
 [submodule "vim/bundle/vim-online-thesaurus.git"]
 	path = vim/bundle/vim-online-thesaurus.git
 	url = https://github.com/beloglazov/vim-online-thesaurus.git
+    ignore = dirty
 [submodule "vim/bundle/vim-easy-align.git"]
 	path = vim/bundle/vim-easy-align.git
 	url = https://github.com/junegunn/vim-easy-align.git
+    ignore = dirty
 [submodule "vim/bundle/vim-smooth-scroll"]
 	path = vim/bundle/vim-smooth-scroll
 	url = https://github.com/terryma/vim-smooth-scroll.git
+    ignore = dirty
 [submodule "vim/bundle/vim-airline"]
 	path = vim/bundle/vim-airline
 	url = https://github.com/bling/vim-airline.git
+    ignore = dirty
 [submodule "vim/bundle/vim-repeat"]
 	path = vim/bundle/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
+    ignore = dirty
 [submodule "vim/bundle/vim-surround"]
 	path = vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
+    ignore = dirty
+[submodule "vim/bundle/tagbar"]
+	path = vim/bundle/tagbar
+	url = git://github.com/majutsushi/tagbar
+    ignore = dirty
+[submodule "vim/bundle/YouCompleteMe"]
+	path = vim/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
+    ignore = dirty
+[submodule "vim/bundle/vim-exchange"]
+	path = vim/bundle/vim-exchange
+	url = https://github.com/tommcdo/vim-exchange
+    ignore = dirty

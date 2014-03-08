@@ -247,8 +247,11 @@ setl includeexpr=substitute(v:fname,'\\%(.tex\\)\\?$','.tex','')
 if !exists("g:Align_xstrlen") && v:version >= 703 && &conceallevel 
     let g:Align_xstrlen="ATP_strlen"
 endif
+
+" The two options below format lists, but they clash with indentation script.
 setl formatlistpat=^\\s*\\\\item\\s*
-setl formatoptions+=n
+" setl formatoptions+=n
+
 " setl formatexpr=TexFormat
 setl cinwords=
 " }}}
@@ -660,6 +663,13 @@ if !exists("g:atp_imap_enumerate")
 	let g:atp_imap_enumerate="enu"
     endif
 endif
+if !exists("g:atp_imap_description")
+    if g:atp_imap_ShortEnvIMaps
+	let g:atp_imap_description="D"
+    else
+	let g:atp_imap_description="descr"
+    endif
+endif
 if !exists("g:atp_imap_tabular")
     if g:atp_imap_ShortEnvIMaps
 	let g:atp_imap_tabular="u"
@@ -895,6 +905,9 @@ if !exists("g:atp_EnvOptions_enumerate")
     " enumerate map <Leader>E will put \begin{enumerate}[topsep=0pt,noitemsep] Useful
     " options of enumitem to make enumerate more condenced.
     let g:atp_EnvOptions_enumerate=""
+endif
+if !exists("g:atp_EnvOptions_description")
+    let g:atp_EnvOptions_description=""
 endif
 if !exists("g:atp_EnvOptions_itemize")
     " Similar to g:atp_enumerate_options.
@@ -1668,16 +1681,14 @@ try:
     import os
     import signal
     import re
-    from psutil import NoSuchProcess
+    from psutil import NoSuchProcess, AccessDenied
     for pid in psutil.get_pid_list():
         try:
             process = psutil.Process(pid)
             cmdline = process.cmdline
             if len(cmdline) > 1 and re.search('evince_sync\.py$', cmdline[1]):
                 os.kill(pid, signal.SIGTERM)
-        except psutil.error.NoSuchProcess:
-            pass
-        except psutil.error.AccessDenied:
+        except (NoSuchProcess, AccessDenied):
             pass
 except ImportError:
     vim.command("echomsg '[ATP:] Import error. You will have to kill evince_sync.py script yourself'")
