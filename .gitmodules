@@ -102,3 +102,24 @@
 	path = vim/bundle/vim-exchange
 	url = https://github.com/tommcdo/vim-exchange
     ignore = dirty
+[submodule "vim/bundle/vim-ruby"]
+	path = vim/bundle/vim-ruby
+	url = git://github.com/vim-ruby/vim-ruby.git
+[submodule "vim/bundle/vim-rails.git"]
+	path = vim/bundle/vim-rails.git
+	url = git://github.com/tpope/vim-rails.git
+[submodule "vim/bundle/vim-bundler.git"]
+	path = vim/bundle/vim-bundler.git
+	url = git://github.com/tpope/vim-bundler.git
+[submodule "vim/bundle/vim-expand-region"]
+	path = vim/bundle/vim-expand-region
+	url = https://github.com/terryma/vim-expand-region.git
+[submodule "vim/bundle/vim-endwise"]
+	path = vim/bundle/vim-endwise
+	url = git://github.com/tpope/vim-endwise.git
+[submodule "vim/bundle/vim-sleuth"]
+	path = vim/bundle/vim-sleuth
+	url = git://github.com/tpope/vim-sleuth.git
+[submodule "vim/bundle/splitjoin"]
+	path = vim/bundle/splitjoin
+	url = https://github.com/AndrewRadev/splitjoin.vim.git

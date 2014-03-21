@@ -12,7 +12,7 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 "let g:Tex_MultipleCompileFormats = 'dvi'
 "
 let g:Tex_ViewRule_pdf = 'okular'
-inoremap <space><space> <CR>
+"inoremap <space><space> <CR>
 set number
 set numberwidth=5
 set spell

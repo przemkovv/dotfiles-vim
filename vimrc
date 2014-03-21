@@ -27,6 +27,8 @@ if s:running_windows
     let $LANG = 'pl_PL.UTF-8'
 endif
 "call pathogen#runtime_append_all_bundles()
+let g:pathogen_disabled = []
+"call add(g:pathogen_disabled, 'YouCompleteMe')
 call pathogen#infect()
 call pathogen#helptags()
 filetype plugin indent on
@@ -128,9 +130,9 @@ if !isdirectory(expand(&directory))
 endif
 
 
-let mapleader = ","
+let mapleader = "\<Space>"
 let maplocalleader = "\\"
-nnoremap <leader><space> :noh<cr>
+"nnoremap <leader><space> :noh<cr>
 set colorcolumn=85
 
 let g:pymode_rope = 0
@@ -320,6 +322,30 @@ inoremap <right> <nop>
 nnoremap Ajk    <nop>
 nnoremap A<esc> <nop>
 
+" saving file
+nnoremap <Leader>w :w<CR>
+
+"" copy & paste
+"vmap <Leader><Leader>y "*y
+"vmap <Leader><Leader>d "*d
+"nmap <Leader><Leader>p "*p
+"nmap <Leader><Leader>P "*P
+"vmap <Leader><Leader>p "*p
+"vmap <Leader><Leader>P "*P
+
+" copy & paste
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
+nmap sj :SplitjoinSplit<cr> 
+nmap sk :SplitjoinJoin<cr> 
+"vmap v <Plug>(expand_region_expand)
+"vmap <C-v> <Plug>(expand_region_shrink)
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " DELETE AND BACKSPACE KEYS ARE UNACCEPTABLE AS WELL
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -334,7 +360,7 @@ if has("mouse")
 endif 
 
 " Folding ----------------------------------------------------------------- {{{
-set foldlevelstart=0
+set foldlevelstart=20
 " Make zO recursively open whatever top level fold we're in, no matter where the
 " cursor happens to be.
 nnoremap zO zCzO
@@ -585,10 +611,14 @@ augroup END
 " }}}
 " Rubby {{{
 
+augroup ft_eruby
+    au!
+    au FileType eruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
+
 augroup ft_ruby
     au!
-    au Filetype ruby setlocal foldmethod=syntax
-    au BufRead,BufNewFile Capfile setlocal filetype=ruby
+    au FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 augroup END
 
 " }}}
@@ -614,6 +644,8 @@ augroup END
 augroup ft_vim
     au!
 
+
+    au FileType vim setlocal foldlevelstart=1
     au FileType vim setlocal foldmethod=marker
     au FileType help setlocal textwidth=78
     au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
@@ -693,6 +725,7 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-stand
 " }}}
 " EasyMotion {{{
 
+let g:EasyMotion_leader_key = ','
 let g:EasyMotion_grouping = 1
 let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
 
@@ -708,7 +741,7 @@ function! g:QuickMotion()
     call EasyMotion#F(0, 0)
     let &l:scrolloff = s
 endfunction
-nnoremap <silent> <Space> :call g:QuickMotion()<cr>
+nnoremap <silent><leader><leader> :call g:QuickMotion()<cr>
 
 " }}}
 " Scratch {{{
