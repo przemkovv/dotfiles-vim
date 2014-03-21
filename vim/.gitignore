@@ -1,3 +1,5 @@
 .VimballRecord
 .netrwhist
 *.pyc
+# vim/bundle
+bundle/*

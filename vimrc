@@ -9,6 +9,67 @@
 set t_Co=16
 set t_ut=
 
+if has('vim_starting')
+   set nocompatible               " Be iMproved
+
+   " Required:
+   set runtimepath+=~/.vim/bundle/neobundle.vim/
+ endif
+call neobundle#rc(expand('~/.vim/bundle/'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+NeoBundle 'Lokaltog/vim-easymotion.git'
+NeoBundle 'Shougo/vimproc', {
+      \ 'build' : {
+      \     'windows' : 'make -f make_mingw32.mak',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
+NeoBundle 'scrooloose/syntastic.git'
+NeoBundle 'klen/python-mode.git'
+NeoBundle 'mileszs/ack.vim.git'
+NeoBundle 'sjl/clam.vim.git'
+NeoBundle 'davidhalter/jedi-vim.git'
+NeoBundle 'scrooloose/nerdcommenter.git'
+NeoBundle 'tpope/vim-fugitive.git'
+NeoBundle 'kien/ctrlp.vim.git'
+NeoBundle 'ciaranm/securemodelines.git'
+NeoBundle 'vim-scripts/utl.vim.git'
+NeoBundle 'embear/vim-localvimrc'
+NeoBundle 'lukerandall/haskellmode-vim.git'
+NeoBundle 'altercation/vim-colors-solarized.git'
+NeoBundle 'mhinz/vim-signify.git'
+NeoBundle 'beloglazov/vim-online-thesaurus.git'
+NeoBundle 'junegunn/vim-easy-align.git'
+NeoBundle 'terryma/vim-smooth-scroll.git'
+NeoBundle 'tpope/vim-markdown.git'
+NeoBundle 'bling/vim-airline.git'
+NeoBundle 'tpope/vim-repeat.git'
+NeoBundle 'tpope/vim-surround.git'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'unix': './install.sh --clang-completer --system-libclang'}}
+NeoBundle 'tommcdo/vim-exchange'
+NeoBundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'tpope/vim-rails.git'
+NeoBundle 'tpope/vim-bundler.git'
+NeoBundle 'terryma/vim-expand-region.git'
+NeoBundle 'tpope/vim-endwise.git'
+NeoBundle 'tpope/vim-sleuth.git'
+NeoBundle 'AndrewRadev/splitjoin.vim.git'
+NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
+		   \ {'name': 'atp-vim'}
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
+NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
+NeoBundle 'chrismetcalf/vim-yankring' " Mirror of yankring.vim
+NeoBundle 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
+
+NeoBundleCheck
+
 let s:running_windows = has("win16") || has("win32") || has("win64")
 filetype off
 
@@ -27,10 +88,10 @@ if s:running_windows
     let $LANG = 'pl_PL.UTF-8'
 endif
 "call pathogen#runtime_append_all_bundles()
-let g:pathogen_disabled = []
+"let g:pathogen_disabled = []
 "call add(g:pathogen_disabled, 'YouCompleteMe')
-call pathogen#infect()
-call pathogen#helptags()
+"call pathogen#infect()
+"call pathogen#helptags()
 filetype plugin indent on
 
 if !s:running_windows
