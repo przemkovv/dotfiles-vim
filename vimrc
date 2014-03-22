@@ -19,7 +19,8 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'Lokaltog/vim-easymotion.git'
+NeoBundle 'tpope/vim-sensible'
+NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -28,6 +29,7 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
+NeoBundle 'Lokaltog/vim-easymotion.git'
 NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'klen/python-mode.git'
 NeoBundle 'mileszs/ack.vim.git'
@@ -62,11 +64,12 @@ NeoBundle 'AndrewRadev/splitjoin.vim.git'
 NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
 		   \ {'name': 'atp-vim'}
 NeoBundle 'sjl/gundo.vim'
-NeoBundle 'Shougo/unite.vim'
 NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
 NeoBundle 'chrismetcalf/vim-yankring' " Mirror of yankring.vim
 NeoBundle 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
+NeoBundle 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
+NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
 
 NeoBundleCheck
 
@@ -87,11 +90,7 @@ if s:running_windows
     set langmenu=pl_PL.UTF-8
     let $LANG = 'pl_PL.UTF-8'
 endif
-"call pathogen#runtime_append_all_bundles()
-"let g:pathogen_disabled = []
-"call add(g:pathogen_disabled, 'YouCompleteMe')
-"call pathogen#infect()
-"call pathogen#helptags()
+
 filetype plugin indent on
 
 if !s:running_windows
@@ -286,7 +285,7 @@ vmap  <expr>  D        DVB_Duplicate()
 "imap <A-UP> <ESC>gki
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
-nnoremap <Leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <Leader>ev :tabnew $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 
 imap <M-j> <Plug>IMAP_JumpForward
@@ -1147,3 +1146,6 @@ if has('gui_running')
 endif
 
 " }}}
+
+
+runtime! plugin/sensible.vim
