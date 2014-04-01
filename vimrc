@@ -1,10 +1,6 @@
-" All system-wide defaults are set in $VIMRUNTIME/debian.vim (usually just
-" /usr/share/vim/vimcurrent/debian.vim) and sourced by the call to :runtime
-" you can find below.  If you wish to change any of those settings, you should
-" do it in this file (/etc/vim/vimrc), since debian.vim will be overwritten
-" everytime an upgrade of the vim packages is performed.  It is recommended to
-" make changes after sourcing debian.vim since it alters the value of the
-" 'compatible' option.
+" vim: set fdm=marker
+" vim: set foldlevelstart=0
+" vim: set foldlevel=0
 
 set t_Co=16
 set t_ut=
@@ -29,9 +25,11 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
-NeoBundle 'Lokaltog/vim-easymotion.git'
+"NeoBundle 'Lokaltog/vim-easymotion.git'
+NeoBundle 'AnsiEsc.vim' " 2     ansi escape sequences concealed, but highlighted as specified (conceal)
 NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'klen/python-mode.git'
+NeoBundle 'rking/ag.vim'
 NeoBundle 'mileszs/ack.vim.git'
 NeoBundle 'sjl/clam.vim.git'
 NeoBundle 'davidhalter/jedi-vim.git'
@@ -41,21 +39,23 @@ NeoBundle 'kien/ctrlp.vim.git'
 NeoBundle 'ciaranm/securemodelines.git'
 NeoBundle 'vim-scripts/utl.vim.git'
 NeoBundle 'embear/vim-localvimrc'
-NeoBundle 'lukerandall/haskellmode-vim.git'
+"NeoBundle 'lukerandall/haskellmode-vim.git'
 NeoBundle 'altercation/vim-colors-solarized.git'
 NeoBundle 'mhinz/vim-signify.git'
 NeoBundle 'beloglazov/vim-online-thesaurus.git'
 NeoBundle 'junegunn/vim-easy-align.git'
-NeoBundle 'terryma/vim-smooth-scroll.git'
+"NeoBundle 'terryma/vim-smooth-scroll.git'
 NeoBundle 'tpope/vim-markdown.git'
 NeoBundle 'bling/vim-airline.git'
 NeoBundle 'tpope/vim-repeat.git'
 NeoBundle 'tpope/vim-surround.git'
 NeoBundle 'majutsushi/tagbar'
-NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'unix': './install.sh --clang-completer --system-libclang'}}
+NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
+            \ unix': './install.sh --clang-completer --system-libclang'}}
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'vim-ruby/vim-ruby.git'
 NeoBundle 'tpope/vim-rails.git'
+NeoBundle 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 NeoBundle 'tpope/vim-bundler.git'
 NeoBundle 'terryma/vim-expand-region.git'
 NeoBundle 'tpope/vim-endwise.git'
@@ -66,11 +66,22 @@ NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
-NeoBundle 'chrismetcalf/vim-yankring' " Mirror of yankring.vim
+NeoBundle 'toorukawahata/yankring_100' " YankRingSyncが最新版YankRingでは動かないためYankRing（var10.0）をアップ。
 NeoBundle 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 NeoBundle 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
-NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
-
+"NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'groenewege/vim-less'
+NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'tpope/vim-ragtag'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'justinmk/vim-sneak'
+"NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
+NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
+NeoBundle 'mattn/webapi-vim' " vim interface to Web API
+NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
+NeoBundle 'mattn/gist-vim' " vimscript for gist
 NeoBundleCheck
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
@@ -93,22 +104,25 @@ endif
 
 filetype plugin indent on
 
-if !s:running_windows
-    let g:Powerline_symbols = "fancy"
-endif
+"if !s:running_windows
+    "let g:Powerline_symbols = "fancy"
+"endif
 
-let g:Powerline_colorscheme = 'solarized16'
+"let g:Powerline_colorscheme = 'solarized16'
 
 let g:airline_powerline_fonts = 1
-"let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='powerlineish'
+let g:airline#extensions#tabline#enabled = 1
+
+let g:airline#extensions#branch#empty_message = "No SCM"
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 
 syntax on
 
 let g:solarized_termcolors = 16
 set background=dark
 colorscheme solarized
-set cursorline
+"set cursorline
 call togglebg#map("<F11>")
 
 " Uncomment the following to have Vim jump to the last position when
@@ -143,6 +157,8 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
 set wildignore+=*.doc,*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.wmv  " Windows
 set wildignore+=*.bbl,*.synctex.gz,*.blg,*.aux
+set wildignore+=*\\vendor\\**
+set wildignore+=*/vendor/**
 set wildmode=list:longest
 set title
 set relativenumber
@@ -201,7 +217,7 @@ set nocp
 filetype plugin on
 au BufNewFile,BufRead *.flex set filetype=lex
 
-autocmd! bufwritepost .vimrc source %
+"autocmd! bufwritepost .vimrc source %
 
 for c in split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', '\zs')
     exec 'noremap <Leader>g'. c .' :TTags '. c .'<cr>'
@@ -212,9 +228,6 @@ endfor
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 let g:tex_indent_items=1
-set sw=4
-set tabstop=4
-
 let g:tex_flavor='latex'
 
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -246,23 +259,13 @@ if v:version < 602 || $DISPLAY =~ '^localhost:' || $DISPLAY == ''
     set clipboard=autoselect,exclude:.* 
 endif
 
-" When Ctrl+SpaceBar are pressed, it flashes the cursor line and column. Hack found on:  http://briancarper.net/blog/590/cursorcolumn--cursorline-slowdown
-function! CursorPing()
-    set cursorline cursorcolumn
-    redraw
-    sleep 500m
-    set nocursorline nocursorcolumn
-endfunction
 
-set switchbuf=useopen,usetab,newtab
-set showtabline=2
+set switchbuf=useopen ",usetab,newtab
+set showtabline=1
 set tabpagemax=15
 
 set cryptmethod=blowfish
 "au BufAdd,BufNewFile,BufRead * nested tab sball
-
-"let g:CommandTAcceptSelectionMap = '<C-t>'
-"let g:CommandTAcceptSelectionTabMap = '<CR>'
 
 nmap <leader><F5>   <Plug>ATP_TeXVerbose
 nmap <leader><F3>   <Plug>ATP_ViewOutput_sync
@@ -270,7 +273,7 @@ nmap <leader><F3>   <Plug>ATP_ViewOutput_sync
 cnoremap <c-a> <home>
 cnoremap <c-e> <end>
 
-nmap <A-Space> :call CursorPing()<CR>
+"nmap <A-Space> :call CursorPing()<CR>
 highlight SpellBad term=reverse ctermbg=1
 
 vmap  <expr>  <LEFT>   DVB_Drag('left')  
@@ -285,7 +288,7 @@ vmap  <expr>  D        DVB_Duplicate()
 "imap <A-UP> <ESC>gki
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
-nnoremap <Leader>ev :tabnew $MYVIMRC<CR>
+nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 
 imap <M-j> <Plug>IMAP_JumpForward
@@ -301,17 +304,19 @@ cnoremap w!! w !sudo tee % >/dev/null
 
 "noremap <F1> :MBEbp<CR>
 "noremap <F2> :MBEbn<CR>
-let notabs = 1
-nnoremap <silent> <F118> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<Bar>:tab ball<Bar>:tabn<Bar>:endif<CR>
+"let notabs = 1
+"nnoremap <silent> <F118> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<Bar>:tab ball<Bar>:tabn<Bar>:endif<CR>
 
 "nnoremap <Tab>  %  " disabled because of the conflict with Ctrl-I
-noremap <F1> :tabprev<CR>
-noremap <F2> :tabnext<CR>
+"noremap <F1> :tabprev<CR>
+"noremap <F2> :tabnext<CR>
+noremap <F1> :bp<CR>
+noremap <F2> :bn<CR>
 noremap <F3> :TagbarToggle<CR>
-"noremap <F4> :NERDTreeToggle<CR>
+noremap <F4> :NERDTreeToggle<CR>
 nnoremap <silent> <F5> :YRShow<cr>
 inoremap <silent> <F5> <ESC>:YRShow<cr>
-nnoremap <F4> :GundoToggle<CR>
+nnoremap <F6> :GundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -339,17 +344,9 @@ nnoremap H  g^
 nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
-noremap Y y$        
+nnoremap Y y$        
 nnoremap <C-Enter> O<Esc>
 nnoremap <S-Enter> o<Esc>
-" Quickreturn
-inoremap <s-cr> <esc>A<cr>
-
-"nnoremap <Esc>j ciW<CR><Esc>:if match( @", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
-" maybe map to S/s?
-nnoremap s Wi<CR><Esc>kg$ 
-nnoremap S i<CR><Esc>
-
 
 inoremap <M-o> <C-O>o
 inoremap <M-O> <C-O>O
@@ -358,12 +355,12 @@ inoremap <M-A>      <C-O>$
 noremap <C-F4>  :bdelete<CR>
 
 " Align text
-nnoremap <leader>Al :left<cr>
-nnoremap <leader>Ac :center<cr>
-nnoremap <leader>Ar :right<cr>
-vnoremap <leader>Al :left<cr>
-vnoremap <leader>Ac :center<cr>
-vnoremap <leader>Ar :right<cr>
+nnoremap <leader>al :left<cr>
+nnoremap <leader>ac :center<cr>
+nnoremap <leader>ar :right<cr>
+vnoremap <leader>al :left<cr>
+vnoremap <leader>ac :center<cr>
+vnoremap <leader>ar :right<cr>
 
 
 " easier moving of code blocks
@@ -379,8 +376,8 @@ inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
-nnoremap Ajk    <nop>
-nnoremap A<esc> <nop>
+"nnoremap Ajk    <nop>
+"nnoremap A<esc> <nop>
 
 " saving file
 nnoremap <Leader>w :w<CR>
@@ -401,8 +398,8 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
-nmap sj :SplitjoinSplit<cr> 
-nmap sk :SplitjoinJoin<cr> 
+nmap <leader>sj :SplitjoinSplit<cr> 
+nmap <leader>sk :SplitjoinJoin<cr> 
 "vmap v <Plug>(expand_region_expand)
 "vmap <C-v> <Plug>(expand_region_shrink)
 
@@ -505,7 +502,7 @@ augroup END
 " }}}
 " HTML, Django, Jinja, Dram {{{
 
-let g:html_indent_tags = ['p', 'li']
+"let g:html_indent_tags = ['p', 'li']
 
 augroup ft_html
     au!
@@ -669,7 +666,7 @@ augroup ft_rest
 augroup END
 
 " }}}
-" Rubby {{{
+" Ruby {{{
 
 augroup ft_eruby
     au!
@@ -679,6 +676,7 @@ augroup END
 augroup ft_ruby
     au!
     au FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+    autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let highlight def link rubyRspec Function
 augroup END
 
 " }}}
@@ -767,7 +765,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$\|vendor',
     \ 'file': '\v\.(exe|so|dll)$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
@@ -783,26 +781,15 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 
 " }}}
-" EasyMotion {{{
+" Sneak {{{
 
-let g:EasyMotion_leader_key = ','
-let g:EasyMotion_grouping = 1
-let g:EasyMotion_keys = 'asdfghjklqwertyuiop'
-
-hi EasyMotionTarget cterm=bold ctermbg=none ctermfg=red guifg=yellow 
-hi EasyMotionShade  ctermbg=none ctermfg=blue guifg=#777777
-          "hi link EasyMotionTarget ErrorMsg
-          "hi link EasyMotionShade  Comment
-
-function! g:QuickMotion()
-    let s=&scrolloff
-    setlocal scrolloff=0
-    keepjumps normal! H
-    call EasyMotion#F(0, 0)
-    let &l:scrolloff = s
-endfunction
-nnoremap <silent><leader><leader> :call g:QuickMotion()<cr>
-
+let g:sneak#streak = 1
+nmap f <Plug>Sneak_f
+nmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
 " }}}
 " Scratch {{{
 
@@ -827,6 +814,7 @@ let g:secure_modelines_allowed_items = [
             \ "textwidth",   "tw",
             \ "foldmethod",  "fdm",
             \ "foldnextmax",  "fdn",
+            \ "foldlevel", "foldlevelstart",
             \ ]
 
 " }}}
@@ -843,12 +831,6 @@ vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign with a Vim movement
 nmap <Leader>a <Plug>(EasyAlign)
 " }}}
-" SmoothScroll {{{
-"nnoremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<CR>
-"nnoremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
-"nnoremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-"nnoremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
-" }}}
 
 " Tagbar {{{
   let g:tagbar_left = 1
@@ -859,6 +841,18 @@ nmap <Leader>a <Plug>(EasyAlign)
 " Syntastic {{{
     let g:syntastic_cpp_auto_refresh_includes = 1
     let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
+" }}}
+" EasyTags {{{
+" }}}
+" YouCompleteMe {{{
+let g:ycm_collect_identifiers_from_tags_files = 1
+" }}}
+" Vim ruby {{{
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+let g:rubycomplete_load_gemfile = 1
+"let g:rubycomplete_use_bundler = 1
 " }}}
 
 " }}}
@@ -1056,30 +1050,30 @@ endfunction
 " Note: If the text covered by a motion contains a newline it won't work.  Ack
 " searches line-by-line.
 
-nnoremap <silent> <localleader>A :set opfunc=<SID>AckMotion<CR>g@
-xnoremap <silent> <localleader>A :<C-U>call <SID>AckMotion(visualmode())<CR>
+"nnoremap <silent> <leader>A :set opfunc=<SID>AckMotion<CR>g@
+"xnoremap <silent> <leader>A :<C-U>call <SID>AckMotion(visualmode())<CR>
 
-"nnoremap <bs> :Ack! '\b<c-r><c-w>\b'<cr>
-"xnoremap <silent> <bs> :<C-U>call <SID>AckMotion(visualmode())<CR>
-nnoremap <leader>a :Ack
+"""nnoremap <bs> :Ack! '\b<c-r><c-w>\b'<cr>
+"""xnoremap <silent> <bs> :<C-U>call <SID>AckMotion(visualmode())<CR>
+""nnoremap <leader>a :Ack
 
-function! s:CopyMotionForType(type)
-    if a:type ==# 'v'
-        silent execute "normal! `<" . a:type . "`>y"
-    elseif a:type ==# 'char'
-        silent execute "normal! `[v`]y"
-    endif
-endfunction
+"""function! s:CopyMotionForType(type)
+    """if a:type ==# 'v'
+        """silent execute "normal! `<" . a:type . "`>y"
+    """elseif a:type ==# 'char'
+        """silent execute "normal! `[v`]y"
+    """endif
+"""endfunction
 
-function! s:AckMotion(type) abort
-    let reg_save = @@
+"""function! s:AckMotion(type) abort
+    """let reg_save = @@
 
-    call s:CopyMotionForType(a:type)
+    """call s:CopyMotionForType(a:type)
 
-    execute "normal! :Ack! --literal " . shellescape(@@) . "\<cr>"
+    ""execute "normal! :Ack! --literal " . shellescape(@@) . "\<cr>"
 
-    let @@ = reg_save
-endfunction
+    ""let @@ = reg_save
+""endfunction
 
 " }}}
 " Pulse Line {{{
