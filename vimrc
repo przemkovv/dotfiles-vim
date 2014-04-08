@@ -738,6 +738,9 @@ augroup END
 " }}}
 " Plugin settings --------------------------------------------------------- {{{
 
+" Pymode {{{
+let g:pymode_breakpoint = 0
+" }}}
 " ATP {{{
 
 " This is only valid for Xpdf viewer. If set to 1 it will reload the file even
@@ -761,8 +764,10 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:100'
 let g:ctrlp_max_files = 0
 " Search from current directory instead of project root
 "let g:ctrlp_working_path_mode = 0
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'raw'
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
+                          \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
 
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn)$\|vendor',
