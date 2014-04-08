@@ -82,6 +82,7 @@ NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 NeoBundle 'mattn/webapi-vim' " vim interface to Web API
 NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
 NeoBundle 'mattn/gist-vim' " vimscript for gist
+NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 NeoBundleCheck
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
