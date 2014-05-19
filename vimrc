@@ -43,7 +43,7 @@ NeoBundle 'embear/vim-localvimrc'
 NeoBundle 'altercation/vim-colors-solarized.git'
 NeoBundle 'mhinz/vim-signify.git'
 NeoBundle 'beloglazov/vim-online-thesaurus.git'
-NeoBundle 'junegunn/vim-easy-align.git'
+"NeoBundle 'junegunn/vim-easy-align.git'
 "NeoBundle 'terryma/vim-smooth-scroll.git'
 NeoBundle 'tpope/vim-markdown.git'
 NeoBundle 'bling/vim-airline.git'
@@ -77,7 +77,7 @@ NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'justinmk/vim-sneak'
 "NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
-NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+"NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 NeoBundle 'mattn/webapi-vim' " vim interface to Web API
 NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
@@ -291,6 +291,7 @@ nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
+nnoremap <Leader>h :Make<CR>
 
 imap <M-j> <Plug>IMAP_JumpForward
 nmap <M-j> <Plug>IMAP_JumpForward
@@ -336,7 +337,7 @@ noremap <Leader>g* :call ttags#List(0, "*", tlib#rx#Escape(expand("<cword>")) ."
 noremap <Leader>g? :call ttags#List(1, "*", tlib#rx#Escape(expand("<cword>")))<cr>
 "nnoremap j gj
 "nnoremap k gk
-nnoremap ; :
+"nnoremap ; :
 inoremap jk <ESC>
 "vnoremap jk <ESC>
 nnoremap <leader>w <C-w>v<C-w>l
@@ -832,6 +833,10 @@ vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign with a Vim movement
 nmap <Leader>a <Plug>(EasyAlign)
 " }}}
+" Local VIM RC {{{
+  let g:localvimrc_name = ".localvimrc"
+  let g:localvimrc_sandbox = 0
+" }}}
 
 " Tagbar {{{
   let g:tagbar_left = 1
@@ -847,6 +852,8 @@ nmap <Leader>a <Plug>(EasyAlign)
 " }}}
 " YouCompleteMe {{{
 let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_confirm_extra_conf = 0
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
 " }}}
 " Vim ruby {{{
 let g:rubycomplete_buffer_loading = 1
