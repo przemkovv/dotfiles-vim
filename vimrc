@@ -2,6 +2,9 @@
 " vim: set foldlevelstart=0
 " vim: set foldlevel=0
 
+let s:running_windows = has("win16") || has("win32") || has("win64")
+
+
 set t_Co=16
 set t_ut=
 
@@ -9,7 +12,11 @@ if has('vim_starting')
    set nocompatible               " Be iMproved
 
    " Required:
-   set runtimepath+=~/.vim/bundle/neobundle.vim/
+    if !s:running_windows
+        set runtimepath+=~/.vim/bundle/neobundle.vim/
+    else
+        set runtimepath+=~/vimfiles/bundle/neobundle.vim/
+    endif
  endif
 call neobundle#rc(expand('~/.vim/bundle/'))
 
@@ -50,8 +57,10 @@ NeoBundle 'bling/vim-airline.git'
 NeoBundle 'tpope/vim-repeat.git'
 NeoBundle 'tpope/vim-surround.git'
 NeoBundle 'majutsushi/tagbar'
-NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
-            \ unix': './install.sh --clang-completer --system-libclang'}}
+if !s:running_windows
+  NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
+        \ unix': './install.sh --clang-completer --system-libclang'}}
+endif
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'vim-ruby/vim-ruby.git'
 NeoBundle 'tpope/vim-rails.git'
@@ -85,7 +94,6 @@ NeoBundle 'mattn/gist-vim' " vimscript for gist
 NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 NeoBundleCheck
 
-let s:running_windows = has("win16") || has("win32") || has("win64")
 filetype off
 
 
@@ -117,6 +125,17 @@ let g:airline#extensions#tabline#enabled = 1
 
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+
+if s:running_windows
+  let g:airline_left_sep = '⮀'
+  let g:airline_left_alt_sep = '⮁'
+  let g:airline_right_sep = '⮂'
+  let g:airline_right_alt_sep = '⮃'
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = ''
+  let g:airline#extensions#tabline#right_sep = ''
+  let g:airline#extensions#tabline#right_alt_sep = ''
+endif
 
 syntax on
 
