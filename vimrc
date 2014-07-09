@@ -357,10 +357,10 @@ noremap <Leader>g? :call ttags#List(1, "*", tlib#rx#Escape(expand("<cword>")))<c
 "nnoremap j gj
 "nnoremap k gk
 "nnoremap ; :
-inoremap jk <ESC>
+"inoremap jk <ESC>
 "vnoremap jk <ESC>
 nnoremap <leader>w <C-w>v<C-w>l
-inoremap <Esc> <Esc>`^
+"inoremap <Esc> <Esc>`^
 nnoremap H  g^
 nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
@@ -388,7 +388,7 @@ vnoremap <leader>ar :right<cr>
 vnoremap < <gv   " better indentation
 vnoremap > >gv   " better indentation
 
-inoremap <esc> <nop>
+"inoremap <esc> <nop>
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
