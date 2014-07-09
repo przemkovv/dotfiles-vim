@@ -1,5 +1,4 @@
 " vim: set fdm=marker
-" vim: set foldlevelstart=0
 " vim: set foldlevel=0
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
@@ -32,12 +31,19 @@ NeoBundle 'Shougo/vimproc', {
       \     'unix' : 'make -f make_unix.mak',
       \    },
       \ }
+
+" Track the engine.
+NeoBundle 'SirVer/ultisnips'
+"
+" " Snippets are separated from the engine. Add this if you want them:
+NeoBundle 'honza/vim-snippets'
+
 "NeoBundle 'Lokaltog/vim-easymotion.git'
-NeoBundle 'AnsiEsc.vim' " 2     ansi escape sequences concealed, but highlighted as specified (conceal)
 NeoBundle 'scrooloose/syntastic.git'
 NeoBundle 'klen/python-mode.git'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'mileszs/ack.vim.git'
+NeoBundle 'maksimr/vim-translator'
 NeoBundle 'sjl/clam.vim.git'
 NeoBundle 'davidhalter/jedi-vim.git'
 NeoBundle 'scrooloose/nerdcommenter.git'
@@ -56,6 +62,7 @@ NeoBundle 'tpope/vim-markdown.git'
 NeoBundle 'bling/vim-airline.git'
 NeoBundle 'tpope/vim-repeat.git'
 NeoBundle 'tpope/vim-surround.git'
+NeoBundle 'tpope/vim-vinegar.git'
 NeoBundle 'majutsushi/tagbar'
 if !s:running_windows
   NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
@@ -86,12 +93,14 @@ NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'justinmk/vim-sneak'
 "NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
-"NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 NeoBundle 'mattn/webapi-vim' " vim interface to Web API
 NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
 NeoBundle 'mattn/gist-vim' " vimscript for gist
-NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
+"NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
+NeoBundle 'wellle/targets.vim' 
+NeoBundle 'FSwitch'
 NeoBundleCheck
 
 filetype off
@@ -173,7 +182,7 @@ set hlsearch      " highlight search terms
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set wildignore+=*.swp,*.bak,*.pyc,*.class
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.d,*.o     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
 set wildignore+=*.doc,*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.wmv  " Windows
 set wildignore+=*.bbl,*.synctex.gz,*.blg,*.aux
@@ -311,6 +320,9 @@ nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <Leader>h :Make<CR>
+nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -C -S<CR>`z<CR>k
+"nnoremap <Leader>= mzgg=G`z<CR>  " reindent
+nnoremap <Leader>sf :FSHere<CR>
 
 imap <M-j> <Plug>IMAP_JumpForward
 nmap <M-j> <Plug>IMAP_JumpForward
@@ -366,8 +378,8 @@ nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 nnoremap Y y$        
-nnoremap <C-Enter> O<Esc>
-nnoremap <S-Enter> o<Esc>
+"nnoremap <C-Enter> O<Esc>
+"nnoremap <S-Enter> o<Esc>
 
 inoremap <M-o> <C-O>o
 inoremap <M-O> <C-O>O
@@ -453,7 +465,7 @@ nnoremap zO zCzO
 " This mapping wipes out the z mark, which I never use.
 "
 " I use :sus for the rare times I want to actually background Vim.
-nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
+"nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
 
@@ -593,6 +605,14 @@ augroup END
 " }}}
 " Markdown {{{
 
+let g:tagbar_type_markdown = {
+      \ 'ctagstype' : 'markdown',
+      \ 'kinds' : [
+      \ 'h:headings'
+      \ ],
+      \ 'sort' : 0,
+      \ }
+
 augroup ft_markdown
     au!
 
@@ -607,7 +627,6 @@ augroup ft_markdown
     au Filetype markdown vnoremap <buffer> <localleader>p :!python -m json.tool<cr>
     au Filetype markdown setlocal textwidth=80
 augroup END
-
 " }}}
 " Mercurial {{{
 
@@ -759,6 +778,10 @@ augroup END
 " }}}
 " Plugin settings --------------------------------------------------------- {{{
 
+" Google-Translate {{{
+  let g:goog_user_conf = { 'langpair': 'pl|en' }
+"}}}
+  
 " Pymode {{{
 let g:pymode_breakpoint = 0
 " }}}
@@ -791,8 +814,8 @@ let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
                           \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
 
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$\|vendor',
-    \ 'file': '\v\.(exe|so|dll)$',
+    \ 'dir':  '\v[\/]\.(git|hg|svn)$\|vendor\|build',
+    \ 'file': '\v\.(exe|so|dll|o|d)$',
     \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
     \ }
 
@@ -861,6 +884,30 @@ nmap <Leader>a <Plug>(EasyAlign)
   let g:localvimrc_name = ".localvimrc"
   let g:localvimrc_sandbox = 0
 " }}}
+" UltiSnips {{{
+"
+   "let g:UltiSnipsExpandTrigger="<c-y>"
+
+"func! s:jInYCM()
+    "if pumvisible()
+        "return "\<C-n>"
+    "else
+        "return "\<c-j>"
+"endfunction
+
+"func! s:kInYCM()
+    "if pumvisible()
+        "return "\<C-p>"
+    "else
+        "return "\<c-k>"
+"endfunction
+"inoremap <c-j> <c-r>=s:jInYCM()<cr>
+"au BufEnter,BufRead * exec "inoremap <silent> " . g:UltiSnipsJumpBackwordTrigger . " <C-R>=s:kInYCM()<cr>"
+"let g:UltiSnipsJumpBackwordTrigger = "<c-k>"
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+" }}}
 
 " Tagbar {{{
   let g:tagbar_left = 1
@@ -873,11 +920,20 @@ nmap <Leader>a <Plug>(EasyAlign)
     let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
 " }}}
 " EasyTags {{{
+
+let g:easytags_auto_update = 0
+let g:easytags_events = ['BufWritePost']
+set tags=./tags;
+let g:easytags_dynamic_files = 1
 " }}}
 " YouCompleteMe {{{
+let g:ycm_key_list_previous_completion=['<Up>']
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
+
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
 " }}}
 " Vim ruby {{{
 let g:rubycomplete_buffer_loading = 1
@@ -1167,8 +1223,12 @@ if has('gui_running')
     set go-=r
     set go-=R
     set encoding=utf-8
-    set guifont=Powerline\ Consolas:h10
-    au GUIEnter * simalt ~x "x on an English Windows version. n on a French one
+    if s:running_windows
+      set guifont=Powerline\ Consolas:h10
+    else
+      set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
+    endif
+    "au GUIEnter * simalt ~x "x on an English Windows version. n on a French one
 endif
 
 " }}}
