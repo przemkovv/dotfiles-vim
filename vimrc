@@ -4,7 +4,7 @@
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
 
-set t_Co=16
+set t_Co=256
 set t_ut=
 
 if has('vim_starting')
@@ -23,6 +23,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'tpope/vim-sensible'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
       \     'windows' : 'make -f make_mingw32.mak',
@@ -32,11 +33,6 @@ NeoBundle 'Shougo/vimproc', {
       \    },
       \ }
 
-" Track the engine.
-NeoBundle 'SirVer/ultisnips'
-"
-" " Snippets are separated from the engine. Add this if you want them:
-NeoBundle 'honza/vim-snippets'
 
 "NeoBundle 'Lokaltog/vim-easymotion.git'
 NeoBundle 'scrooloose/syntastic.git'
@@ -45,8 +41,8 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'mileszs/ack.vim.git'
 NeoBundle 'maksimr/vim-translator'
 NeoBundle 'sjl/clam.vim.git'
-NeoBundle 'davidhalter/jedi-vim.git'
-NeoBundle 'scrooloose/nerdcommenter.git'
+NeoBundle 'davidhalter/jedi-vim.git' ", {'disabled': 1}
+
 NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 'kien/ctrlp.vim.git'
 NeoBundle 'ciaranm/securemodelines.git'
@@ -58,12 +54,34 @@ NeoBundle 'mhinz/vim-signify.git'
 NeoBundle 'beloglazov/vim-online-thesaurus.git'
 "NeoBundle 'junegunn/vim-easy-align.git'
 "NeoBundle 'terryma/vim-smooth-scroll.git'
-NeoBundle 'tpope/vim-markdown.git'
+"NeoBundle 'tpope/vim-markdown.git'
+NeoBundle 'vim-pandoc/vim-pandoc'
+NeoBundle 'vim-pandoc/vim-pandoc-syntax'
+NeoBundle 'vim-pandoc/vim-pandoc-after'
+" Snippets
+NeoBundle 'honza/vim-snippets'
+NeoBundle 'SirVer/ultisnips'
+
+" Status bar
 NeoBundle 'bling/vim-airline.git'
-NeoBundle 'tpope/vim-repeat.git'
-NeoBundle 'tpope/vim-surround.git'
-NeoBundle 'tpope/vim-vinegar.git'
+
+" Text Objects
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-entire' " ae, ie
+NeoBundle 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
+NeoBundle 'kana/vim-textobj-line' " al, il
+NeoBundle 'kana/vim-textobj-indent' " ai, ii, aI, iI
+NeoBundle 'lucapette/vim-textobj-underscore' " a_, i_
+NeoBundle 'bps/vim-textobj-python' " af, if, ac, ic
+
+" Tags
+NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 NeoBundle 'majutsushi/tagbar'
+
+"NeoBundle 'tpope/vim-vinegar.git'
 if !s:running_windows
   NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
         \ unix': './install.sh --clang-completer --system-libclang'}}
@@ -82,13 +100,14 @@ NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
-NeoBundle 'toorukawahata/yankring_100' " YankRingSyncが最新版YankRingでは動かないためYankRing（var10.0）をアップ。
+"NeoBundle 'vim-scripts/yankring.vim' 
 NeoBundle 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 NeoBundle 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 "NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'othree/html5.vim'
 "NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
@@ -149,7 +168,7 @@ endif
 
 syntax on
 
-let g:solarized_termcolors = 16
+"let g:solarized_termcolors = 256
 set background=dark
 colorscheme solarized
 "set cursorline
@@ -180,7 +199,7 @@ set autowrite		" Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
 set mouse=a         " Enable mouse usage (all modes) in terminals
 set hlsearch      " highlight search terms
-set history=1000         " remember more commands and search history
+set history=10000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set wildignore+=*.swp,*.bak,*.pyc,*.class
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.d,*.o     " MacOSX/Linux
@@ -249,11 +268,6 @@ au BufNewFile,BufRead *.flex set filetype=lex
 
 "autocmd! bufwritepost .vimrc source %
 
-for c in split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', '\zs')
-    exec 'noremap <Leader>g'. c .' :TTags '. c .'<cr>'
-endfor 
-
-
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
@@ -297,8 +311,8 @@ set tabpagemax=15
 set cryptmethod=blowfish
 "au BufAdd,BufNewFile,BufRead * nested tab sball
 
-nmap <leader><F5>   <Plug>ATP_TeXVerbose
-nmap <leader><F3>   <Plug>ATP_ViewOutput_sync
+"nmap <leader><F5>   <Plug>ATP_TeXVerbose
+"nmap <leader><F3>   <Plug>ATP_ViewOutput_sync
 
 cnoremap <c-a> <home>
 cnoremap <c-e> <end>
@@ -333,6 +347,26 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+"
+"===============================================================================
+" Command-line Mode Key Mappings
+"===============================================================================
+
+" Bash like keys for the command line. These resemble personal zsh mappings
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
+
+" Ctrl-[hl]: Move left/right by word
+cnoremap <c-h> <s-left>
+cnoremap <c-l> <s-right>
+
+" Ctrl-Space: Show history
+cnoremap <c-@> <c-f>
+
+cnoremap <c-j> <down>
+cnoremap <c-k> <up>
+cnoremap <c-f> <left>
+cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
 
@@ -344,12 +378,14 @@ cnoremap w!! w !sudo tee % >/dev/null
 "nnoremap <Tab>  %  " disabled because of the conflict with Ctrl-I
 "noremap <F1> :tabprev<CR>
 "noremap <F2> :tabnext<CR>
-noremap <F1> :bp<CR>
-noremap <F2> :bn<CR>
-noremap <F3> :TagbarToggle<CR>
-noremap <F4> :NERDTreeToggle<CR>
-nnoremap <silent> <F5> :YRShow<cr>
-inoremap <silent> <F5> <ESC>:YRShow<cr>
+noremap <leader>[ :bprev<CR>
+noremap <leader>] :bnext<CR>
+noremap <leader><bs> :bdelete<CR>
+noremap <leader><leader><bs> :bdelete!<CR>
+noremap <leader>3 :TagbarToggle<CR>
+noremap <leader>4 :NERDTreeToggle<CR>
+"nnoremap <silent> <F5> :YRShow<cr>
+"inoremap <silent> <F5> <ESC>:YRShow<cr>
 nnoremap <F6> :GundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
@@ -363,22 +399,12 @@ noremap CN <esc>:lne<cr>
 noremap CP <esc>:lN<cr>
 noremap cn <esc>:cn<cr>
 noremap cp <esc>:cp<cr>
-noremap <Leader>g. :TTags<cr>
-noremap <Leader>g# :call ttags#List(0, "*", tlib#rx#Escape(expand("<cword>")))<cr>
-noremap <Leader>g* :call ttags#List(0, "*", tlib#rx#Escape(expand("<cword>")) .".*")<cr>
-noremap <Leader>g? :call ttags#List(1, "*", tlib#rx#Escape(expand("<cword>")))<cr>
-"nnoremap j gj
-"nnoremap k gk
-"nnoremap ; :
-"inoremap jk <ESC>
-"vnoremap jk <ESC>
-nnoremap <leader>w <C-w>v<C-w>l
 "inoremap <Esc> <Esc>`^
 nnoremap H  g^
 nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
-nnoremap Y y$        
+nnoremap Y y$
 "nnoremap <C-Enter> O<Esc>
 "nnoremap <S-Enter> o<Esc>
 
@@ -386,16 +412,6 @@ inoremap <M-o> <C-O>o
 inoremap <M-O> <C-O>O
 inoremap <M-I>      <C-O>^
 inoremap <M-A>      <C-O>$
-noremap <C-F4>  :bdelete<CR>
-
-" Align text
-nnoremap <leader>al :left<cr>
-nnoremap <leader>ac :center<cr>
-nnoremap <leader>ar :right<cr>
-vnoremap <leader>al :left<cr>
-vnoremap <leader>ac :center<cr>
-vnoremap <leader>ar :right<cr>
-
 
 " easier moving of code blocks
 vnoremap < <gv   " better indentation
@@ -416,17 +432,9 @@ inoremap <right> <nop>
 " saving file
 nnoremap <Leader>w :w<CR>
 
-"" copy & paste
-"vmap <Leader><Leader>y "*y
-"vmap <Leader><Leader>d "*d
-"nmap <Leader><Leader>p "*p
-"nmap <Leader><Leader>P "*P
-"vmap <Leader><Leader>p "*p
-"vmap <Leader><Leader>P "*P
-
 " copy & paste
 vmap <Leader>y "+y
-vmap <Leader>d "+d
+"vmap <Leader>d "+d
 nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
@@ -434,8 +442,35 @@ vmap <Leader>P "+P
 
 nmap <leader>sj :SplitjoinSplit<cr> 
 nmap <leader>sk :SplitjoinJoin<cr> 
-"vmap v <Plug>(expand_region_expand)
-"vmap <C-v> <Plug>(expand_region_shrink)
+
+" Ctrl-/: A more powerful '/'
+	nmap <c-_> [unite]l
+
+"" Map space to the prefix for Unite
+nnoremap [unite] <Nop>
+" Ctrl-\: Quick outline
+nmap <silent> <c-\> [unite]o
+" Quick outline
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+
+" Quick line
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
+	
+
+"===============================================================================
+" Insert Mode Ctrl Key Mappings
+"===============================================================================
+" Ctrl-w: Delete previous word, create undo point
+inoremap <c-w> <c-g>u<c-w>
+
+" Ctrl-u: Delete til beginning of line, create undo point
+inoremap <c-u> <c-g>u<c-u>
+
+"===============================================================================
+" Normal Mode Key Mappings
+"=============================================================================== 
+"n: Next, keep search matches in the middle of the window
+nnoremap n nzzzv
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " DELETE AND BACKSPACE KEYS ARE UNACCEPTABLE AS WELL
@@ -466,7 +501,6 @@ nnoremap zO zCzO
 " This mapping wipes out the z mark, which I never use.
 "
 " I use :sus for the rare times I want to actually background Vim.
-"nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
 
@@ -785,6 +819,8 @@ augroup END
   
 " Pymode {{{
 let g:pymode_breakpoint = 0
+let g:pymode_doc = 0
+let g:pymode_doc_bind =''
 " }}}
 " ATP {{{
 
@@ -795,6 +831,8 @@ let g:pymode_breakpoint = 0
 " If you set this variable to 1 (defult is 0) after each compelation errors in
 " the tex buffer will be highlighted.
     let g:atp_HighlightErrors 		= 1
+
+    let g:atp_ProjectScript = 1
 
 " }}}
 " Ctrl-P {{{
@@ -831,9 +869,19 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 
 " }}}
+" dbext {{{
+        let g:dbext_default_usermaps = 0
+" }}}
 " Sneak {{{
 
 let g:sneak#streak = 1
+nmap t <Plug>Sneak_t
+nmap T <Plug>Sneak_T
+xmap t <Plug>Sneak_t
+xmap T <Plug>Sneak_T
+omap t <Plug>Sneak_t
+omap T <Plug>Sneak_T
+
 nmap f <Plug>Sneak_f
 nmap F <Plug>Sneak_F
 xmap f <Plug>Sneak_f
@@ -873,13 +921,19 @@ let g:secure_modelines_allowed_items = [
 " }}}
 " Signify {{{
     let g:signify_vcs_list = [ 'git', 'svn' ]
+    let g:signify_mapping_next_hunk = ']c'
+    let g:signify_mapping_prev_hunk = '[c'
+    "let g:signify_mapping_toggle_highlight = ''
+    "let g:signify_mapping_toggle = ''
+    nmap <nop> <plug>(signify-toggle-highlight)
+    nmap <nop> <plug>(signify-toggle)
 " }}}
 " EasyAlign {{{
 " Start interactive EasyAlign in visual mode
-vmap <Enter> <Plug>(EasyAlign)
+"vmap <Enter> <Plug>(EasyAlign)
 
 " Start interactive EasyAlign with a Vim movement
-nmap <Leader>a <Plug>(EasyAlign)
+"nmap <Leader>a <Plug>(EasyAlign)
 " }}}
 " Local VIM RC {{{
   let g:localvimrc_name = ".localvimrc"
@@ -909,32 +963,80 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " }}}
+" Unite {{{
+  let g:unite_source_history_yank_enable = 1
+  "nnoremap <space>y :Unite history/yank<cr>
+  "
+" Use the fuzzy matcher for everything
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" Start in insert mode
+	let g:unite_enable_start_insert = 1
+	
+	let g:unite_data_directory = "~/.unite"
 
+
+" Open in bottom right
+	let g:unite_split_rule = "botright"
+	" Shorten the default update date of 500ms
+	let g:unite_update_time = 200
+" }}}
 " Tagbar {{{
   let g:tagbar_left = 1
   let g:tagbar_width = 33
   let g:tagbar_compact = 1
 " }}}
+" Pandoc {{{
+let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
+" }}}
 
+" Jedi {{{
+       let g:jedi#auto_vim_configuration = 0
+        let g:jedi#popup_on_dot = 0
+        let g:jedi#popup_select_first = 0
+        let g:jedi#completions_enabled = 0
+        let g:jedi#completions_command = ""
+        let g:jedi#show_call_signatures = "1"
+
+        "let g:jedi#goto_assignments_command = "<leader>pa"
+        "let g:jedi#goto_definitions_command = "<leader>pd"
+        "let g:jedi#documentation_command = "<leader>pk"
+        "let g:jedi#usages_command = "<leader>pu"
+        "let g:jedi#rename_command = "<leader>pr"
+        let g:jedi#documentation_command = ''
+" }}}
 " Syntastic {{{
     let g:syntastic_cpp_auto_refresh_includes = 1
+    let g:syntastic_cpp_compiler = 'clang++'
     let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
+    "let g:syntastic_cpp_check_header = 1
+    let g:syntastic_error_symbol='✗'
+    let g:syntastic_warning_symbol='⚠'
+    let g:syntastic_enable_highlighting=0
+    let g:syntastic_auto_loc_list=1 
+    let g:syntastic_loc_list_height = 5
+    let g:syntastic_always_populate_loc_list=1
 " }}}
 " EasyTags {{{
 
 let g:easytags_auto_update = 0
 let g:easytags_events = ['BufWritePost']
 set tags=./tags;
-let g:easytags_dynamic_files = 1
+let g:easytags_dynamic_files = 2
+let g:easytags_include_members = 0
 " }}}
 " YouCompleteMe {{{
 let g:ycm_key_list_previous_completion=['<Up>']
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
+let g:ycm_auto_trigger = 0
 
+let g:ycm_key_detailed_diagnostics = ''
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+
+let g:ycm_goto_buffer_command = 'same-buffer'
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+
 " }}}
 " Vim ruby {{{
 let g:rubycomplete_buffer_loading = 1
