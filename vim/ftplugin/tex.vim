@@ -11,7 +11,8 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 " correctly compiled.
 "let g:Tex_MultipleCompileFormats = 'dvi'
 "
-let g:Tex_ViewRule_pdf = 'okular'
+let g:Tex_ViewRule_pdf = 'xdg-open'
+let b:atp_Viewer = 'xdg-open'
 "inoremap <space><space> <CR>
 set number
 set numberwidth=5
@@ -25,8 +26,6 @@ nmap <M-j> <Plug>TexJMotionForward
 imap <M-k> <Plug>TexJMotionBackward
 nmap <M-k> <Plug>TexJMotionBackward
 
-nmap <F10>			<Plug>Texdoc
-imap <F10> 			<Plug>iTexdoc
 let g:atp_tab_map = 1
 let maplocalleader = ",,"
 let g:syntastic_always_populate_loc_list=1
