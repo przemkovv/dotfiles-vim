@@ -118,6 +118,11 @@ NeoBundle 'mattn/gist-vim' " vimscript for gist
 "NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 NeoBundle 'wellle/targets.vim' 
 NeoBundle 'FSwitch'
+
+" Clojure
+NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
+NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
+
 NeoBundleCheck
 
 filetype off
