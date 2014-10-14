@@ -17,7 +17,7 @@ if has('vim_starting')
         set runtimepath+=~/vimfiles/bundle/neobundle.vim/
     endif
  endif
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -112,18 +112,23 @@ NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'justinmk/vim-sneak'
 "NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
+NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
+"NeoBundle 'xolox/vim-notes'
 NeoBundle 'mattn/webapi-vim' " vim interface to Web API
 NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
 NeoBundle 'mattn/gist-vim' " vimscript for gist
 "NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 NeoBundle 'wellle/targets.vim' 
 NeoBundle 'FSwitch'
+NeoBundle 'vimwiki/vimwiki'
 
 " Clojure
 NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
 NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
 
 NeoBundleCheck
+call neobundle#end()
 
 filetype off
 
@@ -1046,6 +1051,22 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
 "let g:rubycomplete_use_bundler = 1
+" }}}
+" Vim-notes {{{
+
+  let g:notes_directories = ['~/Documents/notes']
+" }}}
+" Vimwiki {{{
+  let g:vimwiki_list = [{'path': '~/Documents/wiki', 'path_html': '/srv/http/wiki'}]
+  nmap <leader>uu <Plug>VimwikiIndex
+  nmap <f14> <Plug>VimwikiTabIndex
+  nmap <F15> <Plug>VimwikiUISelect
+  nmap <leader>ud <Plug>VimwikiDiaryIndex
+  nmap <F17> <Plug>VimwikiDiaryGenerateLinks
+  nmap <leader>un <Plug>VimwikiMakeDiaryNote
+
+  nmap <F19> <Plug>VimwikiTabMakeDiaryNote
+
 " }}}
 
 " }}}
