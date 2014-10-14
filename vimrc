@@ -17,7 +17,7 @@ if has('vim_starting')
         set runtimepath+=~/vimfiles/bundle/neobundle.vim/
     endif
  endif
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -110,6 +110,7 @@ NeoBundle 'scrooloose/nerdtree.git'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'othree/html5.vim'
+NeoBundle 'justinmk/vim-sneak'
 "NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
 NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
@@ -122,6 +123,7 @@ NeoBundle 'wellle/targets.vim'
 NeoBundle 'FSwitch'
 NeoBundle 'vimwiki/vimwiki'
 NeoBundleCheck
+call neobundle#end()
 
 filetype off
 
