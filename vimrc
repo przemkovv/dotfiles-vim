@@ -126,6 +126,10 @@ NeoBundle 'vimwiki/vimwiki'
 " Clojure
 NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
 NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
+NeoBundle 'tpope/vim-classpath' " classpath.vim: Set 'path' from the Java class path
+
+
+NeoBundle 'danielmiessler/VimBlog'
 
 NeoBundleCheck
 call neobundle#end()
