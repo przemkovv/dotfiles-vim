@@ -95,8 +95,8 @@ NeoBundle 'terryma/vim-expand-region.git'
 NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'tpope/vim-sleuth.git'
 NeoBundle 'AndrewRadev/splitjoin.vim.git'
-NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
-		   \ {'name': 'atp-vim'}
+"NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
+		   "\ {'name': 'atp-vim'}
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
@@ -122,6 +122,7 @@ NeoBundle 'mattn/gist-vim' " vimscript for gist
 NeoBundle 'wellle/targets.vim' 
 NeoBundle 'FSwitch'
 NeoBundle 'vimwiki/vimwiki'
+NeoBundle 'lervag/vim-latex'
 
 " Clojure
 NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
@@ -833,13 +834,13 @@ let g:pymode_doc_bind =''
 
 " This is only valid for Xpdf viewer. If set to 1 it will reload the file even
 " if compelation returned with non zero exit code (the default is 1).
-    let b:atp_ReloadOnError		= 1
+    "let b:atp_ReloadOnError		= 1
 
 " If you set this variable to 1 (defult is 0) after each compelation errors in
 " the tex buffer will be highlighted.
-    let g:atp_HighlightErrors 		= 1
+    "let g:atp_HighlightErrors 		= 1
 
-    let g:atp_ProjectScript = 1
+    "let g:atp_ProjectScript = 1
 
 " }}}
 " Ctrl-P {{{
