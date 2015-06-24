@@ -858,6 +858,7 @@ augroup END
 
 let g:gista#github_user = 'przemkovv'
 let g:gista#update_on_write = 1
+let g:gista#post_private = 1
 
 " }}}
 " peekaboo {{{
