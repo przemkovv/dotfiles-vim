@@ -4,8 +4,8 @@
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
 
-set t_Co=256
-set t_ut=
+"set t_Co=256
+"set t_ut=
 
 if has('vim_starting')
    set nocompatible               " Be iMproved
@@ -58,12 +58,18 @@ NeoBundle 'beloglazov/vim-online-thesaurus.git'
 NeoBundle 'vim-pandoc/vim-pandoc'
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'
 NeoBundle 'vim-pandoc/vim-pandoc-after'
+
+"NeoBundle 'junegunn/vim-peekaboo'
+
 " Snippets
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'SirVer/ultisnips'
 
 " Status bar
 NeoBundle 'bling/vim-airline.git'
+
+" Search
+NeoBundle 'justinmk/vim-sneak'
 
 " Text Objects
 NeoBundle 'tpope/vim-surround'
@@ -112,7 +118,6 @@ NeoBundle 'scrooloose/nerdtree.git'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'othree/html5.vim'
-NeoBundle 'justinmk/vim-sneak'
 "NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
 NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
@@ -127,8 +132,17 @@ NeoBundle 'vimwiki/vimwiki'
 NeoBundle 'lervag/vim-latex'
 
 " Clojure
-NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
-NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
+"NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
+"NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
+"NeoBundle 'tpope/vim-classpath' " classpath.vim: Set 'path' from the Java class path
+
+NeoBundle 'jalcine/cmake.vim'
+
+NeoBundle 'danielmiessler/VimBlog'
+NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
+
+NeoBundle 'diepm/vim-rest-console' " A REST console for Vim.
+
 
 " Cmake
 NeoBundle 'jalcine/cmake.vim'
@@ -358,10 +372,10 @@ imap <M-j> <Plug>IMAP_JumpForward
 nmap <M-j> <Plug>IMAP_JumpForward
 vmap <M-j> <Plug>IMAP_JumpForward
 " Easy window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+"nnoremap <C-h> <C-w>h
+"nnoremap <C-j> <C-w>j
+"nnoremap <C-k> <C-w>k
+"nnoremap <C-l> <C-w>l
 "
 "===============================================================================
 " Command-line Mode Key Mappings
@@ -828,6 +842,9 @@ augroup END
 " }}}
 " Plugin settings --------------------------------------------------------- {{{
 
+" peekaboo {{{
+  "let g:peekaboo_window = 'horizontal botright 30new'
+" }}}
 " Google-Translate {{{
   let g:goog_user_conf = { 'langpair': 'pl|en' }
 "}}}
@@ -978,6 +995,9 @@ let g:secure_modelines_allowed_items = [
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+"let g:UltiSnipsSnippetsDir = '~/.vim/mysnippets/' 
+"let g:UltiSnipsSnippetDirectories = ['mysnippets','UltiSnips' ]
+
 " }}}
 " Unite {{{
   let g:unite_source_history_yank_enable = 1
