@@ -143,7 +143,6 @@ NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 NeoBundle 'diepm/vim-rest-console' " A REST console for Vim.
 
-
 " Cmake
 NeoBundle 'jalcine/cmake.vim'
 
