@@ -73,6 +73,7 @@ NeoBundle 'kana/vim-textobj-entire' " ae, ie
 NeoBundle 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
 NeoBundle 'kana/vim-textobj-line' " al, il
 NeoBundle 'kana/vim-textobj-indent' " ai, ii, aI, iI
+NeoBundle 'kana/vim-textobj-function' " af, if, aF, iF
 NeoBundle 'lucapette/vim-textobj-underscore' " a_, i_
 NeoBundle 'bps/vim-textobj-python' " af, if, ac, ic
 
@@ -85,6 +86,7 @@ NeoBundle 'majutsushi/tagbar'
 if !s:running_windows
   NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
         \ unix': './install.sh --clang-completer --system-libclang'}}
+  NeoBundle 'rdnetto/YCM-Generator'
 endif
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'vim-ruby/vim-ruby.git'
@@ -127,6 +129,11 @@ NeoBundle 'lervag/vim-latex'
 " Clojure
 NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
 NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
+
+" Cmake
+NeoBundle 'jalcine/cmake.vim'
+
+NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 NeoBundleCheck
 call neobundle#end()
@@ -316,7 +323,7 @@ set switchbuf=useopen ",usetab,newtab
 set showtabline=1
 set tabpagemax=15
 
-set cryptmethod=blowfish
+"set cryptmethod=blowfish
 "au BufAdd,BufNewFile,BufRead * nested tab sball
 
 "nmap <leader><F5>   <Plug>ATP_TeXVerbose
@@ -490,7 +497,7 @@ nnoremap n nzzzv
 " Odds n Ends
 if has("mouse")
     set mouse=a " use mouse everywhere
-    set ttymouse=xterm2 " makes it work in everything
+    "set ttymouse=xterm2 " makes it work in everything
 endif 
 
 " Folding ----------------------------------------------------------------- {{{
@@ -533,7 +540,7 @@ set foldtext=MyFoldText()
 
 augroup ft_c
     au!
-    au FileType c setlocal foldmethod=marker foldmarker={,}
+    au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
 augroup END
 
 " }}}
@@ -921,6 +928,7 @@ let g:secure_modelines_allowed_items = [
             \ "foldmethod",  "fdm",
             \ "foldnextmax",  "fdn",
             \ "foldlevel", "foldlevelstart",
+            \ "spelllang",
             \ ]
 
 " }}}
@@ -993,8 +1001,14 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
   let g:tagbar_width = 33
   let g:tagbar_compact = 1
 " }}}
+" VimTex {{{
+let g:vimtex_fold_enabled = 0
+" }}}
 " Pandoc {{{
 let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
+let g:pandoc#formatting#textwidth = 79
+let g:pandoc#formatting#mode = "h"
+
 " }}}
 
 " Jedi {{{
