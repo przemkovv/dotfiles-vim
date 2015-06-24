@@ -122,9 +122,9 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "NeoBundle 'xolox/vim-notes'
-NeoBundle 'mattn/webapi-vim' " vim interface to Web API
-NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
-NeoBundle 'mattn/gist-vim' " vimscript for gist
+"NeoBundle 'mattn/webapi-vim' " vim interface to Web API
+"NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
+"NeoBundle 'mattn/gist-vim' " vimscript for gist
 "NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 NeoBundle 'wellle/targets.vim' 
 NeoBundle 'FSwitch'
@@ -147,6 +147,19 @@ NeoBundle 'diepm/vim-rest-console' " A REST console for Vim.
 NeoBundle 'jalcine/cmake.vim'
 
 NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
+
+
+" neobundle.vim (Lazy)
+NeoBundleLazy 'lambdalisue/vim-gista', {
+    \ 'depends': [
+    \    'Shougo/unite.vim',
+    \ ],
+    \ 'autoload': {
+    \    'commands': ['Gista'],
+    \    'mappings': '<Plug>(gista-',
+    \    'unite_sources': 'gista',
+    \}}
+
 
 NeoBundleCheck
 call neobundle#end()
@@ -841,6 +854,12 @@ augroup END
 " }}}
 " Plugin settings --------------------------------------------------------- {{{
 
+" Gista {{{
+
+let g:gista#github_user = 'przemkovv'
+let g:gista#update_on_write = 1
+
+" }}}
 " peekaboo {{{
   "let g:peekaboo_window = 'horizontal botright 30new'
 " }}}
