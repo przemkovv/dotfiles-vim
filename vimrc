@@ -33,15 +33,13 @@ NeoBundle 'Shougo/vimproc', {
       \    },
       \ }
 
+NeoBundle 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 
-"NeoBundle 'Lokaltog/vim-easymotion.git'
 NeoBundle 'scrooloose/syntastic.git'
-NeoBundle 'klen/python-mode.git'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'mileszs/ack.vim.git'
-NeoBundle 'maksimr/vim-translator'
-NeoBundle 'sjl/clam.vim.git'
-NeoBundle 'davidhalter/jedi-vim.git' ", {'disabled': 1}
+" NeoBundle 'maksimr/vim-translator'
+" NeoBundle 'sjl/clam.vim.git' " Clam.vim is a lightweight Vim plugin to easily run shell commands.
 
 NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 'kien/ctrlp.vim.git'
@@ -52,9 +50,6 @@ NeoBundle 'embear/vim-localvimrc'
 NeoBundle 'altercation/vim-colors-solarized.git'
 NeoBundle 'mhinz/vim-signify.git'
 NeoBundle 'beloglazov/vim-online-thesaurus.git'
-"NeoBundle 'junegunn/vim-easy-align.git'
-"NeoBundle 'terryma/vim-smooth-scroll.git'
-"NeoBundle 'tpope/vim-markdown.git'
 NeoBundle 'vim-pandoc/vim-pandoc'
 NeoBundle 'vim-pandoc/vim-pandoc-syntax'
 NeoBundle 'vim-pandoc/vim-pandoc-after'
@@ -83,6 +78,8 @@ NeoBundle 'kana/vim-textobj-function' " af, if, aF, iF
 NeoBundle 'lucapette/vim-textobj-underscore' " a_, i_
 NeoBundle 'bps/vim-textobj-python' " af, if, ac, ic
 
+NeoBundle 'tpope/vim-commentary' " commentary.vim: comment stuff out
+
 " Tags
 NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
@@ -95,30 +92,21 @@ if !s:running_windows
   NeoBundle 'rdnetto/YCM-Generator'
 endif
 NeoBundle 'tommcdo/vim-exchange'
-NeoBundle 'vim-ruby/vim-ruby.git'
-NeoBundle 'tpope/vim-rails.git'
 NeoBundle 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
-NeoBundle 'tpope/vim-bundler.git'
 NeoBundle 'terryma/vim-expand-region.git'
-NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'tpope/vim-sleuth.git'
 NeoBundle 'AndrewRadev/splitjoin.vim.git'
 "NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
 		   "\ {'name': 'atp-vim'}
-NeoBundle 'sjl/gundo.vim'
+" NeoBundle 'sjl/gundo.vim'
+NeoBundle 'simnalamburt/vim-mundo'
+NeoBundle 'mbbill/undotree' " The ultimate undo history visualizer for VIM
+
 NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
 "NeoBundle 'vim-scripts/yankring.vim' 
 NeoBundle 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
-NeoBundle 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
-"NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'groenewege/vim-less'
 NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'othree/html5.vim'
-"NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
 NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "NeoBundle 'xolox/vim-notes'
@@ -129,14 +117,32 @@ NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 NeoBundle 'wellle/targets.vim' 
 NeoBundle 'FSwitch'
 NeoBundle 'vimwiki/vimwiki'
+
+" Latex
 NeoBundle 'lervag/vim-latex'
+
+" HTML/CSS
+NeoBundle 'tpope/vim-ragtag'
+NeoBundle 'othree/html5.vim'
+
+" Ruby
+NeoBundle 'tpope/vim-bundler.git'
+NeoBundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'tpope/vim-rails.git'
+NeoBundle 'tpope/vim-endwise.git'
+"NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
+"NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'groenewege/vim-less'
 
 " Clojure
 "NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
 "NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
 "NeoBundle 'tpope/vim-classpath' " classpath.vim: Set 'path' from the Java class path
 
-NeoBundle 'jalcine/cmake.vim'
+" Python
+NeoBundle 'klen/python-mode.git'
+NeoBundle 'davidhalter/jedi-vim.git' ", {'disabled': 1}
 
 NeoBundle 'danielmiessler/VimBlog'
 NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
@@ -327,7 +333,7 @@ if has("spell")
     " turn spelling on by default
     "set spell
     " toggle spelling with F8 key
-    map <F8> :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+    nnoremap <leader>8 :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 
     " they were using white on white
     highlight PmenuSel ctermfg=black ctermbg=lightgray
@@ -351,9 +357,6 @@ set tabpagemax=15
 
 "set cryptmethod=blowfish
 "au BufAdd,BufNewFile,BufRead * nested tab sball
-
-"nmap <leader><F5>   <Plug>ATP_TeXVerbose
-"nmap <leader><F3>   <Plug>ATP_ViewOutput_sync
 
 cnoremap <c-a> <home>
 cnoremap <c-e> <end>
@@ -380,9 +383,6 @@ nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -C -S<CR>`z<CR>k
 "nnoremap <Leader>= mzgg=G`z<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
-imap <M-j> <Plug>IMAP_JumpForward
-nmap <M-j> <Plug>IMAP_JumpForward
-vmap <M-j> <Plug>IMAP_JumpForward
 " Easy window navigation
 "nnoremap <C-h> <C-w>h
 "nnoremap <C-j> <C-w>j
@@ -411,11 +411,6 @@ cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
 
-"noremap <F1> :MBEbp<CR>
-"noremap <F2> :MBEbn<CR>
-"let notabs = 1
-"nnoremap <silent> <F118> :let notabs=!notabs<Bar>:if notabs<Bar>:tabo<Bar>:else<Bar>:tab ball<Bar>:tabn<Bar>:endif<CR>
-
 "nnoremap <Tab>  %  " disabled because of the conflict with Ctrl-I
 "noremap <F1> :tabprev<CR>
 "noremap <F2> :tabnext<CR>
@@ -427,7 +422,8 @@ noremap <leader>3 :TagbarToggle<CR>
 noremap <leader>4 :NERDTreeToggle<CR>
 "nnoremap <silent> <F5> :YRShow<cr>
 "inoremap <silent> <F5> <ESC>:YRShow<cr>
-nnoremap <F6> :GundoToggle<CR>
+nnoremap <leader>5 :UndotreeToggle<cr>
+nnoremap <leader>6 :GundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -484,18 +480,6 @@ vmap <Leader>P "+P
 nmap <leader>sj :SplitjoinSplit<cr> 
 nmap <leader>sk :SplitjoinJoin<cr> 
 
-" Ctrl-/: A more powerful '/'
-	nmap <c-_> [unite]l
-
-"" Map space to the prefix for Unite
-nnoremap [unite] <Nop>
-" Ctrl-\: Quick outline
-nmap <silent> <c-\> [unite]o
-" Quick outline
-nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
-
-" Quick line
-nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=search_file line<CR>
 	
 
 "===============================================================================
@@ -852,6 +836,7 @@ augroup END
 " }}}
 
 " }}}
+
 " Plugin settings --------------------------------------------------------- {{{
 
 " Gista {{{
@@ -872,19 +857,6 @@ let g:gista#post_private = 1
 let g:pymode_breakpoint = 0
 let g:pymode_doc = 0
 let g:pymode_doc_bind =''
-" }}}
-" ATP {{{
-
-" This is only valid for Xpdf viewer. If set to 1 it will reload the file even
-" if compelation returned with non zero exit code (the default is 1).
-    "let b:atp_ReloadOnError		= 1
-
-" If you set this variable to 1 (defult is 0) after each compelation errors in
-" the tex buffer will be highlighted.
-    "let g:atp_HighlightErrors 		= 1
-
-    "let g:atp_ProjectScript = 1
-
 " }}}
 " Ctrl-P {{{
 
@@ -968,9 +940,6 @@ let g:secure_modelines_allowed_items = [
             \ ]
 
 " }}}
-" Better digraphs {{{
-"inoremap <expr>  <C-K>   BDG_GetDigraph() 
-" }}}
 " Signify {{{
     let g:signify_vcs_list = [ 'git', 'svn' ]
     let g:signify_mapping_next_hunk = ']c'
@@ -980,16 +949,10 @@ let g:secure_modelines_allowed_items = [
     nmap <nop> <plug>(signify-toggle-highlight)
     nmap <nop> <plug>(signify-toggle)
 " }}}
-" EasyAlign {{{
-" Start interactive EasyAlign in visual mode
-"vmap <Enter> <Plug>(EasyAlign)
-
-" Start interactive EasyAlign with a Vim movement
-"nmap <Leader>a <Plug>(EasyAlign)
-" }}}
 " Local VIM RC {{{
   let g:localvimrc_name = ".localvimrc"
   let g:localvimrc_sandbox = 0
+  let g:localvimrc_persistent = 1
 " }}}
 " UltiSnips {{{
 "
@@ -1025,15 +988,23 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " Use the fuzzy matcher for everything
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " Start in insert mode
-	let g:unite_enable_start_insert = 1
-	
-	let g:unite_data_directory = "~/.unite"
+let g:unite_enable_start_insert = 1
+
+let g:unite_data_directory = "~/.unite"
 
 
 " Open in bottom right
-	let g:unite_split_rule = "botright"
-	" Shorten the default update date of 500ms
-	let g:unite_update_time = 200
+let g:unite_split_rule = "botright"
+" Shorten the default update date of 500ms
+let g:unite_update_time = 200
+
+let g:unite_abbr_highlight = 'normal' 
+call unite#filters#matcher_default#use(['matcher_fuzzy']) 
+nnoremap <leader>y :<C-u>Unite history/yank<CR> 
+nnoremap <leader>R :<C-u>Unite register<CR> 
+nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR> 
+nnoremap <leader>g :<C-u>Unite -auto-resize gista<CR> 
+
 " }}}
 " Tagbar {{{
   let g:tagbar_left = 1
@@ -1042,6 +1013,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " }}}
 " VimTex {{{
 let g:vimtex_fold_enabled = 0
+let g:vimtex_view_method = 'zathura'
 " }}}
 " Pandoc {{{
 let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
@@ -1094,6 +1066,7 @@ let g:ycm_auto_trigger = 0
 let g:ycm_key_detailed_diagnostics = ''
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+
 
 let g:ycm_goto_buffer_command = 'same-buffer'
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
@@ -1275,7 +1248,7 @@ endfunction
 
 " Motion for numbers.  Great for CSS.  Lets you do things like this:
 "
-" margin-top: 200px; -> daN -> margin-top: px;
+" mrgin-top: 200px; -> daN -> margin-top: px;
 "              ^                          ^
 " TODO: Handle floats.
 
