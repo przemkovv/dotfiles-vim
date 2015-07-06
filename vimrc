@@ -154,6 +154,9 @@ NeoBundle 'jalcine/cmake.vim'
 
 NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
+" CSV
+NeoBundle 'chrisbra/csv.vim' " A Filetype plugin for csv files
+
 
 " neobundle.vim (Lazy)
 NeoBundleLazy 'lambdalisue/vim-gista', {
@@ -1094,6 +1097,9 @@ let g:rubycomplete_load_gemfile = 1
 
   nmap <F19> <Plug>VimwikiTabMakeDiaryNote
 
+" }}}
+" CSV {{{
+  let g:csv_autocmd_arrange = 1
 " }}}
 
 " }}}
