@@ -100,7 +100,7 @@ NeoBundle 'AndrewRadev/splitjoin.vim.git'
 		   "\ {'name': 'atp-vim'}
 " NeoBundle 'sjl/gundo.vim'
 NeoBundle 'simnalamburt/vim-mundo'
-NeoBundle 'mbbill/undotree' " The ultimate undo history visualizer for VIM
+" NeoBundle 'mbbill/undotree' " The ultimate undo history visualizer for VIM
 
 NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
@@ -422,7 +422,7 @@ noremap <leader>3 :TagbarToggle<CR>
 noremap <leader>4 :NERDTreeToggle<CR>
 "nnoremap <silent> <F5> :YRShow<cr>
 "inoremap <silent> <F5> <ESC>:YRShow<cr>
-nnoremap <leader>5 :UndotreeToggle<cr>
+" nnoremap <leader>5 :UndotreeToggle<cr>
 nnoremap <leader>6 :GundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
