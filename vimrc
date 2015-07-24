@@ -6,160 +6,157 @@ let s:running_windows = has("win16") || has("win32") || has("win64")
 
 "set t_Co=256
 "set t_ut=
+"
 
-if has('vim_starting')
-   set nocompatible               " Be iMproved
+let s:editor_root=expand("~/.vim")
 
-   " Required:
-    if !s:running_windows
-        set runtimepath+=~/.vim/bundle/neobundle.vim/
-    else
-        set runtimepath+=~/vimfiles/bundle/neobundle.vim/
+
+" Set up ultisnips - need to symlink vim scripts to be run when files are opened
+function! SymlinkSnippets(info)
+    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
     endif
- endif
-call neobundle#begin(expand('~/.vim/bundle/'))
+endfunction
 
-NeoBundleFetch 'Shougo/neobundle.vim'
+" Setting up plugins
+if empty(glob(s:editor_root . '/autoload/plug.vim'))
+    autocmd VimEnter * echom "Downloading and installing vim-plug..."
+    silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    autocmd VimEnter * PlugInstall
+endif
 
-NeoBundle 'tpope/vim-sensible'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'windows' : 'make -f make_mingw32.mak',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
+call plug#begin('~/.vim/plugged/')
 
-NeoBundle 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
+Plug 'altercation/vim-colors-solarized'
 
-NeoBundle 'scrooloose/syntastic.git'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'mileszs/ack.vim.git'
-" NeoBundle 'maksimr/vim-translator'
-" NeoBundle 'sjl/clam.vim.git' " Clam.vim is a lightweight Vim plugin to easily run shell commands.
+Plug 'tpope/vim-sensible'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite-outline'
+Plug 'Shougo/vimproc', { 'do' : 'make' }
+Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 
-NeoBundle 'tpope/vim-fugitive.git'
-NeoBundle 'kien/ctrlp.vim.git'
-NeoBundle 'ciaranm/securemodelines.git'
-NeoBundle 'vim-scripts/utl.vim.git'
-NeoBundle 'embear/vim-localvimrc'
-"NeoBundle 'lukerandall/haskellmode-vim.git'
-NeoBundle 'altercation/vim-colors-solarized.git'
-NeoBundle 'mhinz/vim-signify.git'
-NeoBundle 'beloglazov/vim-online-thesaurus.git'
-NeoBundle 'vim-pandoc/vim-pandoc'
-NeoBundle 'vim-pandoc/vim-pandoc-syntax'
-NeoBundle 'vim-pandoc/vim-pandoc-after'
+Plug 'scrooloose/syntastic'
+Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
+" Plug 'maksimr/vim-translator'
+" Plug 'sjl/clam.vim' " Clam.vim is a lightweight Vim plugin to easily run shell commands.
 
-"NeoBundle 'junegunn/vim-peekaboo'
+Plug 'tpope/vim-fugitive'
+Plug 'kien/ctrlp.vim'
+Plug 'ciaranm/securemodelines'
+Plug 'vim-scripts/utl.vim'
+Plug 'embear/vim-localvimrc'
+"Plug 'lukerandall/haskellmode-vim'
+Plug 'mhinz/vim-signify'
+Plug 'beloglazov/vim-online-thesaurus'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'vim-pandoc/vim-pandoc-after'
+
+"Plug 'junegunn/vim-peekaboo'
 
 " Snippets
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
 " Status bar
-NeoBundle 'bling/vim-airline.git'
+Plug 'bling/vim-airline'
 
 " Search
-NeoBundle 'justinmk/vim-sneak'
+Plug 'justinmk/vim-sneak'
 
 " Text Objects
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'kana/vim-textobj-entire' " ae, ie
-NeoBundle 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
-NeoBundle 'kana/vim-textobj-line' " al, il
-NeoBundle 'kana/vim-textobj-indent' " ai, ii, aI, iI
-NeoBundle 'kana/vim-textobj-function' " af, if, aF, iF
-NeoBundle 'lucapette/vim-textobj-underscore' " a_, i_
-NeoBundle 'bps/vim-textobj-python' " af, if, ac, ic
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-entire' " ae, ie
+Plug 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
+Plug 'kana/vim-textobj-line' " al, il
+Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
+Plug 'kana/vim-textobj-function' " af, if, aF, iF
+Plug 'lucapette/vim-textobj-underscore' " a_, i_
+Plug 'bps/vim-textobj-python' " af, if, ac, ic
 
-NeoBundle 'tpope/vim-commentary' " commentary.vim: comment stuff out
+Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 
 " Tags
-NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
-NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
-NeoBundle 'majutsushi/tagbar'
+Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
+Plug 'majutsushi/tagbar'
 
-"NeoBundle 'tpope/vim-vinegar.git'
+"Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
-  NeoBundle 'Valloric/YouCompleteMe.git', {'build': {'
-        \ unix': './install.sh --clang-completer --system-libclang'}}
-  NeoBundle 'rdnetto/YCM-Generator'
+    Plug 'Valloric/YouCompleteMe', {'do': './install.sh --clang-completer --system-libclang'}
+    autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
-NeoBundle 'tommcdo/vim-exchange'
-NeoBundle 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
-NeoBundle 'terryma/vim-expand-region.git'
-NeoBundle 'tpope/vim-sleuth.git'
-NeoBundle 'AndrewRadev/splitjoin.vim.git'
-"NeoBundle 'git://git.code.sf.net/p/atp-vim/code',
+Plug 'tommcdo/vim-exchange'
+Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
+Plug 'terryma/vim-expand-region'
+Plug 'tpope/vim-sleuth'
+Plug 'AndrewRadev/splitjoin.vim'
+"Plug 'git://git.code.sf.net/p/atp-vim/code',
 		   "\ {'name': 'atp-vim'}
-" NeoBundle 'sjl/gundo.vim'
-NeoBundle 'simnalamburt/vim-mundo'
-NeoBundle 'mbbill/undotree' " The ultimate undo history visualizer for VIM
+" Plug 'sjl/gundo.vim'
+Plug 'simnalamburt/vim-mundo'
+" Plug 'mbbill/undotree' " The ultimate undo history visualizer for VIM
 
-NeoBundle 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
-NeoBundle 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
-"NeoBundle 'vim-scripts/yankring.vim' 
-NeoBundle 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
-NeoBundle 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
-"NeoBundle 'xolox/vim-notes'
-"NeoBundle 'mattn/webapi-vim' " vim interface to Web API
-"NeoBundle 'mattn/ctrlp-gist' " ctrlp gist extension
-"NeoBundle 'mattn/gist-vim' " vimscript for gist
-"NeoBundle 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
-NeoBundle 'wellle/targets.vim' 
-NeoBundle 'FSwitch'
-NeoBundle 'vimwiki/vimwiki'
+Plug 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
+Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
+"Plug 'vim-scripts/yankring.vim' 
+Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
+Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
+"Plug 'xolox/vim-notes'
+"Plug 'mattn/webapi-vim' " vim interface to Web API
+"Plug 'mattn/ctrlp-gist' " ctrlp gist extension
+"Plug 'mattn/gist-vim' " vimscript for gist
+"Plug 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
+Plug 'wellle/targets.vim' 
+Plug 'FSwitch'
+Plug 'vimwiki/vimwiki'
 
 " Latex
-NeoBundle 'lervag/vim-latex'
+Plug 'lervag/vim-latex'
 
 " HTML/CSS
-NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'othree/html5.vim'
+Plug 'tpope/vim-ragtag', { 'for': 'html'}
+Plug 'othree/html5.vim', { 'for': 'html'}
 
 " Ruby
-NeoBundle 'tpope/vim-bundler.git'
-NeoBundle 'vim-ruby/vim-ruby.git'
-NeoBundle 'tpope/vim-rails.git'
-NeoBundle 'tpope/vim-endwise.git'
-"NeoBundle 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
-"NeoBundle 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'groenewege/vim-less'
+Plug 'tpope/vim-bundler', { 'for': 'ruby'}
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
+Plug 'tpope/vim-rails', { 'for': 'ruby'}
+Plug 'tpope/vim-endwise'
+"Plug 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
+"Plug 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
+Plug 'groenewege/vim-less', { 'for': 'less'}
 
 " Clojure
-"NeoBundle 'guns/vim-clojure-static' " Meikel Brandmeyer's excellent Clojure runtime files
-"NeoBundle 'tpope/vim-fireplace' " fireplace.vim: Clojure REPL support
-"NeoBundle 'tpope/vim-classpath' " classpath.vim: Set 'path' from the Java class path
+Plug 'guns/vim-clojure-static', { 'for': 'clojure'} " Meikel Brandmeyer's excellent Clojure runtime files
+Plug 'tpope/vim-fireplace', { 'for': 'clojure'} " fireplace.vim: Clojure REPL support
+Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from the Java class path
 
 " Python
-NeoBundle 'klen/python-mode.git'
-NeoBundle 'davidhalter/jedi-vim.git' ", {'disabled': 1}
+Plug 'klen/python-mode', { 'for': 'python'}
+Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 
-NeoBundle 'danielmiessler/VimBlog'
-NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
+Plug 'danielmiessler/VimBlog'
+Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
-NeoBundle 'diepm/vim-rest-console' " A REST console for Vim.
+Plug 'diepm/vim-rest-console' " A REST console for Vim.
 
 " Cmake
-NeoBundle 'jalcine/cmake.vim'
+Plug 'jalcine/cmake.vim'
 
-NeoBundle 'kennethzfeng/vim-raml' " RAML plugin for VIM
+Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 " CSV
-NeoBundle 'chrisbra/csv.vim' " A Filetype plugin for csv files
+Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
 
 " neobundle.vim (Lazy)
-NeoBundleLazy 'lambdalisue/vim-gista', {
+Plug 'lambdalisue/vim-gista', {
     \ 'depends': [
     \    'Shougo/unite.vim',
     \ ],
@@ -170,8 +167,7 @@ NeoBundleLazy 'lambdalisue/vim-gista', {
     \}}
 
 
-NeoBundleCheck
-call neobundle#end()
+call plug#end()
 
 filetype off
 
@@ -425,7 +421,7 @@ noremap <leader>3 :TagbarToggle<CR>
 noremap <leader>4 :NERDTreeToggle<CR>
 "nnoremap <silent> <F5> :YRShow<cr>
 "inoremap <silent> <F5> <ESC>:YRShow<cr>
-nnoremap <leader>5 :UndotreeToggle<cr>
+" nnoremap <leader>5 :UndotreeToggle<cr>
 nnoremap <leader>6 :GundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
