@@ -76,7 +76,7 @@ Plug 'kana/vim-textobj-function' " af, if, aF, iF
 Plug 'lucapette/vim-textobj-underscore' " a_, i_
 Plug 'bps/vim-textobj-python' " af, if, ac, ic
 
-Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
+" Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 
 " Tags
 Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
@@ -104,6 +104,7 @@ Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on E
 "Plug 'vim-scripts/yankring.vim' 
 Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
 Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "Plug 'xolox/vim-notes'
@@ -153,6 +154,9 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
+
+
+Plug 'idanarye/vim-vebugger'
 
 
 " neobundle.vim (Lazy)
