@@ -158,6 +158,8 @@ Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
 Plug 'idanarye/vim-vebugger'
 
+Plug 'vim-scripts/loremipsum'
+
 
 " neobundle.vim (Lazy)
 Plug 'lambdalisue/vim-gista', {
