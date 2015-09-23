@@ -80,7 +80,7 @@ Plug 'kana/vim-textobj-function' " af, if, aF, iF
 Plug 'lucapette/vim-textobj-underscore' " a_, i_
 Plug 'bps/vim-textobj-python' " af, if, ac, ic
 
-Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
+" Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
 
 " Tags
 Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
@@ -108,6 +108,7 @@ Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on E
 "Plug 'vim-scripts/yankring.vim' 
 Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
 Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "Plug 'xolox/vim-notes'
@@ -159,6 +160,9 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
 Plug 'gilligan/vim-lldb'
+
+Plug 'idanarye/vim-vebugger'
+
 
 " neobundle.vim (Lazy)
 Plug 'lambdalisue/vim-gista', {
@@ -894,7 +898,24 @@ let g:ctrlp_custom_ignore = {
       "\ },
     "\ 'fallback': 'find %s -type f'
     "\ }
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+    
+" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+
+let g:ctrlp_show_hidden = 1
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'ag %s --hidden -l --nocolor -g ""']
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+
 
 " }}}
 " dbext {{{
