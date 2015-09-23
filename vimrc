@@ -28,6 +28,10 @@ endif
 call plug#begin('~/.vim/plugged/')
 
 Plug 'altercation/vim-colors-solarized'
+Plug 'nanotech/jellybeans.vim'
+Plug 'romainl/apprentice'
+Plug 'morhetz/gruvbox'
+Plug 'google/vim-colorscheme-primary'
 
 Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
@@ -154,6 +158,7 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
+Plug 'gilligan/vim-lldb'
 
 " neobundle.vim (Lazy)
 Plug 'lambdalisue/vim-gista', {
@@ -216,7 +221,7 @@ syntax on
 
 "let g:solarized_termcolors = 256
 set background=dark
-colorscheme solarized
+colorscheme gruvbox
 "set cursorline
 call togglebg#map("<F11>")
 
@@ -267,6 +272,7 @@ set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
+
 
 " Set the command window height to 2 lines, to avoid many cases of having to
 " "press <Enter> to continue"
