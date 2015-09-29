@@ -159,7 +159,7 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
-Plug 'gilligan/vim-lldb'
+" Plug 'gilligan/vim-lldb'
 
 Plug 'idanarye/vim-vebugger'
 
