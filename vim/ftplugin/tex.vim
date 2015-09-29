@@ -18,8 +18,9 @@ set number
 set numberwidth=5
 set spell
 set spelllang=en,pl
-setlocal wrap linebreak textwidth=79
-setlocal showbreak=…
+setlocal wrap linebreak textwidth=0
+" setlocal showbreak=…
+let &showbreak='↳ '
 
 imap <M-j> <Plug>TexJMotionForward
 nmap <M-j> <Plug>TexJMotionForward

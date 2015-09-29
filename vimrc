@@ -38,6 +38,7 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
+Plug 'tpope/vim-unimpaired'
 
 Plug 'scrooloose/syntastic'
 Plug 'rking/ag.vim'
@@ -56,6 +57,8 @@ Plug 'beloglazov/vim-online-thesaurus'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
+
+Plug 'bronson/vim-trailing-whitespace'
 
 "Plug 'junegunn/vim-peekaboo'
 
@@ -441,10 +444,10 @@ set pastetoggle=<F12>
 nnoremap <leader>z zMzvzz
 
 
-noremap CN <esc>:lne<cr>
-noremap CP <esc>:lN<cr>
-noremap cn <esc>:cn<cr>
-noremap cp <esc>:cp<cr>
+"noremap CN <esc>:lne<cr>
+"noremap CP <esc>:lN<cr>
+"noremap cn <esc>:cn<cr>
+"noremap cp <esc>:cp<cr>
 "inoremap <Esc> <Esc>`^
 nnoremap H  g^
 nnoremap L  g$
@@ -1007,6 +1010,14 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 "let g:UltiSnipsSnippetDirectories = ['mysnippets','UltiSnips' ]
 
 " }}}
+" Fugitive {{{
+nnoremap <leader>gb :Gblame<Cr>
+nnoremap <leader>gs :Gstatus<Cr>
+nnoremap <leader>gc :Gcommit<Cr>
+nnoremap <leader>gl :Glog<Cr>
+nnoremap <leader>gw :Gwrite<Cr>
+nnoremap <leader>gd :Gvdiff<Cr>
+" }}}
 " Unite {{{
   let g:unite_source_history_yank_enable = 1
   "nnoremap <space>y :Unite history/yank<cr>
@@ -1029,7 +1040,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 nnoremap <leader>y :<C-u>Unite history/yank<CR> 
 nnoremap <leader>R :<C-u>Unite register<CR> 
 nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR> 
-nnoremap <leader>g :<C-u>Unite -auto-resize gista<CR> 
+nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR> 
 
 " }}}
 " Tagbar {{{
@@ -1363,14 +1374,6 @@ function! s:Pulse() " {{{
     let steps = 9
     let width = 1
     let start = width
-    let end = steps * width
-    let color = 233
-
-    for i in range(start, end, width)
-        execute "hi CursorLine ctermbg=" . (color + i)
-        redraw
-        sleep 6m
-    endfor
     for i in range(end, start, -1 * width)
         execute "hi CursorLine ctermbg=" . (color + i)
         redraw
