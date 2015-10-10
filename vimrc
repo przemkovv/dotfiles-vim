@@ -43,7 +43,8 @@ Plug 'tpope/vim-unimpaired'
 
 Plug 'OmniSharp/omnisharp-vim'
 
-Plug 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
+Plug 'benekastah/neomake'
 Plug 'rking/ag.vim'
 Plug 'mileszs/ack.vim'
 " Plug 'maksimr/vim-translator'
@@ -103,8 +104,8 @@ Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, 
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-sleuth'
 Plug 'AndrewRadev/splitjoin.vim'
-"Plug 'git://git.code.sf.net/p/atp-vim/code',
-		   "\ {'name': 'atp-vim'}
+"Plug 'git://git.code.sf.net/p/atp-vim/code', \ {'name': 'atp-vim'}
+"
 " Plug 'sjl/gundo.vim'
 Plug 'simnalamburt/vim-mundo'
 " Plug 'mbbill/undotree' " The ultimate undo history visualizer for VIM
@@ -376,7 +377,7 @@ nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
-nnoremap <Leader>h :Make<CR>
+nnoremap <Leader>h :Neomake!<CR>
 nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -C -S<CR>`z<CR>k
 "nnoremap <Leader>= mzgg=G`z<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
@@ -1113,6 +1114,10 @@ let g:pandoc#formatting#mode = "h"
         "let g:jedi#rename_command = "<leader>pr"
         let g:jedi#documentation_command = ''
 " }}}
+" Neovim {{{
+autocmd! BufWritePost * Neomake
+" }}}
+
 " Syntastic {{{
     let g:syntastic_cpp_auto_refresh_includes = 1
     let g:syntastic_cpp_compiler = 'clang++'
