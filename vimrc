@@ -223,6 +223,20 @@ let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
   let g:airline#extensions#tabline#right_sep = ''
   let g:airline#extensions#tabline#right_alt_sep = ''
 
+  let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
+
 if s:running_windows
   let g:airline_left_sep = '⮀'
   let g:airline_left_alt_sep = '⮁'
