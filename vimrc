@@ -166,7 +166,8 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
-Plug 'gilligan/vim-lldb'
+"Plug 'gilligan/vim-lldb'
+Plug 'critiqjo/lldb.nvim'
 
 Plug 'idanarye/vim-vebugger'
 
@@ -1138,6 +1139,7 @@ let g:easytags_events = ['BufWritePost']
 set tags=./tags;
 let g:easytags_dynamic_files = 2
 let g:easytags_include_members = 0
+let g:easytags_async = 1
 " }}}
 " YouCompleteMe {{{
 let g:ycm_key_list_previous_completion=['<Up>']
