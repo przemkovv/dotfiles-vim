@@ -40,7 +40,11 @@ Plug 'Shougo/vimproc', { 'do' : 'make' }
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
 
-Plug 'scrooloose/syntastic'
+
+Plug 'OmniSharp/omnisharp-vim'
+
+"Plug 'scrooloose/syntastic'
+Plug 'benekastah/neomake'
 Plug 'rking/ag.vim'
 Plug 'mileszs/ack.vim'
 " Plug 'maksimr/vim-translator'
@@ -100,15 +104,15 @@ Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, 
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-sleuth'
 Plug 'AndrewRadev/splitjoin.vim'
-"Plug 'git://git.code.sf.net/p/atp-vim/code',
-		   "\ {'name': 'atp-vim'}
+"Plug 'git://git.code.sf.net/p/atp-vim/code', \ {'name': 'atp-vim'}
+"
 " Plug 'sjl/gundo.vim'
 Plug 'simnalamburt/vim-mundo'
 " Plug 'mbbill/undotree' " The ultimate undo history visualizer for VIM
 
 Plug 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
-"Plug 'vim-scripts/yankring.vim' 
+"Plug 'vim-scripts/yankring.vim'
 Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
@@ -119,7 +123,7 @@ Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "Plug 'mattn/ctrlp-gist' " ctrlp gist extension
 "Plug 'mattn/gist-vim' " vimscript for gist
 "Plug 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
-Plug 'wellle/targets.vim' 
+Plug 'wellle/targets.vim'
 Plug 'FSwitch'
 Plug 'vimwiki/vimwiki'
 
@@ -162,7 +166,8 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
-" Plug 'gilligan/vim-lldb'
+"Plug 'gilligan/vim-lldb'
+Plug 'critiqjo/lldb.nvim'
 
 Plug 'idanarye/vim-vebugger'
 
@@ -208,23 +213,6 @@ filetype plugin indent on
 
 "let g:Powerline_colorscheme = 'solarized16'
 
-let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
-let g:airline#extensions#tabline#enabled = 1
-
-let g:airline#extensions#branch#empty_message = "No SCM"
-let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-
-if s:running_windows
-  let g:airline_left_sep = '⮀'
-  let g:airline_left_alt_sep = '⮁'
-  let g:airline_right_sep = '⮂'
-  let g:airline_right_alt_sep = '⮃'
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
-  let g:airline#extensions#tabline#right_sep = ''
-  let g:airline#extensions#tabline#right_alt_sep = ''
-endif
 
 syntax on
 
@@ -276,7 +264,7 @@ set ttyfast
 set showmode
 set wildmenu
 set laststatus=2
-set scrolloff=5 " Keep 5 lines (top/bottom) 
+set scrolloff=5 " Keep 5 lines (top/bottom)
 set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
@@ -353,7 +341,7 @@ if has("spell")
     highlight PmenuSel ctermfg=black ctermbg=lightgray
 
     " limit it to just the top 10 items
-    set sps=best,10                    
+    set sps=best,10
 endif
 
 set number
@@ -361,7 +349,7 @@ set numberwidth=5
 
 
 if v:version < 602 || $DISPLAY =~ '^localhost:' || $DISPLAY == ''
-    set clipboard=autoselect,exclude:.* 
+    set clipboard=autoselect,exclude:.*
 endif
 
 
@@ -378,11 +366,11 @@ cnoremap <c-e> <end>
 "nmap <A-Space> :call CursorPing()<CR>
 highlight SpellBad term=reverse ctermbg=1
 
-vmap  <expr>  <LEFT>   DVB_Drag('left')  
-vmap  <expr>  <RIGHT>  DVB_Drag('right') 
-vmap <expr>  <DOWN>   DVB_Drag('down')  
-vmap  <expr>  <UP>     DVB_Drag('up')    
-vmap  <expr>  D        DVB_Duplicate()   
+vmap  <expr>  <LEFT>   DVB_Drag('left')
+vmap  <expr>  <RIGHT>  DVB_Drag('right')
+vmap <expr>  <DOWN>   DVB_Drag('down')
+vmap  <expr>  <UP>     DVB_Drag('up')
+vmap  <expr>  D        DVB_Duplicate()
 
 "map <A-DOWN> gj
 "map <A-UP> gk
@@ -392,7 +380,7 @@ nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
-nnoremap <Leader>h :Make<CR>
+nnoremap <Leader>h :Neomake!<CR>
 nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -C -S<CR>`z<CR>k
 "nnoremap <Leader>= mzgg=G`z<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
@@ -491,10 +479,10 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
-nmap <leader>sj :SplitjoinSplit<cr> 
-nmap <leader>sk :SplitjoinJoin<cr> 
+nmap <leader>sj :SplitjoinSplit<cr>
+nmap <leader>sk :SplitjoinJoin<cr>
 
-	
+
 
 "===============================================================================
 " Insert Mode Ctrl Key Mappings
@@ -507,7 +495,7 @@ inoremap <c-u> <c-g>u<c-u>
 
 "===============================================================================
 " Normal Mode Key Mappings
-"=============================================================================== 
+"===============================================================================
 "n: Next, keep search matches in the middle of the window
 nnoremap n nzzzv
 
@@ -522,7 +510,7 @@ nnoremap n nzzzv
 if has("mouse")
     set mouse=a " use mouse everywhere
     "set ttymouse=xterm2 " makes it work in everything
-endif 
+endif
 
 " Folding ----------------------------------------------------------------- {{{
 set foldlevelstart=20
@@ -853,6 +841,59 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" airline {{{
+
+let g:airline_powerline_fonts = 1
+let g:airline_theme='powerlineish'
+let g:airline#extensions#tabline#enabled = 1
+
+let g:airline#extensions#branch#empty_message = "No SCM"
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
+
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
+
+if s:running_windows
+  let g:airline_left_sep = '⮀'
+  let g:airline_left_alt_sep = '⮁'
+  let g:airline_right_sep = '⮂'
+  let g:airline_right_alt_sep = '⮃'
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = ''
+  let g:airline#extensions#tabline#right_sep = ''
+  let g:airline#extensions#tabline#right_alt_sep = ''
+endif
+"}}}
+
+
+" omnisharp-vim {{{
+"
+let g:OmniSharp_selector_ui = 'ctrlp'  " Use ctrlp.vim
+let g:OmniSharp_server_type = 'v1'
+let g:OmniSharp_server_type = 'roslyn'
+"
+" }}}
 " Gista {{{
 
 let g:gista#github_user = 'przemkovv'
@@ -866,7 +907,7 @@ let g:gista#post_private = 1
 " Google-Translate {{{
   let g:goog_user_conf = { 'langpair': 'pl|en' }
 "}}}
-  
+
 " Pymode {{{
 let g:pymode_breakpoint = 0
 let g:pymode_doc = 0
@@ -903,7 +944,7 @@ let g:ctrlp_custom_ignore = {
       "\ },
     "\ 'fallback': 'find %s -type f'
     "\ }
-    
+
 " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 
 let g:ctrlp_show_hidden = 1
@@ -1008,7 +1049,7 @@ let g:secure_modelines_allowed_items = [
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-"let g:UltiSnipsSnippetsDir = '~/.vim/mysnippets/' 
+"let g:UltiSnipsSnippetsDir = '~/.vim/mysnippets/'
 "let g:UltiSnipsSnippetDirectories = ['mysnippets','UltiSnips' ]
 
 " }}}
@@ -1037,12 +1078,12 @@ let g:unite_split_rule = "botright"
 " Shorten the default update date of 500ms
 let g:unite_update_time = 200
 
-let g:unite_abbr_highlight = 'normal' 
-call unite#filters#matcher_default#use(['matcher_fuzzy']) 
-nnoremap <leader>y :<C-u>Unite history/yank<CR> 
-nnoremap <leader>R :<C-u>Unite register<CR> 
-nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR> 
-nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR> 
+let g:unite_abbr_highlight = 'normal'
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nnoremap <leader>y :<C-u>Unite history/yank<CR>
+nnoremap <leader>R :<C-u>Unite register<CR>
+nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR>
+nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR>
 
 " }}}
 " Tagbar {{{
@@ -1076,6 +1117,10 @@ let g:pandoc#formatting#mode = "h"
         "let g:jedi#rename_command = "<leader>pr"
         let g:jedi#documentation_command = ''
 " }}}
+" Neovim {{{
+autocmd! BufWritePost * Neomake
+" }}}
+
 " Syntastic {{{
     let g:syntastic_cpp_auto_refresh_includes = 1
     let g:syntastic_cpp_compiler = 'clang++'
@@ -1084,9 +1129,10 @@ let g:pandoc#formatting#mode = "h"
     let g:syntastic_error_symbol='✗'
     let g:syntastic_warning_symbol='⚠'
     let g:syntastic_enable_highlighting=0
-    let g:syntastic_auto_loc_list=1 
+    let g:syntastic_auto_loc_list=1
     let g:syntastic_loc_list_height = 5
     let g:syntastic_always_populate_loc_list=1
+    let g:syntastic_aggregate_errors = 1
 " }}}
 " EasyTags {{{
 
@@ -1095,6 +1141,7 @@ let g:easytags_events = ['BufWritePost']
 set tags=./tags;
 let g:easytags_dynamic_files = 2
 let g:easytags_include_members = 0
+let g:easytags_async = 1
 " }}}
 " YouCompleteMe {{{
 let g:ycm_key_list_previous_completion=['<Up>']
@@ -1158,7 +1205,7 @@ vnoremap ar a[
 " object of the given type.  These don't necessarily have to be in the current
 " line.
 "
-" Currently works for (, [, {, and their shortcuts b, r, B. 
+" Currently works for (, [, {, and their shortcuts b, r, B.
 "
 " Next kind of works for ' and " as long as there are no escaped versions of
 " them in the string (TODO: fix that).  Last is currently broken for quotes
@@ -1225,7 +1272,7 @@ function! s:NextTextObject(motion, dir)
         let open = ''
         let close = ''
 
-        if c ==# "(" 
+        if c ==# "("
             let open = "("
             let close = ")"
         elseif c ==# "{"
