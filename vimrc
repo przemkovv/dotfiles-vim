@@ -176,6 +176,8 @@ Plug 'critiqjo/lldb.nvim'
 
 Plug 'idanarye/vim-vebugger'
 
+Plug 'vim-scripts/loremipsum'
+
 
 " neobundle.vim (Lazy)
 Plug 'lambdalisue/vim-gista', {
