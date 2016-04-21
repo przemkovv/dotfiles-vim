@@ -37,6 +37,7 @@ Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
+Plug 'Shougo/deoplete.nvim'
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
 
@@ -61,6 +62,9 @@ Plug 'beloglazov/vim-online-thesaurus'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
+"Plug 'tex/vimpreviewpandoc'
+"Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'suan/vim-instant-markdown'
 
 Plug 'bronson/vim-trailing-whitespace'
 
@@ -70,7 +74,8 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
 " Status bar
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " Search
 Plug 'justinmk/vim-sneak'
@@ -686,6 +691,8 @@ augroup ft_markdown
     au Filetype markdown nnoremap <buffer> <localleader>p VV:'<,'>!python -m json.tool<cr>
     au Filetype markdown vnoremap <buffer> <localleader>p :!python -m json.tool<cr>
     au Filetype markdown setlocal textwidth=80
+    au Filetype markdown setlocal isfname+=32,&,(,)
+    au Filetype markdown DeopleteEnable
 augroup END
 " }}}
 " Mercurial {{{
@@ -839,6 +846,12 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" deoplete {{{
+inoremap <expr><C-h>
+      \ deoplete#mappings#smart_close_popup()."\<C-h>"
+inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+inoremap <expr><C-l>     deoplete#mappings#refresh()
+" }}}
 " airline {{{
 
 let g:airline_powerline_fonts = 1
@@ -1097,7 +1110,10 @@ let g:vimtex_view_method = 'zathura'
 let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
 let g:pandoc#formatting#textwidth = 79
 let g:pandoc#formatting#mode = "h"
+let g:pandoc#command#autoexec_on_writes = 0
+let g:pandoc#command#autoexec_command = "Pandoc html -s"
 
+let g:instant_markdown_autostart = 0
 " }}}
 
 " Jedi {{{
@@ -1116,7 +1132,7 @@ let g:pandoc#formatting#mode = "h"
         let g:jedi#documentation_command = ''
 " }}}
 " Neovim {{{
-autocmd! BufWritePost * Neomake
+autocmd! BufWritePost * Neomake!
 " }}}
 
 " Syntastic {{{
