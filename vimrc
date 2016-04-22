@@ -1178,6 +1178,7 @@ let g:easytags_include_members = 0
 let g:easytags_async = 1
 " }}}
 " YouCompleteMe {{{
+let g:ycm_server_python_interpreter = '/usr/bin/python'
 let g:ycm_key_list_previous_completion=['<Up>']
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
