@@ -37,30 +37,32 @@ Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
+"Plug 'Shougo/deoplete.nvim'
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/goyo.vim'
 
-Plug 'OmniSharp/omnisharp-vim'
+"Plug 'OmniSharp/omnisharp-vim'
 
 "Plug 'scrooloose/syntastic'
 Plug 'benekastah/neomake'
-Plug 'rking/ag.vim'
-Plug 'mileszs/ack.vim'
 " Plug 'maksimr/vim-translator'
 " Plug 'sjl/clam.vim' " Clam.vim is a lightweight Vim plugin to easily run shell commands.
 
 Plug 'tpope/vim-fugitive'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'vim-scripts/utl.vim'
 Plug 'embear/vim-localvimrc'
 "Plug 'lukerandall/haskellmode-vim'
 Plug 'mhinz/vim-signify'
-Plug 'beloglazov/vim-online-thesaurus'
+"Plug 'beloglazov/vim-online-thesaurus'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
+"Plug 'tex/vimpreviewpandoc'
+"Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'suan/vim-instant-markdown'
 
 Plug 'bronson/vim-trailing-whitespace'
 
@@ -70,7 +72,6 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
 " Status bar
-"Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -102,20 +103,17 @@ if !s:running_windows
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
-Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
-Plug 'terryma/vim-expand-region'
+"Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
+"Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-sleuth'
 Plug 'AndrewRadev/splitjoin.vim'
 "Plug 'git://git.code.sf.net/p/atp-vim/code', \ {'name': 'atp-vim'}
 "
-" Plug 'sjl/gundo.vim'
 Plug 'simnalamburt/vim-mundo'
-" Plug 'mbbill/undotree' " The ultimate undo history visualizer for VIM
 
 Plug 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
-Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
-"Plug 'vim-scripts/yankring.vim'
-Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
+"Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
+"Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
@@ -128,6 +126,7 @@ Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 Plug 'wellle/targets.vim'
 Plug 'FSwitch'
 Plug 'vimwiki/vimwiki'
+Plug 'ryanoasis/vim-devicons'
 
 " Latex
 Plug 'lervag/vim-latex'
@@ -178,6 +177,7 @@ Plug 'vim-scripts/loremipsum'
 
 " neobundle.vim (Lazy)
 Plug 'lambdalisue/vim-gista', {
+    \ 'branch': 'develop',
     \ 'depends': [
     \    'Shougo/unite.vim',
     \ ],
@@ -186,6 +186,7 @@ Plug 'lambdalisue/vim-gista', {
     \    'mappings': '<Plug>(gista-',
     \    'unite_sources': 'gista',
     \}}
+Plug 'lambdalisue/vim-gista-unite'
 
 
 call plug#end()
@@ -271,6 +272,9 @@ set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+
 
 set breakindent
 set breakindentopt+=sbr
@@ -430,7 +434,7 @@ noremap <leader>4 :NERDTreeToggle<CR>
 "nnoremap <silent> <F5> :YRShow<cr>
 "inoremap <silent> <F5> <ESC>:YRShow<cr>
 " nnoremap <leader>5 :UndotreeToggle<cr>
-nnoremap <leader>6 :GundoToggle<CR>
+nnoremap <leader>6 :MundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -487,6 +491,7 @@ vmap <Leader>P "+P
 nmap <leader>sj :SplitjoinSplit<cr>
 nmap <leader>sk :SplitjoinJoin<cr>
 
+inoremap <c-f> <c-x><c-f>
 
 
 "===============================================================================
@@ -693,6 +698,8 @@ augroup ft_markdown
     au Filetype markdown nnoremap <buffer> <localleader>p VV:'<,'>!python -m json.tool<cr>
     au Filetype markdown vnoremap <buffer> <localleader>p :!python -m json.tool<cr>
     au Filetype markdown setlocal textwidth=80
+    au Filetype markdown setlocal isfname+=32,&,(,)
+    au Filetype markdown setlocal complete+=kspell
 augroup END
 " }}}
 " Mercurial {{{
@@ -846,6 +853,15 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" devicons {{{
+" }}}
+" deoplete {{{
+let g:deoplete#enable_at_startup = 1
+inoremap <expr><C-h>
+      \ deoplete#mappings#smart_close_popup()."\<C-h>"
+inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+inoremap <expr><C-l>     deoplete#mappings#refresh()
+" }}}
 " airline {{{
 
 let g:airline_powerline_fonts = 1
@@ -901,9 +917,9 @@ let g:OmniSharp_server_type = 'roslyn'
 " }}}
 " Gista {{{
 
-let g:gista#github_user = 'przemkovv'
+"let g:gista#client#default_username = 'przemkovv'
 let g:gista#update_on_write = 1
-let g:gista#post_private = 1
+let g:gista#command#post#default_public = 1
 
 " }}}
 " peekaboo {{{
@@ -1067,6 +1083,7 @@ nnoremap <leader>gw :Gwrite<Cr>
 nnoremap <leader>gd :Gvdiff<Cr>
 " }}}
 " Unite {{{
+let g:unite_prompt = '» '
   let g:unite_source_history_yank_enable = 1
   "nnoremap <space>y :Unite history/yank<cr>
   "
@@ -1077,6 +1094,15 @@ let g:unite_enable_start_insert = 1
 
 let g:unite_data_directory = "~/.unite"
 
+if executable('ag')
+    " Use ag (the silver searcher)
+    " https://github.com/ggreer/the_silver_searcher
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+                \ '-i --vimgrep --hidden --ignore ' .
+                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+endif
 
 " Open in bottom right
 let g:unite_split_rule = "botright"
@@ -1085,7 +1111,7 @@ let g:unite_update_time = 200
 
 let g:unite_abbr_highlight = 'normal'
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>y :<C-u>Unite history/yank<CR>
+nnoremap <leader>r :<C-u>Unite -start-insert -no-resize grep:.<CR>
 nnoremap <leader>R :<C-u>Unite register<CR>
 nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR>
 nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR>
@@ -1104,7 +1130,10 @@ let g:vimtex_view_method = 'zathura'
 let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
 let g:pandoc#formatting#textwidth = 79
 let g:pandoc#formatting#mode = "h"
+let g:pandoc#command#autoexec_on_writes = 0
+let g:pandoc#command#autoexec_command = "Pandoc html -s"
 
+let g:instant_markdown_autostart = 0
 " }}}
 
 " Jedi {{{
@@ -1123,7 +1152,7 @@ let g:pandoc#formatting#mode = "h"
         let g:jedi#documentation_command = ''
 " }}}
 " Neovim {{{
-autocmd! BufWritePost * Neomake
+autocmd! BufWritePost * Neomake!
 " }}}
 
 " Syntastic {{{
@@ -1154,9 +1183,10 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_auto_trigger = 0
 
-let g:ycm_key_detailed_diagnostics = ''
+"let g:ycm_key_detailed_diagnostics = ''
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 
 
 let g:ycm_goto_buffer_command = 'same-buffer'
