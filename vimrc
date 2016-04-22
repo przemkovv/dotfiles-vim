@@ -39,7 +39,7 @@ Plug 'Shougo/unite-outline'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
-
+Plug 'junegunn/goyo.vim'
 
 Plug 'OmniSharp/omnisharp-vim'
 
@@ -70,7 +70,9 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
 " Status bar
-Plug 'bling/vim-airline'
+"Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " Search
 Plug 'justinmk/vim-sneak'
@@ -96,7 +98,7 @@ Plug 'majutsushi/tagbar'
 
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
-    Plug 'Valloric/YouCompleteMe', {'do': './install.sh --clang-completer --system-libclang'}
+    Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --system-libclang'}
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
@@ -269,6 +271,9 @@ set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
+
+set breakindent
+set breakindentopt+=sbr
 
 
 " Set the command window height to 2 lines, to avoid many cases of having to
