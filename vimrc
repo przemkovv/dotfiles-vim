@@ -36,6 +36,8 @@ Plug 'google/vim-colorscheme-primary'
 Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
+Plug 'tsukkee/unite-tag'
+Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
 "Plug 'Shougo/deoplete.nvim'
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
@@ -50,7 +52,6 @@ Plug 'benekastah/neomake'
 " Plug 'sjl/clam.vim' " Clam.vim is a lightweight Vim plugin to easily run shell commands.
 
 Plug 'tpope/vim-fugitive'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'vim-scripts/utl.vim'
 Plug 'embear/vim-localvimrc'
@@ -60,9 +61,6 @@ Plug 'mhinz/vim-signify'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
-"Plug 'tex/vimpreviewpandoc'
-"Plug 'JamshedVesuna/vim-markdown-preview'
-Plug 'suan/vim-instant-markdown'
 
 Plug 'bronson/vim-trailing-whitespace'
 
@@ -82,7 +80,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'kana/vim-textobj-user'
-Plug 'kana/vim-textobj-entire' " ae, ie
+"Plug 'kana/vim-textobj-entire' " ae, ie conflicts with latex environments
 Plug 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
 Plug 'kana/vim-textobj-line' " al, il
 Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
@@ -106,12 +104,11 @@ Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 "Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-sleuth'
-Plug 'AndrewRadev/splitjoin.vim'
 "Plug 'git://git.code.sf.net/p/atp-vim/code', \ {'name': 'atp-vim'}
 "
 Plug 'simnalamburt/vim-mundo'
 
-Plug 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
+"Plug 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
 "Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
 "Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -120,16 +117,23 @@ Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlightin
 Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "Plug 'xolox/vim-notes'
 "Plug 'mattn/webapi-vim' " vim interface to Web API
-"Plug 'mattn/ctrlp-gist' " ctrlp gist extension
 "Plug 'mattn/gist-vim' " vimscript for gist
 "Plug 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 Plug 'wellle/targets.vim'
 Plug 'FSwitch'
-Plug 'vimwiki/vimwiki'
 Plug 'ryanoasis/vim-devicons'
 
+" C++
+"Plug 'rhysd/libclang-vim', { 'do': 'make' }
+"Plug 'rhysd/vim-textobj-clang', {
+            "\ 'depends' : ['kana/vim-textobj-user', 'rhysd/libclang-vim'],
+            "\ 'autoload' : {
+            "\       'mappings' : [['xo', 'a;'], ['xo', 'i;']]
+            "\   }
+            "\ }
+
 " Latex
-Plug 'lervag/vim-latex'
+Plug 'lervag/vimtex'
 
 " HTML/CSS
 Plug 'tpope/vim-ragtag', { 'for': 'html'}
@@ -210,19 +214,11 @@ endif
 
 filetype plugin indent on
 
-"if !s:running_windows
-    "let g:Powerline_symbols = "fancy"
-"endif
-
-"let g:Powerline_colorscheme = 'solarized16'
-
 
 syntax on
 
-"let g:solarized_termcolors = 256
 set background=dark
 colorscheme gruvbox
-"set cursorline
 call togglebg#map("<F11>")
 
 " Uncomment the following to have Vim jump to the last position when
@@ -315,7 +311,6 @@ endif
 
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
-"nnoremap <leader><space> :noh<cr>
 set colorcolumn=85
 
 let g:pymode_rope = 0
@@ -332,7 +327,6 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 let g:tex_indent_items=1
 let g:tex_flavor='latex'
 
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 set tabstop=4
 set shiftwidth=4
@@ -422,11 +416,12 @@ cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
 
-"nnoremap <Tab>  %  " disabled because of the conflict with Ctrl-I
-"noremap <F1> :tabprev<CR>
-"noremap <F2> :tabnext<CR>
-noremap <leader>[ :bprev<CR>
-noremap <leader>] :bnext<CR>
+" EXPERIMENT
+"noremap <leader>[ :bprev<cr>
+"noremap <leader>] :bnext<cr>
+"noremap <leader>[ :tabprev<cr>
+"noremap <leader>] :tabnext<cr>
+"
 noremap <leader><bs> :bdelete<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
@@ -488,9 +483,6 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
-nmap <leader>sj :SplitjoinSplit<cr>
-nmap <leader>sk :SplitjoinJoin<cr>
-
 inoremap <c-f> <c-x><c-f>
 
 
@@ -509,18 +501,7 @@ inoremap <c-u> <c-g>u<c-u>
 "n: Next, keep search matches in the middle of the window
 nnoremap n nzzzv
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" DELETE AND BACKSPACE KEYS ARE UNACCEPTABLE AS WELL
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"inoremap <Del> <Nop>
-"inoremap <BS>  <Nop>
 
-
-" Odds n Ends
-if has("mouse")
-    set mouse=a " use mouse everywhere
-    "set ttymouse=xterm2 " makes it work in everything
-endif
 
 " Folding ----------------------------------------------------------------- {{{
 set foldlevelstart=20
@@ -539,19 +520,19 @@ nnoremap zO zCzO
 "
 " I use :sus for the rare times I want to actually background Vim.
 function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
+  let line = getline(v:foldstart)
 
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
+  let nucolwidth = &fdc + &number * &numberwidth
+  let windowwidth = winwidth(0) - nucolwidth - 3
+  let foldedlinecount = v:foldend - v:foldstart
 
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
+  " expand tabs into spaces
+  let onetab = strpart('          ', 0, &tabstop)
+  let line = substitute(line, '\t', onetab, 'g')
 
-    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction " }}}
 set foldtext=MyFoldText()
 
@@ -561,47 +542,47 @@ set foldtext=MyFoldText()
 " C {{{
 
 augroup ft_c
-    au!
-    au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
+  au!
+  au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
 augroup END
 
 " }}}
 " CSS and LessCSS {{{
 
 augroup ft_css
-    au!
+  au!
 
-    au BufNewFile,BufRead *.less setlocal filetype=less
+  au BufNewFile,BufRead *.less setlocal filetype=less
 
-    au Filetype less,css setlocal foldmethod=marker
-    au Filetype less,css setlocal foldmarker={,}
-    au Filetype less,css setlocal omnifunc=csscomplete#CompleteCSS
-    au Filetype less,css setlocal iskeyword+=-
-    "{{{"}}}
-    " Use <leader>S to sort properties.  Turns this:
-    "
-    "     p {
-    "         width: 200px;
-    "         height: 100px;
-    "         background: red;
-    "
-    "         ...
-    "     }
-    "
-    " into this:
+  au Filetype less,css setlocal foldmethod=marker
+  au Filetype less,css setlocal foldmarker={,}
+  au Filetype less,css setlocal omnifunc=csscomplete#CompleteCSS
+  au Filetype less,css setlocal iskeyword+=-
+  "{{{"}}}
+  " Use <leader>S to sort properties.  Turns this:
+  "
+  "     p {
+  "         width: 200px;
+  "         height: 100px;
+  "         background: red;
+  "
+  "         ...
+  "     }
+  "
+  " into this:
 
-    "     p {
-    "         background: red;
-    "         height: 100px;
-    "         width: 200px;
-    "
-    "         ...
-    "     }
-    au BufNewFile,BufRead *.less,*.css nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+  "     p {
+  "         background: red;
+  "         height: 100px;
+  "         width: 200px;
+  "
+  "         ...
+  "     }
+  au BufNewFile,BufRead *.less,*.css nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
-    " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-    " positioned inside of them AND the following code doesn't get unfolded.
-    au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+  " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
+  " positioned inside of them AND the following code doesn't get unfolded.
+  au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
 augroup END
 
 " }}}
@@ -610,15 +591,15 @@ augroup END
 "let g:html_indent_tags = ['p', 'li']
 
 augroup ft_html
-    au!
+  au!
 
-    au BufNewFile,BufRead *.html setlocal filetype=htmldjango
-    au BufNewFile,BufRead *.dram setlocal filetype=htmldjango
+  au BufNewFile,BufRead *.html setlocal filetype=htmldjango
+  au BufNewFile,BufRead *.dram setlocal filetype=htmldjango
 
-    au FileType html,jinja,htmldjango setlocal foldmethod=manual
+  au FileType html,jinja,htmldjango setlocal foldmethod=manual
 
-    " Use <localleader>f to fold the current tag.
-    au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>f Vatzf
+  " Use <localleader>f to fold the current tag.
+  au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>f Vatzf
 
     " Use <localleader>t to fold the current templatetag.
     au FileType html,jinja,htmldjango nmap <buffer> <localleader>t viikojozf
@@ -693,10 +674,9 @@ augroup ft_markdown
     " Use <localleader>1/2/3 to add headings.
     au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
     au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
-    au Filetype markdown nnoremap <buffer> <localleader>3 mzI###<space>`zllll <ESC>
+    au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
+    au Filetype markdown nnoremap <buffer> <localleader>4 mzI##<space><ESC>`zlll
 
-    au Filetype markdown nnoremap <buffer> <localleader>p VV:'<,'>!python -m json.tool<cr>
-    au Filetype markdown vnoremap <buffer> <localleader>p :!python -m json.tool<cr>
     au Filetype markdown setlocal textwidth=80
     au Filetype markdown setlocal isfname+=32,&,(,)
     au Filetype markdown setlocal complete+=kspell
@@ -853,6 +833,9 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" textobj-clang {{{
+"let g:textobj_clang_more_mappings = 1
+" }}}
 " devicons {{{
 " }}}
 " deoplete {{{
@@ -867,6 +850,7 @@ inoremap <expr><C-l>     deoplete#mappings#refresh()
 let g:airline_powerline_fonts = 1
 let g:airline_theme='powerlineish'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
 
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
@@ -908,13 +892,6 @@ endif
 "}}}
 
 
-" omnisharp-vim {{{
-"
-let g:OmniSharp_selector_ui = 'ctrlp'  " Use ctrlp.vim
-let g:OmniSharp_server_type = 'v1'
-let g:OmniSharp_server_type = 'roslyn'
-"
-" }}}
 " Gista {{{
 
 "let g:gista#client#default_username = 'przemkovv'
@@ -925,65 +902,11 @@ let g:gista#command#post#default_public = 1
 " peekaboo {{{
   "let g:peekaboo_window = 'horizontal botright 30new'
 " }}}
-" Google-Translate {{{
-  let g:goog_user_conf = { 'langpair': 'pl|en' }
-"}}}
 
 " Pymode {{{
 let g:pymode_breakpoint = 0
 let g:pymode_doc = 0
 let g:pymode_doc_bind =''
-" }}}
-" Ctrl-P {{{
-
-nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>m :CtrlPMRUFiles<CR>
-nnoremap <leader>t :CtrlPTag<CR>
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:10,results:100'
-
-" Set no max file limit
-let g:ctrlp_max_files = 0
-" Search from current directory instead of project root
-"let g:ctrlp_working_path_mode = 0
-let g:ctrlp_working_path_mode = 'raw'
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
-                          \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
-
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$\|vendor\|build',
-    \ 'file': '\v\.(exe|so|dll|o|d)$',
-    \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-    \ }
-
-  " Multiple VCS's:
-  "let g:ctrlp_user_command = {
-    "\ 'types': {
-      "\ 1: ['.git', 'cd %s && git ls-files'],
-      "\ 2: ['.hg', 'hg --cwd %s locate -I .'],
-      "\ },
-    "\ 'fallback': 'find %s -type f'
-    "\ }
-
-" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-
-let g:ctrlp_show_hidden = 1
-
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'ag %s --hidden -l --nocolor -g ""']
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-
-
-
 " }}}
 " dbext {{{
         let g:dbext_default_usermaps = 0
@@ -1004,23 +927,6 @@ xmap f <Plug>Sneak_f
 xmap F <Plug>Sneak_F
 omap f <Plug>Sneak_f
 omap F <Plug>Sneak_F
-" }}}
-" Scratch {{{
-
-command! ScratchToggle call ScratchToggle()
-
-function! ScratchToggle()
-    if exists("w:is_scratch_window")
-        unlet w:is_scratch_window
-        exec "q"
-    else
-        exec "normal! :Sscratch\<cr>\<C-W>L"
-        let w:is_scratch_window = 1
-    endif
-endfunction
-
-nnoremap <silent> <leader><tab> :ScratchToggle<cr>
-
 " }}}
 " Secure Modelines {{{
 
@@ -1067,6 +973,7 @@ let g:secure_modelines_allowed_items = [
 "inoremap <c-j> <c-r>=s:jInYCM()<cr>
 "au BufEnter,BufRead * exec "inoremap <silent> " . g:UltiSnipsJumpBackwordTrigger . " <C-R>=s:kInYCM()<cr>"
 "let g:UltiSnipsJumpBackwordTrigger = "<c-k>"
+let g:UltiSnipsListSnippets = "<f2>"
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
@@ -1089,8 +996,7 @@ let g:unite_prompt = '» '
   "
 " Use the fuzzy matcher for everything
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" Start in insert mode
-let g:unite_enable_start_insert = 1
+call unite#filters#sorter_default#use(['sorter_selecta'])
 
 let g:unite_data_directory = "~/.unite"
 
@@ -1104,17 +1010,47 @@ if executable('ag')
     let g:unite_source_grep_recursive_opt = ''
 endif
 
-" Open in bottom right
-let g:unite_split_rule = "botright"
-" Shorten the default update date of 500ms
-let g:unite_update_time = 200
+"Like ctrlp.vim settings.
+call unite#custom#profile('default', 'context', {
+            \   'start_insert': 1,
+            \   'winheight': 10,
+            \   'direction': 'botright',
+            \   'update-time': 200,
+            \ })
 
-let g:unite_abbr_highlight = 'normal'
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" Using ag as recursive command.
+let g:unite_source_rec_async_command =
+            \ ['ag', '--follow', '--nocolor', '--nogroup',
+            \  '--hidden', '-g', '']
+
+"let g:unite_abbr_highlight = 'normal'
 nnoremap <leader>r :<C-u>Unite -start-insert -no-resize grep:.<CR>
-nnoremap <leader>R :<C-u>Unite register<CR>
-nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR>
+"nnoremap <leader>R :<C-u>Unite register<CR>
+"nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR>
 nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR>
+
+"nnoremap <leader>f :Unite file_rec/neovim<CR>
+"nnoremap <leader>b :Unite buffer<CR>
+"nnoremap <leader>m :Unite file_mru<CR>
+
+nnoremap <leader>f :<C-u>Unite -buffer-name=files   -start-insert file_rec/neovim:!<cr>
+nnoremap <leader>F :<C-u>Unite -buffer-name=files   -start-insert file<cr>
+nnoremap <leader>m :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
+nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
+"nnoremap <leader>y :<C-u>Unite-buffer-name=yank    history/yank<cr>
+nnoremap <leader>b :<C-u>Unite -buffer-name=buffer  -start-insert buffer<cr>
+nnoremap <leader>t :<C-u>Unite -buffer-name=tags  -start-insert tag<cr>
+
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Play nice with supertab
+  let b:SuperTabDisabled=1
+  " Enable navigation with control-j and control-k in insert mode
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <buffer> <Esc>     <Plug>(unite_exit)
+endfunction
 
 " }}}
 " Tagbar {{{
@@ -1127,9 +1063,11 @@ let g:vimtex_fold_enabled = 0
 let g:vimtex_view_method = 'zathura'
 " }}}
 " Pandoc {{{
+let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
+let g:pandoc#filetypes#pandoc_markdown = 0
 let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
 let g:pandoc#formatting#textwidth = 79
-let g:pandoc#formatting#mode = "h"
+let g:pandoc#formatting#mode = "hA"
 let g:pandoc#command#autoexec_on_writes = 0
 let g:pandoc#command#autoexec_command = "Pandoc html -s"
 
@@ -1204,18 +1142,6 @@ let g:rubycomplete_load_gemfile = 1
 " Vim-notes {{{
 
   let g:notes_directories = ['~/Documents/notes']
-" }}}
-" Vimwiki {{{
-  let g:vimwiki_list = [{'path': '~/Documents/wiki', 'path_html': '/srv/http/wiki'}]
-  nmap <leader>uu <Plug>VimwikiIndex
-  nmap <f14> <Plug>VimwikiTabIndex
-  nmap <F15> <Plug>VimwikiUISelect
-  nmap <leader>ud <Plug>VimwikiDiaryIndex
-  nmap <F17> <Plug>VimwikiDiaryGenerateLinks
-  nmap <leader>un <Plug>VimwikiMakeDiaryNote
-
-  nmap <F19> <Plug>VimwikiTabMakeDiaryNote
-
 " }}}
 " CSV {{{
   let g:csv_autocmd_arrange = 1
@@ -1481,27 +1407,5 @@ augroup END
 "
 " }}}
 "
-" Environments (GUI/Console) ---------------------------------------------- {{{
-
-if has('gui_running')
-    " GUI Vim
-
-    " Remove all the UI cruft
-    set go-=T
-    set go-=l
-    set go-=L
-    set go-=r
-    set go-=R
-    set encoding=utf-8
-    if s:running_windows
-      set guifont=Powerline\ Consolas:h10
-    else
-      set guifont=Inconsolata\ for\ Powerline\ Medium\ 12
-    endif
-    "au GUIEnter * simalt ~x "x on an English Windows version. n on a French one
-endif
-
-" }}}
 
 
-runtime! plugin/sensible.vim
