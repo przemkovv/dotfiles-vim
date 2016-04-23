@@ -37,6 +37,9 @@ Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'tsukkee/unite-tag'
+Plug 'osyo-manga/unite-quickfix'
+
+
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
 "Plug 'Shougo/deoplete.nvim'
@@ -1013,7 +1016,7 @@ endif
 "Like ctrlp.vim settings.
 call unite#custom#profile('default', 'context', {
             \   'start_insert': 1,
-            \   'winheight': 10,
+            \   'winheight': 20,
             \   'direction': 'botright',
             \   'update-time': 200,
             \ })
@@ -1033,13 +1036,16 @@ nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR>
 "nnoremap <leader>b :Unite buffer<CR>
 "nnoremap <leader>m :Unite file_mru<CR>
 
-nnoremap <leader>f :<C-u>Unite -buffer-name=files   -start-insert file_rec/neovim:!<cr>
+nnoremap <leader>f :<C-u>Unite -buffer-name=files   -start-insert file_rec/neovim<cr>
 nnoremap <leader>F :<C-u>Unite -buffer-name=files   -start-insert file<cr>
-nnoremap <leader>m :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
-nnoremap <leader>o :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
+nnoremap <leader>mr :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
+nnoremap <leader>ma :<C-u>Unite -buffer-name=mapping     -start-insert mapping<cr>
+nnoremap <leader>o :<C-u>Unite -buffer-name=outline -no-split -start-insert outline<cr>
 "nnoremap <leader>y :<C-u>Unite-buffer-name=yank    history/yank<cr>
 nnoremap <leader>b :<C-u>Unite -buffer-name=buffer  -start-insert buffer<cr>
 nnoremap <leader>t :<C-u>Unite -buffer-name=tags  -start-insert tag<cr>
+nnoremap <leader>q :<C-u>Unite -buffer-name=tags  -start-insert quickfix<cr>
+nnoremap <leader>Q :<C-u>Unite -buffer-name=tags  -start-insert location_list<cr>
 
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
