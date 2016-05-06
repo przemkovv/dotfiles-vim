@@ -27,11 +27,12 @@ endif
 
 call plug#begin('~/.vim/plugged/')
 
-Plug 'altercation/vim-colors-solarized'
-Plug 'nanotech/jellybeans.vim'
-Plug 'romainl/apprentice'
+"Plug 'altercation/vim-colors-solarized'
+"Plug 'frankier/neovim-colors-solarized-truecolor-only'
+"Plug 'nanotech/jellybeans.vim'
+"Plug 'romainl/apprentice'
 Plug 'morhetz/gruvbox'
-Plug 'google/vim-colorscheme-primary'
+"Plug 'google/vim-colorscheme-primary'
 
 Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
@@ -46,6 +47,7 @@ Plug 'Shougo/vimproc', { 'do' : 'make' }
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/goyo.vim'
+Plug 'nhooyr/neoman.vim' "vim-plug
 
 "Plug 'OmniSharp/omnisharp-vim'
 
@@ -60,6 +62,7 @@ Plug 'vim-scripts/utl.vim'
 Plug 'embear/vim-localvimrc'
 "Plug 'lukerandall/haskellmode-vim'
 Plug 'mhinz/vim-signify'
+Plug 'dhruvasagar/vim-markify'
 "Plug 'beloglazov/vim-online-thesaurus'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -100,7 +103,7 @@ Plug 'majutsushi/tagbar'
 
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
-    Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --system-libclang'}
+    Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer --system-libclang'}
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
@@ -221,8 +224,11 @@ filetype plugin indent on
 syntax on
 
 set background=dark
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_contrast_light='soft'
+let g:gruvbox_italic=1
 colorscheme gruvbox
-call togglebg#map("<F11>")
+"call togglebg#map("<F11>")
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
@@ -272,7 +278,10 @@ set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+set splitright
+set splitbelow
 
 
 set breakindent
@@ -385,6 +394,7 @@ vmap  <expr>  D        DVB_Duplicate()
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
+nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <Leader>h :Neomake!<CR>
 nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -C -S<CR>`z<CR>k
@@ -550,6 +560,15 @@ augroup ft_c
 augroup END
 
 " }}}
+" C++ {{{
+
+augroup ft_c
+  au!
+  au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
+  au FileType cpp set keywordprg=:term\ cppman
+augroup END
+
+" }}}
 " CSS and LessCSS {{{
 
 augroup ft_css
@@ -678,7 +697,7 @@ augroup ft_markdown
     au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
     au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
     au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
-    au Filetype markdown nnoremap <buffer> <localleader>4 mzI##<space><ESC>`zlll
+    au Filetype markdown nnoremap <buffer> <localleader>4 mzI#<space><ESC>`z
 
     au Filetype markdown setlocal textwidth=80
     au Filetype markdown setlocal isfname+=32,&,(,)
@@ -958,30 +977,23 @@ let g:secure_modelines_allowed_items = [
 " }}}
 " UltiSnips {{{
 "
-   "let g:UltiSnipsExpandTrigger="<c-y>"
-
-"func! s:jInYCM()
-    "if pumvisible()
-        "return "\<C-n>"
-    "else
-        "return "\<c-j>"
-"endfunction
-
-"func! s:kInYCM()
-    "if pumvisible()
-        "return "\<C-p>"
-    "else
-        "return "\<c-k>"
-"endfunction
-"inoremap <c-j> <c-r>=s:jInYCM()<cr>
-"au BufEnter,BufRead * exec "inoremap <silent> " . g:UltiSnipsJumpBackwordTrigger . " <C-R>=s:kInYCM()<cr>"
-"let g:UltiSnipsJumpBackwordTrigger = "<c-k>"
-let g:UltiSnipsListSnippets = "<f2>"
+"let g:UltiSnipsListSnippets = "<f2>"
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 "let g:UltiSnipsSnippetsDir = '~/.vim/mysnippets/'
 "let g:UltiSnipsSnippetDirectories = ['mysnippets','UltiSnips' ]
+"
+"
+let g:UltiSnipsUsePythonVersion = 2
+inoremap <c-x><c-k> <c-x><c-k>
+ function! UltiSnipsCallUnite()
+    Unite -start-insert -winheight=100 -immediately -no-empty ultisnips
+    return ''
+  endfunction
+
+  inoremap <silent> <c-j> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
+  "nnoremap <silent> <c-j> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 " }}}
 " Fugitive {{{
@@ -1044,8 +1056,8 @@ nnoremap <leader>o :<C-u>Unite -buffer-name=outline -no-split -start-insert outl
 "nnoremap <leader>y :<C-u>Unite-buffer-name=yank    history/yank<cr>
 nnoremap <leader>b :<C-u>Unite -buffer-name=buffer  -start-insert buffer<cr>
 nnoremap <leader>t :<C-u>Unite -buffer-name=tags  -start-insert tag<cr>
-nnoremap <leader>q :<C-u>Unite -buffer-name=tags  -start-insert quickfix<cr>
-nnoremap <leader>Q :<C-u>Unite -buffer-name=tags  -start-insert location_list<cr>
+nnoremap <leader>q :<C-u>Unite -buffer-name=quickfix  -start-insert quickfix<cr>
+nnoremap <leader>Q :<C-u>Unite -buffer-name=location_list  -start-insert location_list<cr>
 
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
@@ -1067,6 +1079,13 @@ endfunction
 " VimTex {{{
 let g:vimtex_fold_enabled = 0
 let g:vimtex_view_method = 'zathura'
+let g:vimtex_latexmk_progname = 'nvr'
+
+    let g:vimtex_quickfix_ignored_warnings = [
+        \ 'Underfull',
+        \ 'Overfull',
+        \ 'specifier changed to',
+      \ ]
 " }}}
 " Pandoc {{{
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
@@ -1096,7 +1115,7 @@ let g:instant_markdown_autostart = 0
         let g:jedi#documentation_command = ''
 " }}}
 " Neovim {{{
-autocmd! BufWritePost * Neomake!
+autocmd! BufWritePost * Neomake
 " }}}
 
 " Syntastic {{{
@@ -1122,7 +1141,7 @@ let g:easytags_include_members = 0
 let g:easytags_async = 1
 " }}}
 " YouCompleteMe {{{
-let g:ycm_server_python_interpreter = '/usr/bin/python'
+let g:ycm_server_python_interpreter = '/usr/bin/python2'
 let g:ycm_key_list_previous_completion=['<Up>']
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
@@ -1337,71 +1356,6 @@ endfunction
 " }}}
 " Others ------------------------------------------------------------------ {{{
 "
-" Ack motions {{{
-
-" Motions to Ack for things.  Works with pretty much everything, including:
-"
-"   w, W, e, E, b, B, t*, f*, i*, a*, and custom text objects
-"
-" Awesome.
-"
-" Note: If the text covered by a motion contains a newline it won't work.  Ack
-" searches line-by-line.
-
-"nnoremap <silent> <leader>A :set opfunc=<SID>AckMotion<CR>g@
-"xnoremap <silent> <leader>A :<C-U>call <SID>AckMotion(visualmode())<CR>
-
-"""nnoremap <bs> :Ack! '\b<c-r><c-w>\b'<cr>
-"""xnoremap <silent> <bs> :<C-U>call <SID>AckMotion(visualmode())<CR>
-""nnoremap <leader>a :Ack
-
-"""function! s:CopyMotionForType(type)
-    """if a:type ==# 'v'
-        """silent execute "normal! `<" . a:type . "`>y"
-    """elseif a:type ==# 'char'
-        """silent execute "normal! `[v`]y"
-    """endif
-"""endfunction
-
-"""function! s:AckMotion(type) abort
-    """let reg_save = @@
-
-    """call s:CopyMotionForType(a:type)
-
-    ""execute "normal! :Ack! --literal " . shellescape(@@) . "\<cr>"
-
-    ""let @@ = reg_save
-""endfunction
-
-" }}}
-" Pulse Line {{{
-
-function! s:Pulse() " {{{
-    let current_window = winnr()
-    windo set nocursorline
-    execute current_window . 'wincmd w'
-    setlocal cursorline
-
-    redir => old_hi
-    silent execute 'hi CursorLine'
-    redir END
-    let old_hi = split(old_hi, '\n')[0]
-    let old_hi = substitute(old_hi, 'xxx', '', '')
-
-    let steps = 9
-    let width = 1
-    let start = width
-    for i in range(end, start, -1 * width)
-        execute "hi CursorLine ctermbg=" . (color + i)
-        redraw
-        sleep 6m
-    endfor
-
-    execute 'hi ' . old_hi
-endfunction " }}}
-command! -nargs=0 Pulse call s:Pulse()
-
-" }}}
 " TMUX {{{
 augroup Tmux
     au!
