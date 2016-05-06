@@ -38,6 +38,7 @@ Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
 Plug 'tsukkee/unite-tag'
+Plug 'tsukkee/unite-help'
 Plug 'osyo-manga/unite-quickfix'
 
 
@@ -1057,7 +1058,7 @@ nnoremap <leader>o :<C-u>Unite -buffer-name=outline -no-split -start-insert outl
 nnoremap <leader>b :<C-u>Unite -buffer-name=buffer  -start-insert buffer<cr>
 nnoremap <leader>t :<C-u>Unite -buffer-name=tags  -start-insert tag<cr>
 nnoremap <leader>q :<C-u>Unite -buffer-name=quickfix  -start-insert quickfix<cr>
-nnoremap <leader>Q :<C-u>Unite -buffer-name=location_list  -start-insert location_list<cr>
+nnoremap <leader>gh :<C-u>Unite -buffer-name=help  -start-insert help<cr>
 
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
