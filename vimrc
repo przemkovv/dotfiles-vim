@@ -7,6 +7,7 @@ let s:running_windows = has("win16") || has("win32") || has("win64")
 "set t_Co=256
 "set t_ut=
 "
+set termguicolors
 
 let s:editor_root=expand("~/.vim")
 
@@ -40,11 +41,14 @@ Plug 'Shougo/unite-outline'
 Plug 'tsukkee/unite-tag'
 Plug 'tsukkee/unite-help'
 Plug 'osyo-manga/unite-quickfix'
+Plug 'ervandew/supertab'
 
 
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
-"Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'
+"Plug 'zchee/deoplete-clang'
+
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/goyo.vim'
@@ -78,7 +82,7 @@ Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim
 
 " Status bar
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline-themes'
 
 " Search
 Plug 'justinmk/vim-sneak'
@@ -120,8 +124,6 @@ Plug 'simnalamburt/vim-mundo'
 "Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
-Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
-Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 "Plug 'xolox/vim-notes'
 "Plug 'mattn/webapi-vim' " vim interface to Web API
 "Plug 'mattn/gist-vim' " vimscript for gist
@@ -269,7 +271,6 @@ set wildmode=list:longest
 set title
 set relativenumber
 set undofile
-set ttyfast
 set showmode
 set wildmenu
 set laststatus=2
@@ -278,7 +279,7 @@ set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 set splitright
@@ -863,20 +864,25 @@ augroup END
 " }}}
 " deoplete {{{
 let g:deoplete#enable_at_startup = 1
-inoremap <expr><C-h>
-      \ deoplete#mappings#smart_close_popup()."\<C-h>"
-inoremap <expr><C-g>     deoplete#mappings#undo_completion()
-inoremap <expr><C-l>     deoplete#mappings#refresh()
+let g:deoplete#disable_auto_complete = 1
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
+"inoremap <expr><C-h>
+      "\ deoplete#mappings#smart_close_popup()."\<C-h>"
+"inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+"inoremap <expr><C-l>     deoplete#mappings#refresh()
 " }}}
 " airline {{{
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
+"let g:airline_theme='powerlineish'
+"let g:airline_theme='luna'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#hunks#enabled = 0 
+
 
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
@@ -912,6 +918,27 @@ if s:running_windows
   let g:airline#extensions#tabline#right_sep = ''
   let g:airline#extensions#tabline#right_alt_sep = ''
 endif
+
+
+
+hi User5 cterm=italic ctermfg=245 ctermbg=237 gui=italic guifg=#928374 guibg=#3c3836 " Comment        
+hi User1 cterm=bold ctermfg=14 ctermbg=237 guifg=#40ffff guibg=#3c3836 " Identifier     
+                        
+
+function! AirlineInit()
+    "let g:airline_section_a = airline#section#create(['mode', ' ', 'foo'])
+    "let g:airline_section_b = airline#section#create_left(['ffenc','file'])
+    "%5*%{expand('%:h')}/
+  call airline#parts#define_raw('file2', "%#User1#%t")
+  call airline#parts#define_raw('path2', "%#User5#%{expand('%:h')}/")
+  "call airline#parts#define_accent('file2', 'GruvboxBlue')
+  "call airline#parts#define_accent('path2', 'Comment')
+    let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
+    "let g:airline_section_c = airline#section#create(['%{getcwd()}'])
+    let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines'])
+endfunction
+  autocmd User AirlineAfterInit call AirlineInit()
+
 "}}}
 
 
@@ -979,21 +1006,26 @@ let g:secure_modelines_allowed_items = [
 " UltiSnips {{{
 "
 "let g:UltiSnipsListSnippets = "<f2>"
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+"let g:UltiSnipsExpandTrigger="<c-j>"
+"let g:UltiSnipsJumpForwardTrigger="<c-j>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 "let g:UltiSnipsSnippetsDir = '~/.vim/mysnippets/'
 "let g:UltiSnipsSnippetDirectories = ['mysnippets','UltiSnips' ]
 "
 "
-let g:UltiSnipsUsePythonVersion = 2
-inoremap <c-x><c-k> <c-x><c-k>
- function! UltiSnipsCallUnite()
-    Unite -start-insert -winheight=100 -immediately -no-empty ultisnips
-    return ''
-  endfunction
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-  inoremap <silent> <c-j> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
+let g:UltiSnipsUsePythonVersion = 2
+"inoremap <c-x><c-k> <c-x><c-k>
+ "function! UltiSnipsCallUnite()
+    "Unite -start-insert -winheight=100 -immediately -no-empty ultisnips
+    "return ''
+  "endfunction
+
+  "inoremap <silent> <c-j> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
   "nnoremap <silent> <c-j> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 " }}}
@@ -1120,17 +1152,17 @@ autocmd! BufWritePost * Neomake
 " }}}
 
 " Syntastic {{{
-    let g:syntastic_cpp_auto_refresh_includes = 1
-    let g:syntastic_cpp_compiler = 'clang++'
-    let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
-    "let g:syntastic_cpp_check_header = 1
-    let g:syntastic_error_symbol='✗'
-    let g:syntastic_warning_symbol='⚠'
-    let g:syntastic_enable_highlighting=0
-    let g:syntastic_auto_loc_list=1
-    let g:syntastic_loc_list_height = 5
-    let g:syntastic_always_populate_loc_list=1
-    let g:syntastic_aggregate_errors = 1
+    "let g:syntastic_cpp_auto_refresh_includes = 1
+    "let g:syntastic_cpp_compiler = 'clang++'
+    "let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
+    ""let g:syntastic_cpp_check_header = 1
+    "let g:syntastic_error_symbol='✗'
+    "let g:syntastic_warning_symbol='⚠'
+    "let g:syntastic_enable_highlighting=0
+    "let g:syntastic_auto_loc_list=1
+    "let g:syntastic_loc_list_height = 5
+    "let g:syntastic_always_populate_loc_list=1
+    "let g:syntastic_aggregate_errors = 1
 " }}}
 " EasyTags {{{
 
@@ -1143,7 +1175,7 @@ let g:easytags_async = 1
 " }}}
 " YouCompleteMe {{{
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
-let g:ycm_key_list_previous_completion=['<Up>']
+"let g:ycm_key_list_previous_completion=['<Up>']
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_auto_trigger = 0
@@ -1153,6 +1185,10 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 
 let g:ycm_goto_buffer_command = 'same-buffer'
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
