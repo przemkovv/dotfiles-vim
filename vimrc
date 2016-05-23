@@ -3,10 +3,6 @@
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
-
-"set t_Co=256
-"set t_ut=
-"
 set termguicolors
 
 let s:editor_root=expand("~/.vim")
@@ -28,12 +24,7 @@ endif
 
 call plug#begin('~/.vim/plugged/')
 
-"Plug 'altercation/vim-colors-solarized'
-"Plug 'frankier/neovim-colors-solarized-truecolor-only'
-"Plug 'nanotech/jellybeans.vim'
-"Plug 'romainl/apprentice'
 Plug 'morhetz/gruvbox'
-"Plug 'google/vim-colorscheme-primary'
 
 Plug 'tpope/vim-sensible'
 Plug 'Shougo/unite.vim'
@@ -82,7 +73,6 @@ Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim
 
 " Status bar
 Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
 
 " Search
 Plug 'justinmk/vim-sneak'
@@ -108,38 +98,22 @@ Plug 'majutsushi/tagbar'
 
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
-    Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer --system-libclang'}
+    Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 "Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-sleuth'
-"Plug 'git://git.code.sf.net/p/atp-vim/code', \ {'name': 'atp-vim'}
 "
 Plug 'simnalamburt/vim-mundo'
 
-"Plug 'duff/vim-scratch' " Yegappan Lakshmanan's scratch.vim plugin
-"Plug 'vim-orgmode' " 0.2   Text outlining and task management for Vim based on Emacs' Org-Mode
-"Plug 'koljakube/vim-dragvisuals' " Damian Conway's dragvisuals for vim, compatible with pathogen.
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
-"Plug 'xolox/vim-notes'
-"Plug 'mattn/webapi-vim' " vim interface to Web API
-"Plug 'mattn/gist-vim' " vimscript for gist
-"Plug 'paradigm/TextObjectify' " TextObjectify is a Vim plugin which improves text-objects
 Plug 'wellle/targets.vim'
 Plug 'FSwitch'
 Plug 'ryanoasis/vim-devicons'
 
-" C++
-"Plug 'rhysd/libclang-vim', { 'do': 'make' }
-"Plug 'rhysd/vim-textobj-clang', {
-            "\ 'depends' : ['kana/vim-textobj-user', 'rhysd/libclang-vim'],
-            "\ 'autoload' : {
-            "\       'mappings' : [['xo', 'a;'], ['xo', 'i;']]
-            "\   }
-            "\ }
 
 " Latex
 Plug 'lervag/vimtex'
@@ -153,8 +127,6 @@ Plug 'tpope/vim-bundler', { 'for': 'ruby'}
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
 Plug 'tpope/vim-rails', { 'for': 'ruby'}
 Plug 'tpope/vim-endwise'
-"Plug 'thoughtbot/vim-rspec' " Run Rspec specs from Vim
-"Plug 'Keithbsmiley/rspec.vim' " Better rspec syntax highlighting for Vim
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
 Plug 'groenewege/vim-less', { 'for': 'less'}
 
@@ -185,7 +157,7 @@ Plug 'critiqjo/lldb.nvim'
 
 Plug 'idanarye/vim-vebugger'
 
-Plug 'vim-scripts/loremipsum'
+"Plug 'vim-scripts/loremipsum'
 
 
 " neobundle.vim (Lazy)
@@ -267,7 +239,7 @@ set wildignore+=*.doc,*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.wmv  " Windows
 set wildignore+=*.bbl,*.synctex.gz,*.blg,*.aux
 set wildignore+=*\\vendor\\**
 set wildignore+=*/vendor/**
-set wildmode=list:longest
+set wildmode=list:longest,full
 set title
 set relativenumber
 set undofile
@@ -388,6 +360,9 @@ vmap  <expr>  <RIGHT>  DVB_Drag('right')
 vmap <expr>  <DOWN>   DVB_Drag('down')
 vmap  <expr>  <UP>     DVB_Drag('up')
 vmap  <expr>  D        DVB_Duplicate()
+
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
 
 "map <A-DOWN> gj
 "map <A-UP> gk
@@ -690,10 +665,13 @@ let g:tagbar_type_markdown = {
       \ 'sort' : 0,
       \ }
 
+au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md   setf markdown.pandoc
+
 augroup ft_markdown
     au!
 
-    au BufNewFile,BufRead *.m*down setlocal filetype=markdown foldlevel=1
+    au FileType markdown setlocal foldlevel=1
+
 
     " Use <localleader>1/2/3 to add headings.
     au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
@@ -926,15 +904,10 @@ hi User1 cterm=bold ctermfg=14 ctermbg=237 guifg=#40ffff guibg=#3c3836 " Identif
                         
 
 function! AirlineInit()
-    "let g:airline_section_a = airline#section#create(['mode', ' ', 'foo'])
-    "let g:airline_section_b = airline#section#create_left(['ffenc','file'])
     "%5*%{expand('%:h')}/
   call airline#parts#define_raw('file2', "%#User1#%t")
   call airline#parts#define_raw('path2', "%#User5#%{expand('%:h')}/")
-  "call airline#parts#define_accent('file2', 'GruvboxBlue')
-  "call airline#parts#define_accent('path2', 'Comment')
     let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
-    "let g:airline_section_c = airline#section#create(['%{getcwd()}'])
     let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines'])
 endfunction
   autocmd User AirlineAfterInit call AirlineInit()
@@ -948,9 +921,6 @@ endfunction
 let g:gista#update_on_write = 1
 let g:gista#command#post#default_public = 1
 
-" }}}
-" peekaboo {{{
-  "let g:peekaboo_window = 'horizontal botright 30new'
 " }}}
 
 " Pymode {{{
@@ -1005,13 +975,6 @@ let g:secure_modelines_allowed_items = [
 " }}}
 " UltiSnips {{{
 "
-"let g:UltiSnipsListSnippets = "<f2>"
-"let g:UltiSnipsExpandTrigger="<c-j>"
-"let g:UltiSnipsJumpForwardTrigger="<c-j>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-"let g:UltiSnipsSnippetsDir = '~/.vim/mysnippets/'
-"let g:UltiSnipsSnippetDirectories = ['mysnippets','UltiSnips' ]
-"
 "
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
@@ -1019,14 +982,6 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 let g:UltiSnipsUsePythonVersion = 2
-"inoremap <c-x><c-k> <c-x><c-k>
- "function! UltiSnipsCallUnite()
-    "Unite -start-insert -winheight=100 -immediately -no-empty ultisnips
-    "return ''
-  "endfunction
-
-  "inoremap <silent> <c-j> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
-  "nnoremap <silent> <c-j> a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 " }}}
 " Fugitive {{{
@@ -1077,10 +1032,6 @@ nnoremap <leader>r :<C-u>Unite -start-insert -no-resize grep:.<CR>
 "nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR>
 nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR>
 
-"nnoremap <leader>f :Unite file_rec/neovim<CR>
-"nnoremap <leader>b :Unite buffer<CR>
-"nnoremap <leader>m :Unite file_mru<CR>
-
 nnoremap <leader>f :<C-u>Unite -buffer-name=files   -start-insert file_rec/neovim<cr>
 nnoremap <leader>F :<C-u>Unite -buffer-name=files   -start-insert file<cr>
 nnoremap <leader>mr :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
@@ -1122,7 +1073,7 @@ let g:vimtex_latexmk_progname = 'nvr'
 " }}}
 " Pandoc {{{
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-let g:pandoc#filetypes#pandoc_markdown = 0
+let g:pandoc#filetypes#pandoc_markdown = 1
 let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
 let g:pandoc#formatting#textwidth = 79
 let g:pandoc#formatting#mode = "hA"
@@ -1140,17 +1091,22 @@ let g:instant_markdown_autostart = 0
         let g:jedi#completions_command = ""
         let g:jedi#show_call_signatures = "1"
 
-        "let g:jedi#goto_assignments_command = "<leader>pa"
-        "let g:jedi#goto_definitions_command = "<leader>pd"
-        "let g:jedi#documentation_command = "<leader>pk"
-        "let g:jedi#usages_command = "<leader>pu"
-        "let g:jedi#rename_command = "<leader>pr"
         let g:jedi#documentation_command = ''
 " }}}
 " Neovim {{{
 autocmd! BufWritePost * Neomake
 " }}}
 
+" Neomake {{{
+"let g:neomake_verbose=1
+let g:neomake_open_list = 2
+let g:neomake_place_signs = 1
+let g:neomake_cpp_enable_markers=['clang']
+"let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
+"'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
+let g:neomake_cpp_clang_args = ['-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
+" }}}
+"
 " Syntastic {{{
     "let g:syntastic_cpp_auto_refresh_includes = 1
     "let g:syntastic_cpp_compiler = 'clang++'
@@ -1166,24 +1122,24 @@ autocmd! BufWritePost * Neomake
 " }}}
 " EasyTags {{{
 
-let g:easytags_auto_update = 0
+let g:easytags_auto_update = 1
 let g:easytags_events = ['BufWritePost']
-set tags=./tags;
+set tags=./tags;,~/.vimtags
 let g:easytags_dynamic_files = 2
 let g:easytags_include_members = 0
+let g:easytags_python_enabled = 1
 let g:easytags_async = 1
 " }}}
 " YouCompleteMe {{{
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
-"let g:ycm_key_list_previous_completion=['<Up>']
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_auto_trigger = 0
 
-"let g:ycm_key_detailed_diagnostics = ''
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+let g:ycm_show_diagnostic_ui = 1
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -1199,7 +1155,6 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
-"let g:rubycomplete_use_bundler = 1
 " }}}
 " Vim-notes {{{
 
@@ -1391,18 +1346,5 @@ endfunction
 " }}}
 
 " }}}
-" Others ------------------------------------------------------------------ {{{
-"
-" TMUX {{{
-augroup Tmux
-    au!
-
-    autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim - ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-    autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
-augroup END
-" }}}
-"
-" }}}
-"
 
 
