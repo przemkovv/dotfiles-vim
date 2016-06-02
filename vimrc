@@ -4,16 +4,11 @@
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
 set termguicolors
+syntax enable
 
 let s:editor_root=expand("~/.vim")
 
-
-" Set up ultisnips - need to symlink vim scripts to be run when files are opened
-function! SymlinkSnippets(info)
-    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-    endif
-endfunction
+" Plugins -------------------------------------------------------------------- {{{
 
 " Setting up plugins
 if empty(glob(s:editor_root . '/autoload/plug.vim'))
@@ -26,9 +21,11 @@ call plug#begin('~/.vim/plugged/')
 
 Plug 'morhetz/gruvbox'
 
-Plug 'tpope/vim-sensible'
+"Plug 'tpope/vim-sensible'
+Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
+"Plug 'Shougo/neoinclude.vim'
 Plug 'tsukkee/unite-tag'
 Plug 'tsukkee/unite-help'
 Plug 'osyo-manga/unite-quickfix'
@@ -60,15 +57,21 @@ Plug 'embear/vim-localvimrc'
 Plug 'mhinz/vim-signify'
 Plug 'dhruvasagar/vim-markify'
 "Plug 'beloglazov/vim-online-thesaurus'
-Plug 'vim-pandoc/vim-pandoc'
+"Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vim-pandoc/vim-pandoc-after'
+"Plug 'vim-pandoc/vim-pandoc-after'
 
 Plug 'bronson/vim-trailing-whitespace'
 
 "Plug 'junegunn/vim-peekaboo'
 
 " Snippets
+" Set up ultisnips - need to symlink vim scripts to be run when files are opened
+function! SymlinkSnippets(info)
+    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+    endif
+endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
 " Status bar
@@ -108,7 +111,7 @@ Plug 'tpope/vim-sleuth'
 "
 Plug 'simnalamburt/vim-mundo'
 
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'wellle/targets.vim'
 Plug 'FSwitch'
@@ -161,23 +164,23 @@ Plug 'idanarye/vim-vebugger'
 
 
 " neobundle.vim (Lazy)
-Plug 'lambdalisue/vim-gista', {
-    \ 'branch': 'develop',
-    \ 'depends': [
-    \    'Shougo/unite.vim',
-    \ ],
-    \ 'autoload': {
-    \    'commands': ['Gista'],
-    \    'mappings': '<Plug>(gista-',
-    \    'unite_sources': 'gista',
-    \}}
-Plug 'lambdalisue/vim-gista-unite'
+"Plug 'lambdalisue/vim-gista', {
+    "\ 'branch': 'develop',
+    "\ 'depends': [
+    "\    'Shougo/unite.vim',
+    "\ ],
+    "\ 'autoload': {
+    "\    'commands': ['Gista'],
+    "\    'mappings': '<Plug>(gista-',
+    "\    'unite_sources': 'gista',
+    "\}}
+"Plug 'lambdalisue/vim-gista-unite'
 
 
 call plug#end()
+" }}}
 
 filetype off
-
 
 if s:running_windows
     if has("multi_byte")
@@ -328,6 +331,7 @@ if has("spell")
 
     " they were using white on white
     highlight PmenuSel ctermfg=black ctermbg=lightgray
+    highlight SpellBad term=reverse ctermbg=1
 
     " limit it to just the top 10 items
     set sps=best,10
@@ -346,14 +350,10 @@ set switchbuf=useopen ",usetab,newtab
 set showtabline=1
 set tabpagemax=15
 
-"set cryptmethod=blowfish
-"au BufAdd,BufNewFile,BufRead * nested tab sball
+" Mappings ---------------------------------------------------------------- {{{
 
 cnoremap <c-a> <home>
 cnoremap <c-e> <end>
-
-"nmap <A-Space> :call CursorPing()<CR>
-highlight SpellBad term=reverse ctermbg=1
 
 vmap  <expr>  <LEFT>   DVB_Drag('left')
 vmap  <expr>  <RIGHT>  DVB_Drag('right')
@@ -364,18 +364,14 @@ vmap  <expr>  D        DVB_Duplicate()
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
-"map <A-DOWN> gj
-"map <A-UP> gk
-"imap <A-DOWN> <ESC>gji
-"imap <A-UP> <ESC>gki
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
-nnoremap <Leader>h :Neomake!<CR>
-nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -C -S<CR>`z<CR>k
-"nnoremap <Leader>= mzgg=G`z<CR>  " reindent
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+"nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -O -C -S<CR>`z<CR>k
+nnoremap <Leader>= mzgg=G`z<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
 " Easy window navigation
@@ -415,11 +411,10 @@ cnoremap w!! w !sudo tee % >/dev/null
 noremap <leader><bs> :bdelete<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
-noremap <leader>4 :NERDTreeToggle<CR>
-"nnoremap <silent> <F5> :YRShow<cr>
-"inoremap <silent> <F5> <ESC>:YRShow<cr>
-" nnoremap <leader>5 :UndotreeToggle<cr>
-nnoremap <leader>6 :MundoToggle<CR>
+"noremap <leader>4 :NERDTreeToggle<CR>
+nnoremap <leader>4 :<C-u>VimFiler<CR> 
+nnoremap <leader>2 :<C-u>VimFilerExplorer<CR>
+nnoremap <leader>7 :MundoToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -438,29 +433,15 @@ nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 nnoremap Y y$
-"nnoremap <C-Enter> O<Esc>
-"nnoremap <S-Enter> o<Esc>
 
-inoremap <M-o> <C-O>o
-inoremap <M-O> <C-O>O
-inoremap <M-I>      <C-O>^
-inoremap <M-A>      <C-O>$
+"inoremap <M-o> <C-O>o
+"inoremap <M-O> <C-O>O
+"inoremap <M-I>      <C-O>^
+"inoremap <M-A>      <C-O>$
 
 " easier moving of code blocks
 vnoremap < <gv   " better indentation
 vnoremap > >gv   " better indentation
-
-"inoremap <esc> <nop>
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
-"nnoremap Ajk    <nop>
-"nnoremap A<esc> <nop>
 
 " saving file
 nnoremap <Leader>w :w<CR>
@@ -491,10 +472,10 @@ inoremap <c-u> <c-g>u<c-u>
 "n: Next, keep search matches in the middle of the window
 nnoremap n nzzzv
 
-
+" }}}
 
 " Folding ----------------------------------------------------------------- {{{
-set foldlevelstart=20
+set foldlevelstart=99
 " Make zO recursively open whatever top level fold we're in, no matter where the
 " cursor happens to be.
 nnoremap zO zCzO
@@ -534,6 +515,7 @@ set foldtext=MyFoldText()
 augroup ft_c
   au!
   au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
+  au FileType c setlocal equalprg=astyle\ -A4UHk3W1xefxyjOCS
 augroup END
 
 " }}}
@@ -543,6 +525,7 @@ augroup ft_c
   au!
   au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
   au FileType cpp set keywordprg=:term\ cppman
+  au FileType cpp setlocal equalprg=astyle\ -A4UHk3W1xefxyjOCS
 augroup END
 
 " }}}
@@ -665,7 +648,9 @@ let g:tagbar_type_markdown = {
       \ 'sort' : 0,
       \ }
 
-au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md   setf markdown.pandoc
+augroup pandoc_syntax
+  au! BufNewFile,BufFilePre,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md   set filetype=markdown.pandoc
+augroup END
 
 augroup ft_markdown
     au!
@@ -679,7 +664,7 @@ augroup ft_markdown
     au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
     au Filetype markdown nnoremap <buffer> <localleader>4 mzI#<space><ESC>`z
 
-    au Filetype markdown setlocal textwidth=80
+    au Filetype markdown setlocal textwidth=79
     au Filetype markdown setlocal isfname+=32,&,(,)
     au Filetype markdown setlocal complete+=kspell
 augroup END
@@ -701,16 +686,6 @@ augroup ft_muttrc
     au BufRead,BufNewFile *.muttrc set ft=muttrc
 
     au FileType muttrc setlocal foldmethod=marker foldmarker={{{,}}}
-augroup END
-
-" }}}
-" OrgMode {{{
-
-augroup ft_org
-    au!
-
-    au Filetype org nmap <buffer> Q vahjgq
-    au Filetype org setlocal nolist
 augroup END
 
 " }}}
@@ -776,23 +751,6 @@ augroup ft_ruby
 augroup END
 
 " }}}
-" Scala {{{
-
-augroup ft_scala
-    au!
-    au Filetype scala setlocal foldmethod=marker foldmarker={,}
-    au Filetype scala setlocal textwidth=100
-    au Filetype scala compiler maven
-    au Filetype scala let b:dispatch = 'mvn -B package install'
-    au Filetype scala nnoremap <buffer> <localleader>s mz:%!sort-scala-imports<cr>`z
-    au Filetype scala nnoremap <buffer> M :call scaladoc#Search(expand("<cword>"))<cr>
-    au Filetype scala vnoremap <buffer> M "ry:call scaladoc#Search(@r)<cr>
-    au Filetype scala nmap <buffer> <localleader>( ysiwbi
-    au Filetype scala nmap <buffer> <localleader>[ ysiwri
-    ")]
-augroup END
-
-" }}}
 " Vim {{{
 
 augroup ft_vim
@@ -835,10 +793,38 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
-" textobj-clang {{{
-"let g:textobj_clang_more_mappings = 1
+" nerdcommenter {{{
+  "let g:NERDAltDelims_cpp = 1
 " }}}
-" devicons {{{
+" vimfiler {{{
+"
+
+let g:vimfiler_as_default_explorer = 1
+
+let g:vimfiler_enable_clipboard = 0
+
+call vimfiler#custom#profile('default', 'context', {
+      \ 'safe' : 0,
+      \ 'auto_expand' : 1,
+      \ 'parent' : 0,
+      \ })
+"
+  " Like Textmate icons.
+  let g:vimfiler_tree_leaf_icon = ' '
+  let g:vimfiler_tree_opened_icon = '▾'
+  let g:vimfiler_tree_closed_icon = '▸'
+  let g:vimfiler_file_icon = ' '
+  let g:vimfiler_readonly_file_icon = '✗'
+  let g:vimfiler_marked_file_icon = '✓'
+
+" }}}
+" netrw {{{
+
+let g:loaded_netrwPlugin = 1
+let g:netrw_winsize = -40
+
+
+
 " }}}
 " deoplete {{{
 let g:deoplete#enable_at_startup = 1
@@ -913,8 +899,6 @@ endfunction
   autocmd User AirlineAfterInit call AirlineInit()
 
 "}}}
-
-
 " Gista {{{
 
 "let g:gista#client#default_username = 'przemkovv'
@@ -922,7 +906,6 @@ let g:gista#update_on_write = 1
 let g:gista#command#post#default_public = 1
 
 " }}}
-
 " Pymode {{{
 let g:pymode_breakpoint = 0
 let g:pymode_doc = 0
@@ -994,12 +977,7 @@ nnoremap <leader>gd :Gvdiff<Cr>
 " }}}
 " Unite {{{
 let g:unite_prompt = '» '
-  let g:unite_source_history_yank_enable = 1
-  "nnoremap <space>y :Unite history/yank<cr>
-  "
-" Use the fuzzy matcher for everything
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_selecta'])
+let g:unite_source_history_yank_enable = 1
 
 let g:unite_data_directory = "~/.unite"
 
@@ -1025,6 +1003,7 @@ call unite#custom#profile('default', 'context', {
 let g:unite_source_rec_async_command =
             \ ['ag', '--follow', '--nocolor', '--nogroup',
             \  '--hidden', '-g', '']
+
 
 "let g:unite_abbr_highlight = 'normal'
 nnoremap <leader>r :<C-u>Unite -start-insert -no-resize grep:.<CR>
@@ -1052,8 +1031,18 @@ function! s:unite_settings()
   imap <buffer> <C-j>   <Plug>(unite_select_next_line)
   imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
   imap <buffer> <Esc>     <Plug>(unite_exit)
+
+  call unite#custom#source('buffer', 'converters', ['converter_file_directory'])
+  " Use the fuzzy matcher for everything
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  call unite#filters#sorter_default#use(['sorter_selecta'])
 endfunction
 
+
+
+
+" }}}
+" neoinclue {{{
 " }}}
 " Tagbar {{{
   let g:tagbar_left = 1
@@ -1065,24 +1054,23 @@ let g:vimtex_fold_enabled = 0
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_latexmk_progname = 'nvr'
 
-    let g:vimtex_quickfix_ignored_warnings = [
-        \ 'Underfull',
-        \ 'Overfull',
-        \ 'specifier changed to',
+let g:vimtex_quickfix_ignored_warnings = [
+      \ 'Underfull',
+      \ 'Overfull',
+      \ 'specifier changed to',
       \ ]
 " }}}
 " Pandoc {{{
-let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-let g:pandoc#filetypes#pandoc_markdown = 1
-let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
-let g:pandoc#formatting#textwidth = 79
-let g:pandoc#formatting#mode = "hA"
-let g:pandoc#command#autoexec_on_writes = 0
-let g:pandoc#command#autoexec_command = "Pandoc html -s"
+"let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
+"let g:pandoc#filetypes#pandoc_markdown = 1
+"let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
+"let g:pandoc#formatting#textwidth = 79
+"let g:pandoc#formatting#mode = "hA"
+"let g:pandoc#command#autoexec_on_writes = 0
+"let g:pandoc#command#autoexec_command = "Pandoc html -s"
 
-let g:instant_markdown_autostart = 0
+"let g:instant_markdown_autostart = 0
 " }}}
-
 " Jedi {{{
        let g:jedi#auto_vim_configuration = 0
         let g:jedi#popup_on_dot = 0
@@ -1093,20 +1081,18 @@ let g:instant_markdown_autostart = 0
 
         let g:jedi#documentation_command = ''
 " }}}
-" Neovim {{{
-autocmd! BufWritePost * Neomake
-" }}}
-
 " Neomake {{{
+autocmd! BufWritePost * Neomake
+nnoremap <Leader>h :Neomake!<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
-let g:neomake_cpp_enable_markers=['clang']
+let g:neomake_cpp_enabled_makers=['clangtidy']
+"let g:neomake_cpp_enabled_makers=['clang', 'clangtidy']
 "let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
 "'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
-let g:neomake_cpp_clang_args = ['-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
+let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
 " }}}
-"
 " Syntastic {{{
     "let g:syntastic_cpp_auto_refresh_includes = 1
     "let g:syntastic_cpp_compiler = 'clang++'
@@ -1121,14 +1107,16 @@ let g:neomake_cpp_clang_args = ['-std=c++14', '-fsyntax-only', '-Wextra', '-Wall
     "let g:syntastic_aggregate_errors = 1
 " }}}
 " EasyTags {{{
-
 let g:easytags_auto_update = 1
+let g:easytags_on_cursorhold = 1
 let g:easytags_events = ['BufWritePost']
-set tags=./tags;,~/.vimtags
+"let g:easytags_events = ['CursorHold']
+set tags=tags,./tags,~/.vimtags
 let g:easytags_dynamic_files = 2
 let g:easytags_include_members = 0
 let g:easytags_python_enabled = 1
 let g:easytags_async = 1
+let g:easytags_opts = ['--fields=+l']
 " }}}
 " YouCompleteMe {{{
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
@@ -1137,9 +1125,10 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_auto_trigger = 0
 
 let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 let g:ycm_show_diagnostic_ui = 1
+let g:ycm_server_log_level = 'debug'
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -1157,16 +1146,13 @@ let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
 " }}}
 " Vim-notes {{{
-
   let g:notes_directories = ['~/Documents/notes']
 " }}}
 " CSV {{{
   let g:csv_autocmd_arrange = 1
 " }}}
-
 " }}}
 " Text objects ------------------------------------------------------------ {{{
-
 " Shortcut for [] {{{
 
 onoremap ir i[
@@ -1344,7 +1330,6 @@ function! s:NumberTextObject(whole)
 endfunction
 
 " }}}
-
 " }}}
 
 
