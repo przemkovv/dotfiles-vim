@@ -894,7 +894,7 @@ function! AirlineInit()
   call airline#parts#define_raw('file2', "%#User1#%t")
   call airline#parts#define_raw('path2', "%#User5#%{expand('%:h')}/")
     let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
-    let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines'])
+    let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines [%{winnr()}]'])
 endfunction
   autocmd User AirlineAfterInit call AirlineInit()
 
