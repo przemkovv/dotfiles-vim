@@ -207,7 +207,11 @@ let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
 colorscheme gruvbox
 "call togglebg#map("<F11>")
+<<<<<<< Updated upstream
 highlight Normal guibg=NONE ctermbg=NONE
+=======
+hi Normal guibg=NONE ctermbg=NONE
+>>>>>>> Stashed changes
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
