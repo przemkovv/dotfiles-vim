@@ -12,9 +12,9 @@ let s:editor_root=expand("~/.vim")
 
 " Setting up plugins
 if empty(glob(s:editor_root . '/autoload/plug.vim'))
-    autocmd VimEnter * echom "Downloading and installing vim-plug..."
-    silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    autocmd VimEnter * PlugInstall
+  autocmd VimEnter * echom "Downloading and installing vim-plug..."
+  silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  autocmd VimEnter * PlugInstall
 endif
 
 call plug#begin('~/.vim/plugged/')
@@ -34,7 +34,7 @@ Plug 'ervandew/supertab'
 
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
-Plug 'Shougo/deoplete.nvim'
+"Plug 'Shougo/deoplete.nvim'
 "Plug 'zchee/deoplete-clang'
 
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
@@ -68,9 +68,9 @@ Plug 'bronson/vim-trailing-whitespace'
 " Snippets
 " Set up ultisnips - need to symlink vim scripts to be run when files are opened
 function! SymlinkSnippets(info)
-    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-    endif
+  if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+    silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+  endif
 endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
@@ -101,8 +101,8 @@ Plug 'majutsushi/tagbar'
 
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
-    Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
-    autocmd! User YouCompleteMe call youcompleteme#Enable()
+  Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
+  autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
@@ -165,15 +165,15 @@ Plug 'idanarye/vim-vebugger'
 
 " neobundle.vim (Lazy)
 "Plug 'lambdalisue/vim-gista', {
-    "\ 'branch': 'develop',
-    "\ 'depends': [
-    "\    'Shougo/unite.vim',
-    "\ ],
-    "\ 'autoload': {
-    "\    'commands': ['Gista'],
-    "\    'mappings': '<Plug>(gista-',
-    "\    'unite_sources': 'gista',
-    "\}}
+"\ 'branch': 'develop',
+"\ 'depends': [
+"\    'Shougo/unite.vim',
+"\ ],
+"\ 'autoload': {
+"\    'commands': ['Gista'],
+"\    'mappings': '<Plug>(gista-',
+"\    'unite_sources': 'gista',
+"\}}
 "Plug 'lambdalisue/vim-gista-unite'
 
 
@@ -183,17 +183,17 @@ call plug#end()
 filetype off
 
 if s:running_windows
-    if has("multi_byte")
-        if &termencoding == ""
-            let &termencoding = &encoding
-        endif
-        set encoding=utf-8
-        setglobal fileencoding=utf-8
-        "setglobal bomb
-        set fileencodings=ucs-bom,utf-8,latin1
+  if has("multi_byte")
+    if &termencoding == ""
+      let &termencoding = &encoding
     endif
-    set langmenu=pl_PL.UTF-8
-    let $LANG = 'pl_PL.UTF-8'
+    set encoding=utf-8
+    setglobal fileencoding=utf-8
+    "setglobal bomb
+    set fileencodings=ucs-bom,utf-8,latin1
+  endif
+  set langmenu=pl_PL.UTF-8
+  let $LANG = 'pl_PL.UTF-8'
 endif
 
 filetype plugin indent on
@@ -207,19 +207,20 @@ let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
 colorscheme gruvbox
 "call togglebg#map("<F11>")
+highlight Normal guibg=NONE ctermbg=NONE
 
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
 if has("autocmd")
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-                \| exe "normal g'\"" | endif
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+        \| exe "normal g'\"" | endif
 endif
 
 " Uncomment the following to have Vim load indentation rules according to the
 " detected filetype. Per default Debian Vim only load filetype specific
 " plugins.
 if has("autocmd")
-    filetype indent on
+  filetype indent on
 endif
 
 " The following are commented out as they cause vim to behave a lot
@@ -278,23 +279,23 @@ set notimeout ttimeout ttimeoutlen=200
 set nostartofline
 
 if s:running_windows
-    set backupdir=~/vimfiles/backup " where to put backup files
-    set undodir=~/vimfiles/undo " where to put undo files
-    set directory=~/vimfiles/temp " directory to place swap files in
+  set backupdir=~/vimfiles/backup " where to put backup files
+  set undodir=~/vimfiles/undo " where to put undo files
+  set directory=~/vimfiles/temp " directory to place swap files in
 else
-    set backupdir=~/.vim/backup " where to put backup files
-    set undodir=~/.vim/undo " where to put undo files
-    set directory=~/.vim/temp " directory to place swap files in
+  set backupdir=~/.vim/backup " where to put backup files
+  set undodir=~/.vim/undo " where to put undo files
+  set directory=~/.vim/temp " directory to place swap files in
 endif
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
-    call mkdir(expand(&undodir), "p")
+  call mkdir(expand(&undodir), "p")
 endif
 if !isdirectory(expand(&backupdir))
-    call mkdir(expand(&backupdir), "p")
+  call mkdir(expand(&backupdir), "p")
 endif
 if !isdirectory(expand(&directory))
-    call mkdir(expand(&directory), "p")
+  call mkdir(expand(&directory), "p")
 endif
 
 
@@ -324,17 +325,17 @@ set softtabstop=4
 
 if has("spell")
 
-    " turn spelling on by default
-    "set spell
-    " toggle spelling with F8 key
-    nnoremap <leader>8 :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+  " turn spelling on by default
+  "set spell
+  " toggle spelling with F8 key
+  nnoremap <leader>8 :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 
-    " they were using white on white
-    highlight PmenuSel ctermfg=black ctermbg=lightgray
-    highlight SpellBad term=reverse ctermbg=1
+  " they were using white on white
+  highlight PmenuSel ctermfg=black ctermbg=lightgray
+  highlight SpellBad term=reverse ctermbg=1
 
-    " limit it to just the top 10 items
-    set sps=best,10
+  " limit it to just the top 10 items
+  set sps=best,10
 endif
 
 set number
@@ -342,7 +343,7 @@ set numberwidth=5
 
 
 if v:version < 602 || $DISPLAY =~ '^localhost:' || $DISPLAY == ''
-    set clipboard=autoselect,exclude:.*
+  set clipboard=autoselect,exclude:.*
 endif
 
 
@@ -587,17 +588,17 @@ augroup ft_html
   " Use <localleader>f to fold the current tag.
   au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>f Vatzf
 
-    " Use <localleader>t to fold the current templatetag.
-    au FileType html,jinja,htmldjango nmap <buffer> <localleader>t viikojozf
+  " Use <localleader>t to fold the current templatetag.
+  au FileType html,jinja,htmldjango nmap <buffer> <localleader>t viikojozf
 
-    " Indent tag
-    au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>= Vat=
+  " Indent tag
+  au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>= Vat=
 
-    " Django tags
-    au FileType jinja,htmldjango inoremap <buffer> <c-t> {%<space><space>%}<left><left><left>
+  " Django tags
+  au FileType jinja,htmldjango inoremap <buffer> <c-t> {%<space><space>%}<left><left><left>
 
-    " Django variables
-    au FileType jinja,htmldjango inoremap <buffer> <c-b> {{<space><space>}}<left><left><left>
+  " Django variables
+  au FileType jinja,htmldjango inoremap <buffer> <c-b> {{<space><space>}}<left><left><left>
 augroup END
 
 " }}}
@@ -611,34 +612,34 @@ let g:haddock_browser = "w3m"
 " Java {{{
 
 augroup ft_java
-    au!
+  au!
 
-    au FileType java setlocal foldmethod=marker
-    au FileType java setlocal foldmarker={,}
+  au FileType java setlocal foldmethod=marker
+  au FileType java setlocal foldmarker={,}
 augroup END
 
 " }}}
 " Javascript {{{
 
 augroup ft_javascript
-    au!
+  au!
 
-    au FileType javascript setlocal foldmethod=marker
-    au FileType javascript setlocal foldmarker={,}
-    au FileType javascript call MakeSpacelessBufferIabbrev('clog', 'console.log();<left><left>')
+  au FileType javascript setlocal foldmethod=marker
+  au FileType javascript setlocal foldmarker={,}
+  au FileType javascript call MakeSpacelessBufferIabbrev('clog', 'console.log();<left><left>')
 
-    " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-    " positioned inside of them AND the following code doesn't get unfolded.
-    au Filetype javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+  " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
+  " positioned inside of them AND the following code doesn't get unfolded.
+  au Filetype javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
 augroup END
 
 " }}}
 " Mail {{{
 
 augroup ft_mail
-    au!
+  au!
 
-    au Filetype mail setlocal spell
+  au Filetype mail setlocal spell
 augroup END
 
 " }}}
@@ -657,138 +658,138 @@ augroup pandoc_syntax
 augroup END
 
 augroup ft_markdown
-    au!
+  au!
 
-    au FileType markdown setlocal foldlevel=1
+  au FileType markdown setlocal foldlevel=1
 
 
-    " Use <localleader>1/2/3 to add headings.
-    au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
-    au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
-    au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
-    au Filetype markdown nnoremap <buffer> <localleader>4 mzI#<space><ESC>`z
+  " Use <localleader>1/2/3 to add headings.
+  au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
+  au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
+  au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
+  au Filetype markdown nnoremap <buffer> <localleader>4 mzI#<space><ESC>`z
 
-    au Filetype markdown setlocal textwidth=79
-    au Filetype markdown setlocal isfname+=32,&,(,)
-    au Filetype markdown setlocal complete+=kspell
+  au Filetype markdown setlocal textwidth=79
+  au Filetype markdown setlocal isfname+=32,&,(,)
+  au Filetype markdown setlocal complete+=kspell
 augroup END
 " }}}
 " Mercurial {{{
 
 augroup ft_mercurial
-    au!
+  au!
 
-    au BufNewFile,BufRead *hg-editor-*.txt setlocal filetype=hgcommit
+  au BufNewFile,BufRead *hg-editor-*.txt setlocal filetype=hgcommit
 augroup END
 
 " }}}
 " Mutt {{{
 
 augroup ft_muttrc
-    au!
+  au!
 
-    au BufRead,BufNewFile *.muttrc set ft=muttrc
+  au BufRead,BufNewFile *.muttrc set ft=muttrc
 
-    au FileType muttrc setlocal foldmethod=marker foldmarker={{{,}}}
+  au FileType muttrc setlocal foldmethod=marker foldmarker={{{,}}}
 augroup END
 
 " }}}
 " Postgresql {{{
 
 augroup ft_postgres
-    au!
+  au!
 
-    au BufNewFile,BufRead *.sql set filetype=pgsql
-    au FileType pgsql set foldmethod=indent
-    au FileType pgsql set softtabstop=2 shiftwidth=2
-    au FileType pgsql setlocal commentstring=--\ %s comments=:--
+  au BufNewFile,BufRead *.sql set filetype=pgsql
+  au FileType pgsql set foldmethod=indent
+  au FileType pgsql set softtabstop=2 shiftwidth=2
+  au FileType pgsql setlocal commentstring=--\ %s comments=:--
 augroup END
 
 " }}}
 " Python {{{
 
 augroup ft_python
-    au!
+  au!
 
-    au FileType python setlocal define=^\s*\\(def\\\\|class\\)
-    au FileType man nnoremap <buffer> <cr> :q<cr>
+  au FileType python setlocal define=^\s*\\(def\\\\|class\\)
+  au FileType man nnoremap <buffer> <cr> :q<cr>
 
-    " Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
-    " override this in a normal way, could you?
-    au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
+  " Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
+  " override this in a normal way, could you?
+  au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
 
-    au FileType python iabbrev <buffer> afo assert False, "Okay"
+  au FileType python iabbrev <buffer> afo assert False, "Okay"
 augroup END
 
 " }}}
 " QuickFix {{{
 
 augroup ft_quickfix
-    au!
-    au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
+  au!
+  au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
 augroup END
 
 " }}}
 " ReStructuredText {{{
 
 augroup ft_rest
-    au!
+  au!
 
-    au Filetype rst nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
-    au Filetype rst nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
-    au Filetype rst nnoremap <buffer> <localleader>3 yypVr~:redraw<cr>
-    au Filetype rst nnoremap <buffer> <localleader>4 yypVr`:redraw<cr>
+  au Filetype rst nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
+  au Filetype rst nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
+  au Filetype rst nnoremap <buffer> <localleader>3 yypVr~:redraw<cr>
+  au Filetype rst nnoremap <buffer> <localleader>4 yypVr`:redraw<cr>
 augroup END
 
 " }}}
 " Ruby {{{
 
 augroup ft_eruby
-    au!
-    au FileType eruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+  au!
+  au FileType eruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 augroup END
 
 augroup ft_ruby
-    au!
-    au FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-    autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let highlight def link rubyRspec Function
+  au!
+  au FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+  autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let highlight def link rubyRspec Function
 augroup END
 
 " }}}
 " Vim {{{
 
 augroup ft_vim
-    au!
+  au!
 
 
-    au FileType vim setlocal foldlevelstart=1
-    au FileType vim setlocal foldmethod=marker
-    au FileType help setlocal textwidth=78
-    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+  au FileType vim setlocal foldlevelstart=1
+  au FileType vim setlocal foldmethod=marker
+  au FileType help setlocal textwidth=78
+  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
 " }}}
 " YAML {{{
 
 augroup ft_yaml
-    au!
+  au!
 
-    au FileType yaml set shiftwidth=2
+  au FileType yaml set shiftwidth=2
 augroup END
 
 " }}}
 " XML {{{
 
 augroup ft_xml
-    au!
+  au!
 
-    au FileType xml setlocal foldmethod=manual
+  au FileType xml setlocal foldmethod=manual
 
-    " Use <localleader>f to fold the current tag.
-    au FileType xml nnoremap <buffer> <localleader>f Vatzf
+  " Use <localleader>f to fold the current tag.
+  au FileType xml nnoremap <buffer> <localleader>f Vatzf
 
-    " Indent tag
-    au FileType xml nnoremap <buffer> <localleader>= Vat=
+  " Indent tag
+  au FileType xml nnoremap <buffer> <localleader>= Vat=
 augroup END
 
 " }}}
@@ -798,7 +799,7 @@ augroup END
 " Plugin settings --------------------------------------------------------- {{{
 
 " nerdcommenter {{{
-  "let g:NERDAltDelims_cpp = 1
+"let g:NERDAltDelims_cpp = 1
 " }}}
 " vimfiler {{{
 "
@@ -813,13 +814,13 @@ call vimfiler#custom#profile('default', 'context', {
       \ 'parent' : 0,
       \ })
 "
-  " Like Textmate icons.
-  let g:vimfiler_tree_leaf_icon = ' '
-  let g:vimfiler_tree_opened_icon = '▾'
-  let g:vimfiler_tree_closed_icon = '▸'
-  let g:vimfiler_file_icon = ' '
-  let g:vimfiler_readonly_file_icon = '✗'
-  let g:vimfiler_marked_file_icon = '✓'
+" Like Textmate icons.
+let g:vimfiler_tree_leaf_icon = ' '
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = ' '
+let g:vimfiler_readonly_file_icon = '✗'
+let g:vimfiler_marked_file_icon = '✓'
 
 " }}}
 " netrw {{{
@@ -833,9 +834,9 @@ let g:netrw_winsize = -40
 " deoplete {{{
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 1
-inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
+"inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
 "inoremap <expr><C-h>
-      "\ deoplete#mappings#smart_close_popup()."\<C-h>"
+"\ deoplete#mappings#smart_close_popup()."\<C-h>"
 "inoremap <expr><C-g>     deoplete#mappings#undo_completion()
 "inoremap <expr><C-l>     deoplete#mappings#refresh()
 " }}}
@@ -891,16 +892,16 @@ endif
 
 hi User5 cterm=italic ctermfg=245 ctermbg=237 gui=italic guifg=#928374 guibg=#3c3836 " Comment        
 hi User1 cterm=bold ctermfg=14 ctermbg=237 guifg=#40ffff guibg=#3c3836 " Identifier     
-                        
+
 
 function! AirlineInit()
-    "%5*%{expand('%:h')}/
+  "%5*%{expand('%:h')}/
   call airline#parts#define_raw('file2', "%#User1#%t")
   call airline#parts#define_raw('path2', "%#User5#%{expand('%:h')}/")
-    let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
-    let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines [%{winnr()}]'])
+  let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
+  let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines [%{winnr()}]'])
 endfunction
-  autocmd User AirlineAfterInit call AirlineInit()
+autocmd User AirlineAfterInit call AirlineInit()
 
 "}}}
 " Gista {{{
@@ -916,7 +917,7 @@ let g:pymode_doc = 0
 let g:pymode_doc_bind =''
 " }}}
 " dbext {{{
-        let g:dbext_default_usermaps = 0
+let g:dbext_default_usermaps = 0
 " }}}
 " Sneak {{{
 
@@ -938,27 +939,27 @@ omap F <Plug>Sneak_F
 " Secure Modelines {{{
 
 let g:secure_modelines_allowed_items = [
-            \ "textwidth",   "tw",
-            \ "foldmethod",  "fdm",
-            \ "foldnextmax",  "fdn",
-            \ "foldlevel", "foldlevelstart",
-            \ "spelllang",
-            \ ]
+      \ "textwidth",   "tw",
+      \ "foldmethod",  "fdm",
+      \ "foldnextmax",  "fdn",
+      \ "foldlevel", "foldlevelstart",
+      \ "spelllang",
+      \ ]
 
 " }}}
 " Signify {{{
-    let g:signify_vcs_list = [ 'git', 'svn' ]
-    let g:signify_mapping_next_hunk = ']c'
-    let g:signify_mapping_prev_hunk = '[c'
-    "let g:signify_mapping_toggle_highlight = ''
-    "let g:signify_mapping_toggle = ''
-    nmap <nop> <plug>(signify-toggle-highlight)
-    nmap <nop> <plug>(signify-toggle)
+let g:signify_vcs_list = [ 'git', 'svn' ]
+let g:signify_mapping_next_hunk = ']c'
+let g:signify_mapping_prev_hunk = '[c'
+"let g:signify_mapping_toggle_highlight = ''
+"let g:signify_mapping_toggle = ''
+nmap <nop> <plug>(signify-toggle-highlight)
+nmap <nop> <plug>(signify-toggle)
 " }}}
 " Local VIM RC {{{
-  let g:localvimrc_name = ".localvimrc"
-  let g:localvimrc_sandbox = 0
-  let g:localvimrc_persistent = 1
+let g:localvimrc_name = ".localvimrc"
+let g:localvimrc_sandbox = 0
+let g:localvimrc_persistent = 1
 " }}}
 " UltiSnips {{{
 "
@@ -986,27 +987,27 @@ let g:unite_source_history_yank_enable = 1
 let g:unite_data_directory = "~/.unite"
 
 if executable('ag')
-    " Use ag (the silver searcher)
-    " https://github.com/ggreer/the_silver_searcher
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-                \ '-i --vimgrep --hidden --ignore ' .
-                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-    let g:unite_source_grep_recursive_opt = ''
+  " Use ag (the silver searcher)
+  " https://github.com/ggreer/the_silver_searcher
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts =
+        \ '-i --vimgrep --hidden --ignore ' .
+        \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+  let g:unite_source_grep_recursive_opt = ''
 endif
 
 "Like ctrlp.vim settings.
 call unite#custom#profile('default', 'context', {
-            \   'start_insert': 1,
-            \   'winheight': 20,
-            \   'direction': 'botright',
-            \   'update-time': 200,
-            \ })
+      \   'start_insert': 1,
+      \   'winheight': 20,
+      \   'direction': 'botright',
+      \   'update-time': 200,
+      \ })
 
 " Using ag as recursive command.
 let g:unite_source_rec_async_command =
-            \ ['ag', '--follow', '--nocolor', '--nogroup',
-            \  '--hidden', '-g', '']
+      \ ['ag', '--follow', '--nocolor', '--nogroup',
+      \  '--hidden', '-g', '']
 
 
 "let g:unite_abbr_highlight = 'normal'
@@ -1049,9 +1050,9 @@ endfunction
 " neoinclue {{{
 " }}}
 " Tagbar {{{
-  let g:tagbar_left = 1
-  let g:tagbar_width = 33
-  let g:tagbar_compact = 1
+let g:tagbar_left = 1
+let g:tagbar_width = 33
+let g:tagbar_compact = 1
 " }}}
 " VimTex {{{
 let g:vimtex_fold_enabled = 0
@@ -1076,14 +1077,14 @@ let g:vimtex_quickfix_ignored_warnings = [
 "let g:instant_markdown_autostart = 0
 " }}}
 " Jedi {{{
-       let g:jedi#auto_vim_configuration = 0
-        let g:jedi#popup_on_dot = 0
-        let g:jedi#popup_select_first = 0
-        let g:jedi#completions_enabled = 0
-        let g:jedi#completions_command = ""
-        let g:jedi#show_call_signatures = "1"
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+let g:jedi#completions_enabled = 0
+let g:jedi#completions_command = ""
+let g:jedi#show_call_signatures = "1"
 
-        let g:jedi#documentation_command = ''
+let g:jedi#documentation_command = ''
 " }}}
 " Neomake {{{
 autocmd! BufWritePost * Neomake
@@ -1098,17 +1099,17 @@ let g:neomake_cpp_enabled_makers=['clangtidy']
 let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
 " }}}
 " Syntastic {{{
-    "let g:syntastic_cpp_auto_refresh_includes = 1
-    "let g:syntastic_cpp_compiler = 'clang++'
-    "let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
-    ""let g:syntastic_cpp_check_header = 1
-    "let g:syntastic_error_symbol='✗'
-    "let g:syntastic_warning_symbol='⚠'
-    "let g:syntastic_enable_highlighting=0
-    "let g:syntastic_auto_loc_list=1
-    "let g:syntastic_loc_list_height = 5
-    "let g:syntastic_always_populate_loc_list=1
-    "let g:syntastic_aggregate_errors = 1
+"let g:syntastic_cpp_auto_refresh_includes = 1
+"let g:syntastic_cpp_compiler = 'clang++'
+"let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
+""let g:syntastic_cpp_check_header = 1
+"let g:syntastic_error_symbol='✗'
+"let g:syntastic_warning_symbol='⚠'
+"let g:syntastic_enable_highlighting=0
+"let g:syntastic_auto_loc_list=1
+"let g:syntastic_loc_list_height = 5
+"let g:syntastic_always_populate_loc_list=1
+"let g:syntastic_aggregate_errors = 1
 " }}}
 " EasyTags {{{
 let g:easytags_auto_update = 1
@@ -1150,10 +1151,10 @@ let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
 " }}}
 " Vim-notes {{{
-  let g:notes_directories = ['~/Documents/notes']
+let g:notes_directories = ['~/Documents/notes']
 " }}}
 " CSV {{{
-  let g:csv_autocmd_arrange = 1
+let g:csv_autocmd_arrange = 1
 " }}}
 " }}}
 " Text objects ------------------------------------------------------------ {{{
@@ -1209,96 +1210,96 @@ xnoremap il :<c-u>call <SID>NextTextObject('i', '?')<cr>
 
 
 function! s:NextTextObject(motion, dir)
-    let c = nr2char(getchar())
-    let d = ''
+  let c = nr2char(getchar())
+  let d = ''
 
-    if c ==# "b" || c ==# "(" || c ==# ")"
-        let c = "("
-    elseif c ==# "B" || c ==# "{" || c ==# "}"
-        let c = "{"
-    elseif c ==# "r" || c ==# "[" || c ==# "]"
-        let c = "["
+  if c ==# "b" || c ==# "(" || c ==# ")"
+    let c = "("
+  elseif c ==# "B" || c ==# "{" || c ==# "}"
+    let c = "{"
+  elseif c ==# "r" || c ==# "[" || c ==# "]"
+    let c = "["
+  elseif c ==# "'"
+    let c = "'"
+  elseif c ==# '"'
+    let c = '"'
+  else
+    return
+  endif
+
+  " Find the next opening-whatever.
+  execute "normal! " . a:dir . c . "\<cr>"
+
+  if a:motion ==# 'a'
+    " If we're doing an 'around' method, we just need to select around it
+    " and we can bail out to Vim.
+    execute "normal! va" . c
+  else
+    " Otherwise we're looking at an 'inside' motion.  Unfortunately these
+    " get tricky when you're dealing with an empty set of delimiters because
+    " Vim does the wrong thing when you say vi(.
+
+    let open = ''
+    let close = ''
+
+    if c ==# "("
+      let open = "("
+      let close = ")"
+    elseif c ==# "{"
+      let open = "{"
+      let close = "}"
+    elseif c ==# "["
+      let open = "\\["
+      let close = "\\]"
     elseif c ==# "'"
-        let c = "'"
+      let open = "'"
+      let close = "'"
     elseif c ==# '"'
-        let c = '"'
-    else
-        return
+      let open = '"'
+      let close = '"'
     endif
 
-    " Find the next opening-whatever.
-    execute "normal! " . a:dir . c . "\<cr>"
+    " We'll start at the current delimiter.
+    let start_pos = getpos('.')
+    let start_l = start_pos[1]
+    let start_c = start_pos[2]
 
-    if a:motion ==# 'a'
-        " If we're doing an 'around' method, we just need to select around it
-        " and we can bail out to Vim.
-        execute "normal! va" . c
+    " Then we'll find it's matching end delimiter.
+    if c ==# "'" || c ==# '"'
+      " searchpairpos() doesn't work for quotes, because fuck me.
+      let end_pos = searchpos(open)
     else
-        " Otherwise we're looking at an 'inside' motion.  Unfortunately these
-        " get tricky when you're dealing with an empty set of delimiters because
-        " Vim does the wrong thing when you say vi(.
-
-        let open = ''
-        let close = ''
-
-        if c ==# "("
-            let open = "("
-            let close = ")"
-        elseif c ==# "{"
-            let open = "{"
-            let close = "}"
-        elseif c ==# "["
-            let open = "\\["
-            let close = "\\]"
-        elseif c ==# "'"
-            let open = "'"
-            let close = "'"
-        elseif c ==# '"'
-            let open = '"'
-            let close = '"'
-        endif
-
-        " We'll start at the current delimiter.
-        let start_pos = getpos('.')
-        let start_l = start_pos[1]
-        let start_c = start_pos[2]
-
-        " Then we'll find it's matching end delimiter.
-        if c ==# "'" || c ==# '"'
-            " searchpairpos() doesn't work for quotes, because fuck me.
-            let end_pos = searchpos(open)
-        else
-            let end_pos = searchpairpos(open, '', close)
-        endif
-
-        let end_l = end_pos[0]
-        let end_c = end_pos[1]
-
-        call setpos('.', start_pos)
-
-        if start_l == end_l && start_c == (end_c - 1)
-            " We're in an empty set of delimiters.  We'll append an "x"
-            " character and select that so most Vim commands will do something
-            " sane.  v is gonna be weird, and so is y.  Oh well.
-            execute "normal! ax\<esc>\<left>"
-            execute "normal! vi" . c
-        elseif start_l == end_l && start_c == (end_c - 2)
-            " We're on a set of delimiters that contain a single, non-newline
-            " character.  We can just select that and we're done.
-            execute "normal! vi" . c
-        else
-            " Otherwise these delimiters contain something.  But we're still not
-            " sure Vim's gonna work, because if they contain nothing but
-            " newlines Vim still does the wrong thing.  So we'll manually select
-            " the guts ourselves.
-            let whichwrap = &whichwrap
-            set whichwrap+=h,l
-
-            execute "normal! va" . c . "hol"
-
-            let &whichwrap = whichwrap
-        endif
+      let end_pos = searchpairpos(open, '', close)
     endif
+
+    let end_l = end_pos[0]
+    let end_c = end_pos[1]
+
+    call setpos('.', start_pos)
+
+    if start_l == end_l && start_c == (end_c - 1)
+      " We're in an empty set of delimiters.  We'll append an "x"
+      " character and select that so most Vim commands will do something
+      " sane.  v is gonna be weird, and so is y.  Oh well.
+      execute "normal! ax\<esc>\<left>"
+      execute "normal! vi" . c
+    elseif start_l == end_l && start_c == (end_c - 2)
+      " We're on a set of delimiters that contain a single, non-newline
+      " character.  We can just select that and we're done.
+      execute "normal! vi" . c
+    else
+      " Otherwise these delimiters contain something.  But we're still not
+      " sure Vim's gonna work, because if they contain nothing but
+      " newlines Vim still does the wrong thing.  So we'll manually select
+      " the guts ourselves.
+      let whichwrap = &whichwrap
+      set whichwrap+=h,l
+
+      execute "normal! va" . c . "hol"
+
+      let &whichwrap = whichwrap
+    endif
+  endif
 endfunction
 
 " }}}
@@ -1318,19 +1319,19 @@ onoremap iN :<c-u>call <SID>NumberTextObject(1)<cr>
 xnoremap iN :<c-u>call <SID>NumberTextObject(1)<cr>
 
 function! s:NumberTextObject(whole)
-    normal! v
+  normal! v
 
-    while getline('.')[col('.')] =~# '\v[0-9]'
-        normal! l
+  while getline('.')[col('.')] =~# '\v[0-9]'
+    normal! l
+  endwhile
+
+  if a:whole
+    normal! o
+
+    while col('.') > 1 && getline('.')[col('.') - 2] =~# '\v[0-9]'
+      normal! h
     endwhile
-
-    if a:whole
-        normal! o
-
-        while col('.') > 1 && getline('.')[col('.') - 2] =~# '\v[0-9]'
-            normal! h
-        endwhile
-    endif
+  endif
 endfunction
 
 " }}}
