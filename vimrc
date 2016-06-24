@@ -515,7 +515,9 @@ set foldtext=MyFoldText()
 augroup ft_c
   au!
   au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
-  au FileType c setlocal equalprg=astyle\ -A4UHk3W1xefxyjOCS
+  "au FileType c setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
+  au FileType c setlocal equalprg=clang-format
+  au FileType c setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 augroup END
 
 " }}}
@@ -525,7 +527,9 @@ augroup ft_c
   au!
   au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
   au FileType cpp set keywordprg=:term\ cppman
-  au FileType cpp setlocal equalprg=astyle\ -A4UHk3W1xefxyjOCS
+  "au FileType cpp setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
+  au FileType cpp setlocal equalprg=clang-format
+  au FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 augroup END
 
 " }}}
