@@ -408,7 +408,7 @@ cnoremap w!! w !sudo tee % >/dev/null
 "noremap <leader>[ :tabprev<cr>
 "noremap <leader>] :tabnext<cr>
 "
-noremap <leader><bs> :bdelete<CR>
+noremap <silent> <leader><bs> :bprevious\|bdelete #<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
 "noremap <leader>4 :NERDTreeToggle<CR>
