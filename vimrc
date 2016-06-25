@@ -1090,8 +1090,9 @@ let g:jedi#show_call_signatures = "1"
 let g:jedi#documentation_command = ''
 " }}}
 " Neomake {{{
-autocmd! BufWritePost * Neomake
+"autocmd! BufWritePost * Neomake
 nnoremap <Leader>h :Neomake!<CR>
+nnoremap <Leader>H :Neomake<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
