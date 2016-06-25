@@ -55,7 +55,7 @@ Plug 'vim-scripts/utl.vim'
 Plug 'embear/vim-localvimrc'
 "Plug 'lukerandall/haskellmode-vim'
 Plug 'mhinz/vim-signify'
-Plug 'dhruvasagar/vim-markify'
+"Plug 'dhruvasagar/vim-markify'
 "Plug 'beloglazov/vim-online-thesaurus'
 "Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -142,7 +142,7 @@ Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from
 Plug 'klen/python-mode', { 'for': 'python'}
 Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 
-Plug 'danielmiessler/VimBlog'
+"Plug 'danielmiessler/VimBlog'
 Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
@@ -511,6 +511,9 @@ set foldtext=MyFoldText()
 " }}}
 " Filetype-specific ------------------------------------------------------- {{{
 
+" QuickFix {{{
+au FileType qf wincmd J
+" }}}
 " C {{{
 
 augroup ft_c
@@ -762,7 +765,7 @@ augroup ft_vim
   au!
 
 
-  au FileType vim setlocal foldlevelstart=1
+  "au FileType vim setlocal foldlevelstart=1
   au FileType vim setlocal foldmethod=marker
   au FileType help setlocal textwidth=78
   au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
@@ -1093,6 +1096,8 @@ nnoremap <Leader>h :Neomake!<CR>
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
 let g:neomake_cpp_enabled_makers=['clangtidy']
+"let g:neomake_verbose = 3
+"let g:neomake_logfile='neomake.log'
 "let g:neomake_cpp_enabled_makers=['clang', 'clangtidy']
 "let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
 "'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
@@ -1114,11 +1119,11 @@ let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall
 " EasyTags {{{
 let g:easytags_auto_update = 1
 let g:easytags_on_cursorhold = 1
-let g:easytags_events = ['BufWritePost']
+"let g:easytags_events = ['BufWritePost']
 "let g:easytags_events = ['CursorHold']
 set tags=tags,./tags,~/.vimtags
 let g:easytags_dynamic_files = 2
-let g:easytags_include_members = 0
+let g:easytags_include_members = 1
 let g:easytags_python_enabled = 1
 let g:easytags_async = 1
 let g:easytags_opts = ['--fields=+l']
