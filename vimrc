@@ -25,7 +25,6 @@ Plug 'morhetz/gruvbox'
 Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/unite-outline'
-"Plug 'Shougo/neoinclude.vim'
 Plug 'tsukkee/unite-tag'
 Plug 'tsukkee/unite-help'
 Plug 'osyo-manga/unite-quickfix'
@@ -34,36 +33,24 @@ Plug 'ervandew/supertab'
 
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
-"Plug 'Shougo/deoplete.nvim'
-"Plug 'zchee/deoplete-clang'
 
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
 Plug 'junegunn/goyo.vim'
 Plug 'nhooyr/neoman.vim' "vim-plug
 
-"Plug 'OmniSharp/omnisharp-vim'
 
-"Plug 'scrooloose/syntastic'
 Plug 'benekastah/neomake'
-" Plug 'maksimr/vim-translator'
-" Plug 'sjl/clam.vim' " Clam.vim is a lightweight Vim plugin to easily run shell commands.
 
 Plug 'tpope/vim-fugitive'
 Plug 'ciaranm/securemodelines'
 Plug 'vim-scripts/utl.vim'
 Plug 'embear/vim-localvimrc'
-"Plug 'lukerandall/haskellmode-vim'
 Plug 'mhinz/vim-signify'
-"Plug 'dhruvasagar/vim-markify'
-"Plug 'beloglazov/vim-online-thesaurus'
-"Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-"Plug 'vim-pandoc/vim-pandoc-after'
 
 Plug 'bronson/vim-trailing-whitespace'
 
-"Plug 'junegunn/vim-peekaboo'
 
 " Snippets
 " Set up ultisnips - need to symlink vim scripts to be run when files are opened
@@ -86,18 +73,17 @@ Plug 'tpope/vim-repeat'
 Plug 'kana/vim-textobj-user'
 "Plug 'kana/vim-textobj-entire' " ae, ie conflicts with latex environments
 Plug 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
-Plug 'kana/vim-textobj-line' " al, il
-Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
+"Plug 'kana/vim-textobj-line' " al, il
+"Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
 Plug 'kana/vim-textobj-function' " af, if, aF, iF
-Plug 'lucapette/vim-textobj-underscore' " a_, i_
-Plug 'bps/vim-textobj-python' " af, if, ac, ic
-
-" Plug 'tpope/vim-commentary' " commentary.vim: comment stuff out
+"Plug 'lucapette/vim-textobj-underscore' " a_, i_
+"Plug 'bps/vim-textobj-python' " af, if, ac, ic
 
 " Tags
 Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
 Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 Plug 'majutsushi/tagbar'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
@@ -119,7 +105,7 @@ Plug 'ryanoasis/vim-devicons'
 
 
 " Latex
-Plug 'lervag/vimtex'
+Plug 'lervag/vimtex', { 'for': 'latex' }
 
 " HTML/CSS
 Plug 'tpope/vim-ragtag', { 'for': 'html'}
@@ -158,7 +144,7 @@ Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 "Plug 'gilligan/vim-lldb'
 Plug 'critiqjo/lldb.nvim'
 
-Plug 'idanarye/vim-vebugger'
+"Plug 'idanarye/vim-vebugger'
 
 "Plug 'vim-scripts/loremipsum'
 
@@ -351,6 +337,10 @@ set switchbuf=useopen ",usetab,newtab
 set showtabline=1
 set tabpagemax=15
 
+
+command! -nargs=+ -complete=file_in_path -bar Grep silent! grep! <args> | redraw!
+set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column\ --vimgrep\ --ignore\ '.git'
+
 " Mappings ---------------------------------------------------------------- {{{
 
 cnoremap <c-a> <home>
@@ -372,7 +362,7 @@ nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 "nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -O -C -S<CR>`z<CR>k
-nnoremap <Leader>= mzgg=G`z<CR>  " reindent
+nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
 " Easy window navigation
@@ -801,6 +791,10 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" vim-cpp-enhanced-highlight {{{
+let g:cpp_class_scope_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+" }}}
 " nerdcommenter {{{
 "let g:NERDAltDelims_cpp = 1
 " }}}
@@ -1119,11 +1113,13 @@ let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall
 " }}}
 " EasyTags {{{
 let g:easytags_auto_update = 1
+let g:easytags_auto_highlight = 0
 let g:easytags_on_cursorhold = 1
 "let g:easytags_events = ['BufWritePost']
 "let g:easytags_events = ['CursorHold']
 set tags=tags,./tags,~/.vimtags
 let g:easytags_dynamic_files = 2
+let g:easytags_suppress_ctags_warning = 1
 let g:easytags_include_members = 1
 let g:easytags_python_enabled = 1
 let g:easytags_async = 1
