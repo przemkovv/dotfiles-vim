@@ -982,6 +982,7 @@ let g:unite_prompt = '» '
 let g:unite_source_history_yank_enable = 1
 
 let g:unite_data_directory = "~/.unite"
+let g:unite_source_rec_min_cache_files = 2000
 
 if executable('ag')
   " Use ag (the silver searcher)
@@ -991,6 +992,11 @@ if executable('ag')
         \ '-i --vimgrep --hidden --ignore ' .
         \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
   let g:unite_source_grep_recursive_opt = ''
+  "
+  " Using ag as recursive command.
+  let g:unite_source_rec_async_command =
+        \ ['ag', '--follow', '--nocolor', '--nogroup',
+        \  '--hidden', '-g', '--ignore .git', '']
 endif
 
 "Like ctrlp.vim settings.
