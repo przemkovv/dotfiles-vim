@@ -49,6 +49,8 @@ Plug 'embear/vim-localvimrc'
 Plug 'mhinz/vim-signify'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
+
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'bronson/vim-trailing-whitespace'
 
 
@@ -791,6 +793,10 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" vim-table-mode {{{
+  "let g:table_mode_disable_mappings = 1
+  let g:table_mode_map_prefix = "<localleader>t"
+" }}}
 " vim-cpp-enhanced-highlight {{{
 let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
