@@ -23,13 +23,14 @@ Plug 'morhetz/gruvbox'
 
 "Plug 'tpope/vim-sensible'
 Plug 'Shougo/vimfiler.vim'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
-Plug 'tsukkee/unite-tag'
-Plug 'tsukkee/unite-help'
-Plug 'osyo-manga/unite-quickfix'
+"Plug 'Shougo/unite.vim'
+"Plug 'Shougo/unite-outline'
+"Plug 'tsukkee/unite-tag'
+"Plug 'tsukkee/unite-help'
+"Plug 'osyo-manga/unite-quickfix'
 Plug 'ervandew/supertab'
-
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
@@ -90,7 +91,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
   Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
-  autocmd! User YouCompleteMe call youcompleteme#Enable()
+  "autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
@@ -151,20 +152,6 @@ Plug 'critiqjo/lldb.nvim'
 "Plug 'vim-scripts/loremipsum'
 
 
-" neobundle.vim (Lazy)
-"Plug 'lambdalisue/vim-gista', {
-"\ 'branch': 'develop',
-"\ 'depends': [
-"\    'Shougo/unite.vim',
-"\ ],
-"\ 'autoload': {
-"\    'commands': ['Gista'],
-"\    'mappings': '<Plug>(gista-',
-"\    'unite_sources': 'gista',
-"\}}
-"Plug 'lambdalisue/vim-gista-unite'
-
-
 call plug#end()
 " }}}
 
@@ -197,12 +184,40 @@ colorscheme gruvbox
 "call togglebg#map("<F11>")
 highlight Normal guibg=NONE ctermbg=NONE
 
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
 if has("autocmd")
+  " Uncomment the following to have Vim jump to the last position when
+  " reopening a file
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
         \| exe "normal g'\"" | endif
+
+
 endif
+
+
+" Save current view settings on a per-window, per-buffer basis.
+function! AutoSaveWinView()
+  if !exists("w:SavedBufView")
+    let w:SavedBufView = {}
+  endif
+  let w:SavedBufView[bufnr("%")] = winsaveview()
+endfunction
+
+" Restore current view settings.
+function! AutoRestoreWinView()
+  let buf = bufnr("%")
+  if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
+    let v = winsaveview()
+    let atStartOfFile = v.lnum == 1 && v.col == 0
+    if atStartOfFile && !&diff
+      call winrestview(w:SavedBufView[buf])
+    endif
+    unlet w:SavedBufView[buf]
+  endif
+endfunction
+
+" When switching buffers, preserve window view.
+autocmd BufLeave * call AutoSaveWinView()
+autocmd BufEnter * call AutoRestoreWinView()
 
 " Uncomment the following to have Vim load indentation rules according to the
 " detected filetype. Per default Debian Vim only load filetype specific
@@ -983,81 +998,22 @@ nnoremap <leader>gl :Glog<Cr>
 nnoremap <leader>gw :Gwrite<Cr>
 nnoremap <leader>gd :Gvdiff<Cr>
 " }}}
-" Unite {{{
-let g:unite_prompt = '» '
-let g:unite_source_history_yank_enable = 1
 
-let g:unite_data_directory = "~/.unite"
-let g:unite_source_rec_min_cache_files = 2000
+" fzf {{{
+"
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+nnoremap <leader>r :Ag<CR>
 
-if executable('ag')
-  " Use ag (the silver searcher)
-  " https://github.com/ggreer/the_silver_searcher
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts =
-        \ '-i --vimgrep --hidden --ignore ' .
-        \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-  let g:unite_source_grep_recursive_opt = ''
-  "
-  " Using ag as recursive command.
-  let g:unite_source_rec_async_command =
-        \ ['ag', '--follow', '--nocolor', '--nogroup',
-        \  '--hidden', '-g', '--ignore .git', '']
-endif
-
-"Like ctrlp.vim settings.
-call unite#custom#profile('default', 'context', {
-      \   'start_insert': 1,
-      \   'winheight': 20,
-      \   'direction': 'botright',
-      \   'update-time': 200,
-      \ })
-
-" Using ag as recursive command.
-let g:unite_source_rec_async_command =
-      \ ['ag', '--follow', '--nocolor', '--nogroup',
-      \  '--hidden', '-g', '']
-
-
-"let g:unite_abbr_highlight = 'normal'
-nnoremap <leader>r :<C-u>Unite -start-insert -no-resize grep:.<CR>
-"nnoremap <leader>R :<C-u>Unite register<CR>
-"nnoremap <leader>o :<C-u>Unite -auto-resize outline<CR>
-nnoremap <leader>gg :<C-u>Unite -auto-resize gista<CR>
-
-nnoremap <leader>f :<C-u>Unite -buffer-name=files   -start-insert file_rec/neovim<cr>
-nnoremap <leader>F :<C-u>Unite -buffer-name=files   -start-insert file<cr>
-nnoremap <leader>mr :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
-nnoremap <leader>ma :<C-u>Unite -buffer-name=mapping     -start-insert mapping<cr>
-nnoremap <leader>o :<C-u>Unite -buffer-name=outline -no-split -start-insert outline<cr>
-"nnoremap <leader>y :<C-u>Unite-buffer-name=yank    history/yank<cr>
-nnoremap <leader>b :<C-u>Unite -buffer-name=buffer  -start-insert buffer<cr>
-nnoremap <leader>t :<C-u>Unite -buffer-name=tags  -start-insert tag<cr>
-nnoremap <leader>q :<C-u>Unite -buffer-name=quickfix  -start-insert quickfix<cr>
-nnoremap <leader>gh :<C-u>Unite -buffer-name=help  -start-insert help<cr>
-
-" Custom mappings for the unite buffer
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  " Play nice with supertab
-  let b:SuperTabDisabled=1
-  " Enable navigation with control-j and control-k in insert mode
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <buffer> <Esc>     <Plug>(unite_exit)
-
-  call unite#custom#source('buffer', 'converters', ['converter_file_directory'])
-  " Use the fuzzy matcher for everything
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-  call unite#filters#sorter_default#use(['sorter_selecta'])
-endfunction
-
-
-
-
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>mr :History<cr>
+nnoremap <leader>ma :Maps<cr>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>t :Tags<cr>
+"
 " }}}
-" neoinclue {{{
-" }}}
+
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 33
