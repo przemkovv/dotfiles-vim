@@ -964,6 +964,8 @@ nnoremap <leader>mr :History<cr>
 nnoremap <leader>ma :Maps<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>t :Tags<cr>
+
+let g:fzf_files_options=' --bind alt-a:select-all,alt-d:deselect-all '
 "
 " }}}
 
