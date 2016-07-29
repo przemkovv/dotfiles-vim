@@ -21,13 +21,7 @@ call plug#begin('~/.vim/plugged/')
 
 Plug 'morhetz/gruvbox'
 
-"Plug 'tpope/vim-sensible'
 Plug 'Shougo/vimfiler.vim'
-"Plug 'Shougo/unite.vim'
-"Plug 'Shougo/unite-outline'
-"Plug 'tsukkee/unite-tag'
-"Plug 'tsukkee/unite-help'
-"Plug 'osyo-manga/unite-quickfix'
 Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -91,7 +85,6 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'tpope/vim-vinegar.git'
 if !s:running_windows
   Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
-  "autocmd! User YouCompleteMe call youcompleteme#Enable()
 endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
@@ -131,7 +124,6 @@ Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from
 Plug 'klen/python-mode', { 'for': 'python'}
 Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 
-"Plug 'danielmiessler/VimBlog'
 Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
@@ -144,13 +136,7 @@ Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
-"Plug 'gilligan/vim-lldb'
 Plug 'critiqjo/lldb.nvim'
-
-"Plug 'idanarye/vim-vebugger'
-
-"Plug 'vim-scripts/loremipsum'
-
 
 call plug#end()
 " }}}
