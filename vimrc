@@ -314,11 +314,6 @@ set softtabstop=4
 
 if has("spell")
 
-  " turn spelling on by default
-  "set spell
-  " toggle spelling with F8 key
-  nnoremap <leader>8 :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
-
   " they were using white on white
   highlight PmenuSel ctermfg=black ctermbg=lightgray
   highlight SpellBad term=reverse ctermbg=1
@@ -349,12 +344,6 @@ set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column\ --vimgrep\ --igno
 cnoremap <c-a> <home>
 cnoremap <c-e> <end>
 
-vmap  <expr>  <LEFT>   DVB_Drag('left')
-vmap  <expr>  <RIGHT>  DVB_Drag('right')
-vmap <expr>  <DOWN>   DVB_Drag('down')
-vmap  <expr>  <UP>     DVB_Drag('up')
-vmap  <expr>  D        DVB_Duplicate()
-
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
@@ -368,12 +357,6 @@ nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR
 nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
-" Easy window navigation
-"nnoremap <C-h> <C-w>h
-"nnoremap <C-j> <C-w>j
-"nnoremap <C-k> <C-w>k
-"nnoremap <C-l> <C-w>l
-"
 "===============================================================================
 " Command-line Mode Key Mappings
 "===============================================================================
@@ -396,11 +379,6 @@ cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
 
-" EXPERIMENT
-"noremap <leader>[ :bprev<cr>
-"noremap <leader>] :bnext<cr>
-"noremap <leader>[ :tabprev<cr>
-"noremap <leader>] :tabnext<cr>
 "
 noremap <silent> <leader><bs> :bprevious\|bdelete #<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
@@ -416,22 +394,11 @@ set pastetoggle=<F12>
 
 nnoremap <leader>z zMzvzz
 
-
-"noremap CN <esc>:lne<cr>
-"noremap CP <esc>:lN<cr>
-"noremap cn <esc>:cn<cr>
-"noremap cp <esc>:cp<cr>
-"inoremap <Esc> <Esc>`^
 nnoremap H  g^
 nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 nnoremap Y y$
-
-"inoremap <M-o> <C-O>o
-"inoremap <M-O> <C-O>O
-"inoremap <M-I>      <C-O>^
-"inoremap <M-A>      <C-O>$
 
 " easier moving of code blocks
 vnoremap < <gv   " better indentation
