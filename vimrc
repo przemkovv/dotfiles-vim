@@ -91,7 +91,7 @@ Plug 'tommcdo/vim-exchange'
 "Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-sleuth'
 "
-Plug 'simnalamburt/vim-mundo'
+Plug 'mbbill/undotree'
 
 "Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
@@ -386,7 +386,7 @@ noremap <leader>3 :TagbarToggle<CR>
 "noremap <leader>4 :NERDTreeToggle<CR>
 nnoremap <leader>4 :<C-u>VimFiler<CR> 
 nnoremap <leader>2 :<C-u>VimFilerExplorer<CR>
-nnoremap <leader>7 :MundoToggle<CR>
+nnoremap <leader>7 :UndotreeToggle<CR>
 " <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -432,6 +432,32 @@ inoremap <c-u> <c-g>u<c-u>
 "===============================================================================
 "n: Next, keep search matches in the middle of the window
 nnoremap n nzzzv
+
+nnoremap <leader>q :cclose<bar>lclose<cr>
+
+" ----------------------------------------------------------------------------
+" Todo
+" ----------------------------------------------------------------------------
+function! s:todo() abort
+  let entries = []
+  for cmd in ['git grep -n -e TODO -e FIXME -e XXX 2> /dev/null',
+            \ 'grep -rn -e TODO -e FIXME -e XXX * 2> /dev/null']
+    let lines = split(system(cmd), '\n')
+    if v:shell_error != 0 | continue | endif
+    for line in lines
+      let [fname, lno, text] = matchlist(line, '^\([^:]*\):\([^:]*\):\(.*\)')[1:3]
+      call add(entries, { 'filename': fname, 'lnum': lno, 'text': text })
+    endfor
+    break
+  endfor
+
+  if !empty(entries)
+    call setqflist(entries)
+    copen
+  endif
+endfunction
+command! Todo call s:todo()
+
 
 " }}}
 
@@ -761,6 +787,9 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" undotree {{{
+ let g:undotree_WindowLayout = 2
+" }}}
 " vim-table-mode {{{
   "let g:table_mode_disable_mappings = 1
   let g:table_mode_map_prefix = "<localleader>t"
@@ -957,6 +986,7 @@ nnoremap <leader>gd :Gvdiff<Cr>
 " [Buffers] Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
 nnoremap <leader>r :Ag<CR>
 
 nnoremap <leader>f :Files<cr>
@@ -964,8 +994,13 @@ nnoremap <leader>mr :History<cr>
 nnoremap <leader>ma :Maps<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>t :Tags<cr>
+nnoremap <leader>ag :Ag <C-R><C-W><cr>
+nnoremap <leader>AG :Ag <C-R><C-A><cr>
 
 let g:fzf_files_options=' --bind alt-a:select-all,alt-d:deselect-all '
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 "
 " }}}
 
