@@ -12,9 +12,9 @@ let s:editor_root=expand("~/.vim")
 
 " Setting up plugins
 if empty(glob(s:editor_root . '/autoload/plug.vim'))
-  autocmd VimEnter * echom "Downloading and installing vim-plug..."
-  silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  autocmd VimEnter * PlugInstall
+autocmd VimEnter * echom "Downloading and installing vim-plug..."
+silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+autocmd VimEnter * PlugInstall
 endif
 
 call plug#begin('~/.vim/plugged/')
@@ -22,6 +22,7 @@ call plug#begin('~/.vim/plugged/')
 Plug 'morhetz/gruvbox'
 
 Plug 'Shougo/vimfiler.vim'
+Plug 'Shougo/unite.vim'
 Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -52,9 +53,9 @@ Plug 'bronson/vim-trailing-whitespace'
 " Snippets
 " Set up ultisnips - need to symlink vim scripts to be run when files are opened
 function! SymlinkSnippets(info)
-  if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-    silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-  endif
+if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+  silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+endif
 endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
@@ -82,9 +83,9 @@ Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
 Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
 
-"Plug 'tpope/vim-vinegar.git'
+"Plug 'tpope/vim-vinegar'
 if !s:running_windows
-  Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
+Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
 endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
@@ -993,7 +994,8 @@ nnoremap <leader>f :Files<cr>
 nnoremap <leader>mr :History<cr>
 nnoremap <leader>ma :Maps<cr>
 nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>t :Tags<cr>
+nnoremap <leader>t :BTags<cr>
+nnoremap <leader>T :Tags<cr>
 nnoremap <leader>ag :Ag <C-R><C-W><cr>
 nnoremap <leader>AG :Ag <C-R><C-A><cr>
 
@@ -1077,7 +1079,7 @@ let g:easytags_on_cursorhold = 1
 "let g:easytags_events = ['CursorHold']
 set tags=tags,./tags,~/.vimtags
 let g:easytags_dynamic_files = 2
-let g:easytags_suppress_ctags_warning = 1
+"let g:easytags_suppress_ctags_warning = 1
 let g:easytags_include_members = 1
 let g:easytags_python_enabled = 1
 let g:easytags_async = 1
