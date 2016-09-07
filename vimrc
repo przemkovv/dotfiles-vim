@@ -12,14 +12,17 @@ let s:editor_root=expand("~/.vim")
 
 " Setting up plugins
 if empty(glob(s:editor_root . '/autoload/plug.vim'))
-autocmd VimEnter * echom "Downloading and installing vim-plug..."
-silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-autocmd VimEnter * PlugInstall
+  autocmd VimEnter * echom "Downloading and installing vim-plug..."
+  silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  autocmd VimEnter * PlugInstall
 endif
 
 call plug#begin('~/.vim/plugged/')
 
 Plug 'morhetz/gruvbox'
+Plug 'romainl/Apprentice'
+Plug 'rakr/vim-two-firewatch'
+Plug 'lifepillar/vim-solarized8'
 
 Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
@@ -27,14 +30,10 @@ Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc', { 'do' : 'make' }
 
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
-Plug 'junegunn/goyo.vim'
-Plug 'nhooyr/neoman.vim' "vim-plug
-
 
 Plug 'benekastah/neomake'
 
@@ -53,9 +52,9 @@ Plug 'bronson/vim-trailing-whitespace'
 " Snippets
 " Set up ultisnips - need to symlink vim scripts to be run when files are opened
 function! SymlinkSnippets(info)
-if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-  silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-endif
+  if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+    silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+  endif
 endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
@@ -78,14 +77,12 @@ Plug 'kana/vim-textobj-function' " af, if, aF, iF
 "Plug 'bps/vim-textobj-python' " af, if, ac, ic
 
 " Tags
-Plug 'xolox/vim-easytags' " Automated tag file generation and syntax highlighting of tags in Vim
-Plug 'xolox/vim-misc' " Miscellaneous auto-load Vim scripts
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
 
-"Plug 'tpope/vim-vinegar'
 if !s:running_windows
-Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
+  Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
 endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
@@ -98,11 +95,14 @@ Plug 'mbbill/undotree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'wellle/targets.vim'
 Plug 'FSwitch'
-Plug 'ryanoasis/vim-devicons'
+"Plug 'ryanoasis/vim-devicons'
 
 
 " Latex
 Plug 'lervag/vimtex', { 'for': 'latex' }
+
+" dot - graphviz
+Plug 'wannesm/wmgraphviz.vim'
 
 " HTML/CSS
 Plug 'tpope/vim-ragtag', { 'for': 'html'}
@@ -167,9 +167,14 @@ set background=dark
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
-colorscheme gruvbox
-"call togglebg#map("<F11>")
-highlight Normal guibg=NONE ctermbg=NONE
+"colorscheme gruvbox
+colorscheme apprentice
+
+let g:solarized_term_italics =1
+"let g:solarized_termtrans= 1
+"colorscheme solarized8_dark_flat
+
+"highlight Normal guibg=NONE ctermbg=NONE
 
 if has("autocmd")
   " Uncomment the following to have Vim jump to the last position when
@@ -233,6 +238,7 @@ set wildignore+=*.doc,*.docx,*.pdf,*.ppt,*.pptx,*.xls,*.wmv  " Windows
 set wildignore+=*.bbl,*.synctex.gz,*.blg,*.aux
 set wildignore+=*\\vendor\\**
 set wildignore+=*/vendor/**
+set wildignorecase
 set wildmode=list:longest,full
 set title
 set relativenumber
@@ -241,20 +247,20 @@ set showmode
 set wildmenu
 set laststatus=2
 set scrolloff=5 " Keep 5 lines (top/bottom)
-set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
-"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+set list listchars=trail:•,space:·,tab:»·
 
 set splitright
 set splitbelow
 
-
 set breakindent
 set breakindentopt+=sbr
 
+set tags=tags,./tags,~/.vimtags
 
 " Set the command window height to 2 lines, to avoid many cases of having to
 " "press <Enter> to continue"
@@ -290,16 +296,14 @@ endif
 
 
 let mapleader = "\<Space>"
-let maplocalleader = "\\"
-set colorcolumn=85
+let maplocalleader = ","
+set colorcolumn=81
 
 let g:pymode_rope = 0
 
 set nocp
 filetype plugin on
 au BufNewFile,BufRead *.flex set filetype=lex
-
-"autocmd! bufwritepost .vimrc source %
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -354,7 +358,6 @@ nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-"nnoremap <Leader>= mz:%!astyle -A4 -U -H -k3 -W1 -xe -f -xy -j -O -C -S<CR>`z<CR>k
 nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
@@ -380,15 +383,12 @@ cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
 
-"
 noremap <silent> <leader><bs> :bprevious\|bdelete #<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
-"noremap <leader>4 :NERDTreeToggle<CR>
-nnoremap <leader>4 :<C-u>VimFiler<CR> 
+nnoremap <leader>4 :<C-u>VimFiler<CR>
 nnoremap <leader>2 :<C-u>VimFilerExplorer<CR>
 nnoremap <leader>7 :UndotreeToggle<CR>
-" <F8> spell checking
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F12>
@@ -407,6 +407,7 @@ vnoremap > >gv   " better indentation
 
 " saving file
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>W :wa<CR>
 
 " copy & paste
 vmap <Leader>y "+y
@@ -442,7 +443,7 @@ nnoremap <leader>q :cclose<bar>lclose<cr>
 function! s:todo() abort
   let entries = []
   for cmd in ['git grep -n -e TODO -e FIXME -e XXX 2> /dev/null',
-            \ 'grep -rn -e TODO -e FIXME -e XXX * 2> /dev/null']
+        \ 'grep -rn -e TODO -e FIXME -e XXX * 2> /dev/null']
     let lines = split(system(cmd), '\n')
     if v:shell_error != 0 | continue | endif
     for line in lines
@@ -789,11 +790,11 @@ augroup END
 " Plugin settings --------------------------------------------------------- {{{
 
 " undotree {{{
- let g:undotree_WindowLayout = 2
+let g:undotree_WindowLayout = 2
 " }}}
 " vim-table-mode {{{
-  "let g:table_mode_disable_mappings = 1
-  let g:table_mode_map_prefix = "<localleader>t"
+"let g:table_mode_disable_mappings = 1
+let g:table_mode_map_prefix = "<localleader>t"
 " }}}
 " vim-cpp-enhanced-highlight {{{
 let g:cpp_class_scope_highlight = 1
@@ -829,29 +830,18 @@ let g:vimfiler_marked_file_icon = '✓'
 let g:loaded_netrwPlugin = 1
 let g:netrw_winsize = -40
 
-
-
-" }}}
-" deoplete {{{
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#disable_auto_complete = 1
-"inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
-"inoremap <expr><C-h>
-"\ deoplete#mappings#smart_close_popup()."\<C-h>"
-"inoremap <expr><C-g>     deoplete#mappings#undo_completion()
-"inoremap <expr><C-l>     deoplete#mappings#refresh()
 " }}}
 " airline {{{
 
 let g:airline_powerline_fonts = 1
-"let g:airline_theme='powerlineish'
-"let g:airline_theme='luna'
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#show_buffers = 0
 
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-let g:airline#extensions#hunks#enabled = 0 
+let g:airline#extensions#hunks#enabled = 0
+let g:airline_inactive_collapse = 1
+let g:airline_detect_modified=0
 
 
 let g:airline_left_sep = ''
@@ -863,6 +853,7 @@ let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
+
 
 let g:airline_mode_map = {
       \ '__' : '-',
@@ -891,18 +882,28 @@ endif
 
 
 
-hi User5 cterm=italic ctermfg=245 ctermbg=237 gui=italic guifg=#928374 guibg=#3c3836 " Comment        
-hi User1 cterm=bold ctermfg=14 ctermbg=237 guifg=#40ffff guibg=#3c3836 " Identifier     
+hi User5 cterm=italic ctermfg=245 gui=italic guifg=#928374 " Comment
+hi User1 cterm=bold ctermfg=14 guifg=#40ffff " Identifier
 
 
 function! AirlineInit()
   "%5*%{expand('%:h')}/
-  call airline#parts#define_raw('file2', "%#User1#%t")
-  call airline#parts#define_raw('path2', "%#User5#%{expand('%:h')}/")
+  call airline#parts#define_raw('file2', "%#User1#%t %m")
+  call airline#parts#define_raw('path2', "%{expand('%:h')}/")
   let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
-  let g:airline_section_z = airline#section#create(['%3p%%',  ' %L lines [%{winnr()}]'])
+
+
+  let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
+  let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
+  let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
+
 endfunction
 autocmd User AirlineAfterInit call AirlineInit()
+
+let g:airline#extensions#whitespace#trailing_format = 'tr[%s]'
+let g:airline#extensions#whitespace#mixed_indent_format = 'mi[%s]'
+let g:airline#extensions#whitespace#long_format = 'long[%s]'
+let g:airline#extensions#whitespace#mixed_indent_file_format = 'mi[%s]'
 
 "}}}
 " Gista {{{
@@ -956,6 +957,10 @@ let g:signify_mapping_prev_hunk = '[c'
 "let g:signify_mapping_toggle = ''
 nmap <nop> <plug>(signify-toggle-highlight)
 nmap <nop> <plug>(signify-toggle)
+omap ic <plug>(signify-motion-inner-pending)
+xmap ic <plug>(signify-motion-inner-visual)
+omap ac <plug>(signify-motion-outer-pending)
+xmap ac <plug>(signify-motion-outer-visual)
 " }}}
 " Local VIM RC {{{
 let g:localvimrc_name = ".localvimrc"
@@ -988,7 +993,9 @@ nnoremap <leader>gd :Gvdiff<Cr>
 let g:fzf_buffers_jump = 1
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
+let g:fzf_launcher = 'termite --geometry 120x30 -e "sh -c %s"'
 nnoremap <leader>r :Ag<CR>
+nnoremap <leader>R :Ag <C-r>=expand('<cword>')<CR><CR>
 
 nnoremap <leader>f :Files<cr>
 nnoremap <leader>mr :History<cr>
@@ -1022,17 +1029,6 @@ let g:vimtex_quickfix_ignored_warnings = [
       \ 'specifier changed to',
       \ ]
 " }}}
-" Pandoc {{{
-"let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-"let g:pandoc#filetypes#pandoc_markdown = 1
-"let g:pandoc#after#modules#enabled = ["unite", "ultisnips"]
-"let g:pandoc#formatting#textwidth = 79
-"let g:pandoc#formatting#mode = "hA"
-"let g:pandoc#command#autoexec_on_writes = 0
-"let g:pandoc#command#autoexec_command = "Pandoc html -s"
-
-"let g:instant_markdown_autostart = 0
-" }}}
 " Jedi {{{
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#popup_on_dot = 0
@@ -1057,33 +1053,6 @@ let g:neomake_cpp_enabled_makers=['clangtidy']
 "let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
 "'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
 let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
-" }}}
-" Syntastic {{{
-"let g:syntastic_cpp_auto_refresh_includes = 1
-"let g:syntastic_cpp_compiler = 'clang++'
-"let g:syntastic_cpp_compiler_options = '-std=gnu++11 -Wall'
-""let g:syntastic_cpp_check_header = 1
-"let g:syntastic_error_symbol='✗'
-"let g:syntastic_warning_symbol='⚠'
-"let g:syntastic_enable_highlighting=0
-"let g:syntastic_auto_loc_list=1
-"let g:syntastic_loc_list_height = 5
-"let g:syntastic_always_populate_loc_list=1
-"let g:syntastic_aggregate_errors = 1
-" }}}
-" EasyTags {{{
-let g:easytags_auto_update = 1
-let g:easytags_auto_highlight = 0
-let g:easytags_on_cursorhold = 1
-"let g:easytags_events = ['BufWritePost']
-"let g:easytags_events = ['CursorHold']
-set tags=tags,./tags,~/.vimtags
-let g:easytags_dynamic_files = 2
-"let g:easytags_suppress_ctags_warning = 1
-let g:easytags_include_members = 1
-let g:easytags_python_enabled = 1
-let g:easytags_async = 1
-let g:easytags_opts = ['--fields=+l']
 " }}}
 " YouCompleteMe {{{
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
