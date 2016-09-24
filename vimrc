@@ -23,7 +23,9 @@ Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
 Plug 'rakr/vim-two-firewatch'
 Plug 'lifepillar/vim-solarized8'
+Plug 'rakr/vim-one'
 
+"Plug 'justinmk/vim-dirvish'
 Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
 Plug 'ervandew/supertab'
@@ -78,6 +80,7 @@ Plug 'kana/vim-textobj-function' " af, if, aF, iF
 
 " Tags
 Plug 'ludovicchabant/vim-gutentags'
+"Plug 'c0r73x/neotags.nvim'
 Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
 
@@ -87,12 +90,13 @@ endif
 Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 "Plug 'terryma/vim-expand-region'
-Plug 'tpope/vim-sleuth'
+"Plug 'tpope/vim-sleuth'
 "
 Plug 'mbbill/undotree'
 
-"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
+" Plug 'tpope/vim-commentary'
 Plug 'wellle/targets.vim'
 Plug 'FSwitch'
 "Plug 'ryanoasis/vim-devicons'
@@ -107,6 +111,10 @@ Plug 'wannesm/wmgraphviz.vim'
 " HTML/CSS
 Plug 'tpope/vim-ragtag', { 'for': 'html'}
 Plug 'othree/html5.vim', { 'for': 'html'}
+
+Plug 'leafgarland/typescript-vim'
+"Plug 'magarcia/vim-angular2-snippets'
+
 
 " Ruby
 Plug 'tpope/vim-bundler', { 'for': 'ruby'}
@@ -125,14 +133,14 @@ Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from
 Plug 'klen/python-mode', { 'for': 'python'}
 Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 
-Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
-
+Plug 'IN3D/vim-raml' " RAML plugin for VIM
+"Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
+"
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
 
 " Cmake
 Plug 'jalcine/cmake.vim'
 
-Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
 
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
@@ -167,8 +175,8 @@ set background=dark
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
-"colorscheme gruvbox
-colorscheme apprentice
+colorscheme gruvbox
+"colorscheme apprentice
 
 let g:solarized_term_italics =1
 "let g:solarized_termtrans= 1
@@ -617,11 +625,18 @@ augroup ft_javascript
 
   au FileType javascript setlocal foldmethod=marker
   au FileType javascript setlocal foldmarker={,}
-  au FileType javascript call MakeSpacelessBufferIabbrev('clog', 'console.log();<left><left>')
+  au FileType javascript setlocal equalprg=js-beautify\ --stdin
 
-  " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-  " positioned inside of them AND the following code doesn't get unfolded.
-  au Filetype javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+augroup END
+" }}}
+" Typescript {{{
+augroup ft_typescript
+  au!
+
+  au FileType typescript setlocal foldmethod=marker
+  au FileType typescript setlocal foldmarker={,}
+  au FileType typescript setlocal equalprg=tsfmt\ --stdin
+
 augroup END
 
 " }}}
@@ -766,6 +781,7 @@ augroup ft_yaml
   au!
 
   au FileType yaml set shiftwidth=2
+  au FileType raml set shiftwidth=2
 augroup END
 
 " }}}
@@ -789,6 +805,9 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" neotags.nvim {{{
+let g:neotags_run_ctags = 0
+" }}}
 " undotree {{{
 let g:undotree_WindowLayout = 2
 " }}}
@@ -1047,6 +1066,9 @@ nnoremap <Leader>H :Neomake<CR>
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
 let g:neomake_cpp_enabled_makers=['clangtidy']
+"let g:neomake_typescript_enabled_makers=['tsc', 'tslint']
+"let g:neomake_typescript_tsc_maker = {
+"\ 'args': ['--module', 'system', '--target', 'ES5', '--experimentalDecorators', '--noEmit']}
 "let g:neomake_verbose = 3
 "let g:neomake_logfile='neomake.log'
 "let g:neomake_cpp_enabled_makers=['clang', 'clangtidy']
