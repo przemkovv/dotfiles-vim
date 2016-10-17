@@ -103,7 +103,7 @@ Plug 'FSwitch'
 
 
 " Latex
-Plug 'lervag/vimtex', { 'for': 'latex' }
+Plug 'lervag/vimtex', { 'for': 'tex' }
 
 " dot - graphviz
 Plug 'wannesm/wmgraphviz.vim'
