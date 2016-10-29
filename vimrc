@@ -25,6 +25,7 @@ Plug 'rakr/vim-two-firewatch'
 Plug 'lifepillar/vim-solarized8'
 Plug 'rakr/vim-one'
 Plug 'iCyMind/NeoSolarized'
+Plug 'NLKNguyen/papercolor-theme'
 
 "Plug 'justinmk/vim-dirvish'
 Plug 'Shougo/vimfiler.vim'
@@ -84,6 +85,8 @@ Plug 'ludovicchabant/vim-gutentags'
 "Plug 'c0r73x/neotags.nvim'
 Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
+
+Plug 'vim-scripts/DoxygenToolkit.vim'
 
 if !s:running_windows
   Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
@@ -183,6 +186,7 @@ let g:gruvbox_italic=1
 let g:solarized_term_italics =1
 "let g:solarized_termtrans= 1
 "colorscheme solarized8_dark_flat
+" colorscheme PaperColor
 
 let g:neosolarized_contrast = "high"
 let g:neosolarized_visibility = "low"
@@ -539,6 +543,7 @@ augroup END
 
 augroup ft_c
   au!
+  autocmd BufRead,BufNewFile *.h,*.cpp set filetype=cpp.doxygen
   au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
   au FileType cpp set keywordprg=:term\ cppman
   "au FileType cpp setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
@@ -789,7 +794,14 @@ augroup ft_vim
 augroup END
 
 " }}}
-" YAML {{{
+" JSON {{{
+augroup ft_json
+  au!
+
+  au FileType json set shiftwidth=2
+augroup END
+
+" }}}
 
 augroup ft_yaml
   au!
@@ -821,6 +833,10 @@ augroup END
 
 " neotags.nvim {{{
 let g:neotags_run_ctags = 0
+" Doxygen {{{
+ let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
+ let g:DoxygenToolkit_briefTag_funcName="yes" 
+ let g:doxygen_enhanced_color=1
 " }}}
 " undotree {{{
 let g:undotree_WindowLayout = 2
@@ -835,6 +851,7 @@ let g:cpp_experimental_template_highlight = 1
 " }}}
 " nerdcommenter {{{
 "let g:NERDAltDelims_cpp = 1
+let g:NERDSpaceDelims = 1
 " }}}
 " vimfiler {{{
 "
@@ -1023,13 +1040,14 @@ nnoremap <leader>gd :Gvdiff<Cr>
 " fzf {{{
 "
 " [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
+let g:fzf_buffers_jump = 0
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 let g:fzf_launcher = 'termite --geometry 120x30 -e "sh -c %s"'
 nnoremap <leader>r :Ag<CR>
 nnoremap <leader>R :Ag <C-r>=expand('<cword>')<CR><CR>
 
+nnoremap <leader>? :Helptags<cr>
 nnoremap <leader>f :Files<cr>
 nnoremap <leader>mr :History<cr>
 nnoremap <leader>ma :Maps<cr>
@@ -1089,6 +1107,7 @@ let g:neomake_cpp_enabled_makers=['clangtidy']
 "let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
 "'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
 let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
+
 " }}}
 " YouCompleteMe {{{
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
