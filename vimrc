@@ -24,6 +24,7 @@ Plug 'romainl/Apprentice'
 Plug 'rakr/vim-two-firewatch'
 Plug 'lifepillar/vim-solarized8'
 Plug 'rakr/vim-one'
+Plug 'iCyMind/NeoSolarized'
 
 "Plug 'justinmk/vim-dirvish'
 Plug 'Shougo/vimfiler.vim'
@@ -47,7 +48,7 @@ Plug 'mhinz/vim-signify'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
 
-Plug 'dhruvasagar/vim-table-mode'
+"Plug 'dhruvasagar/vim-table-mode'
 Plug 'bronson/vim-trailing-whitespace'
 
 
@@ -87,7 +88,8 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 if !s:running_windows
   Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
 endif
-Plug 'tommcdo/vim-exchange'
+
+"Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 "Plug 'terryma/vim-expand-region'
 "Plug 'tpope/vim-sleuth'
@@ -117,17 +119,17 @@ Plug 'leafgarland/typescript-vim'
 
 
 " Ruby
-Plug 'tpope/vim-bundler', { 'for': 'ruby'}
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
-Plug 'tpope/vim-rails', { 'for': 'ruby'}
-Plug 'tpope/vim-endwise'
-Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
-Plug 'groenewege/vim-less', { 'for': 'less'}
+"Plug 'tpope/vim-bundler', { 'for': 'ruby'}
+"Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
+"Plug 'tpope/vim-rails', { 'for': 'ruby'}
+"Plug 'tpope/vim-endwise'
+"Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
+"Plug 'groenewege/vim-less', { 'for': 'less'}
 
-" Clojure
-Plug 'guns/vim-clojure-static', { 'for': 'clojure'} " Meikel Brandmeyer's excellent Clojure runtime files
-Plug 'tpope/vim-fireplace', { 'for': 'clojure'} " fireplace.vim: Clojure REPL support
-Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from the Java class path
+"" Clojure
+"Plug 'guns/vim-clojure-static', { 'for': 'clojure'} " Meikel Brandmeyer's excellent Clojure runtime files
+"Plug 'tpope/vim-fireplace', { 'for': 'clojure'} " fireplace.vim: Clojure REPL support
+"Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from the Java class path
 
 " Python
 Plug 'klen/python-mode', { 'for': 'python'}
@@ -145,7 +147,7 @@ Plug 'jalcine/cmake.vim'
 " CSV
 Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
 
-Plug 'critiqjo/lldb.nvim'
+"Plug 'critiqjo/lldb.nvim'
 
 call plug#end()
 " }}}
@@ -175,12 +177,23 @@ set background=dark
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
-colorscheme gruvbox
+"colorscheme gruvbox
 "colorscheme apprentice
 
 let g:solarized_term_italics =1
 "let g:solarized_termtrans= 1
 "colorscheme solarized8_dark_flat
+
+let g:neosolarized_contrast = "high"
+let g:neosolarized_visibility = "low"
+"let g:neosolarized_termtrans= 1
+
+" If you wish to enable/disable NeoSolarized from displaying bold, underlined or italicized
+" typefaces, simply assign 1 or 0 to the appropriate variable. Default values:
+let g:neosolarized_bold = 1
+let g:neosolarized_underline = 1
+let g:neosolarized_italic = 1
+colorscheme NeoSolarized
 
 "highlight Normal guibg=NONE ctermbg=NONE
 
@@ -365,7 +378,8 @@ nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
-nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
+"nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
