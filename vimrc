@@ -210,6 +210,9 @@ if has("autocmd")
 
 endif
 
+if exists('&inccommand')
+  set inccommand=nosplit
+endif
 
 " Save current view settings on a per-window, per-buffer basis.
 function! AutoSaveWinView()
