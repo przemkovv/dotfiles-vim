@@ -12,9 +12,9 @@ let s:editor_root=expand("~/.vim")
 
 " Setting up plugins
 if empty(glob(s:editor_root . '/autoload/plug.vim'))
-  autocmd VimEnter * echom "Downloading and installing vim-plug..."
-  silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  autocmd VimEnter * PlugInstall
+    autocmd VimEnter * echom "Downloading and installing vim-plug..."
+    silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    autocmd VimEnter * PlugInstall
 endif
 
 call plug#begin('~/.vim/plugged/')
@@ -30,11 +30,11 @@ Plug 'NLKNguyen/papercolor-theme'
 "Plug 'justinmk/vim-dirvish'
 Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-Plug 'Shougo/vimproc', { 'do' : 'make' }
+" Plug 'Shougo/vimproc', { 'do' : 'make' }
 
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'tpope/vim-unimpaired'
@@ -56,9 +56,9 @@ Plug 'bronson/vim-trailing-whitespace'
 " Snippets
 " Set up ultisnips - need to symlink vim scripts to be run when files are opened
 function! SymlinkSnippets(info)
-  if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-    silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-  endif
+    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+    endif
 endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 
@@ -88,9 +88,17 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
-if !s:running_windows
-  Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer '}
-endif
+" if !s:running_windows
+" Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer --system-libclang --system-boost --tern-completer'}
+" endif
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/neoinclude.vim'
+Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/context_filetype.vim'
+Plug 'Shougo/vinarise.vim'
+Plug 'mhartington/deoplete-typescript'
+
+Plug 'Rip-Rip/clang_complete'
 
 "Plug 'tommcdo/vim-exchange'
 "Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
@@ -158,17 +166,17 @@ call plug#end()
 filetype off
 
 if s:running_windows
-  if has("multi_byte")
-    if &termencoding == ""
-      let &termencoding = &encoding
+    if has("multi_byte")
+        if &termencoding == ""
+            let &termencoding = &encoding
+        endif
+        set encoding=utf-8
+        setglobal fileencoding=utf-8
+        "setglobal bomb
+        set fileencodings=ucs-bom,utf-8,latin1
     endif
-    set encoding=utf-8
-    setglobal fileencoding=utf-8
-    "setglobal bomb
-    set fileencodings=ucs-bom,utf-8,latin1
-  endif
-  set langmenu=pl_PL.UTF-8
-  let $LANG = 'pl_PL.UTF-8'
+    set langmenu=pl_PL.UTF-8
+    let $LANG = 'pl_PL.UTF-8'
 endif
 
 filetype plugin indent on
@@ -199,13 +207,14 @@ let g:neosolarized_underline = 1
 let g:neosolarized_italic = 1
 colorscheme NeoSolarized
 
-"highlight Normal guibg=NONE ctermbg=NONE
+" highlight Normal guibg=NONE ctermbg=NONE
+" au ColorScheme * hi Normal ctermbg=NONE guibg=NONE
 
 if has("autocmd")
-  " Uncomment the following to have Vim jump to the last position when
-  " reopening a file
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-        \| exe "normal g'\"" | endif
+    " Uncomment the following to have Vim jump to the last position when
+    " reopening a file
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+                \| exe "normal g'\"" | endif
 
 
 endif
@@ -216,23 +225,23 @@ endif
 
 " Save current view settings on a per-window, per-buffer basis.
 function! AutoSaveWinView()
-  if !exists("w:SavedBufView")
-    let w:SavedBufView = {}
-  endif
-  let w:SavedBufView[bufnr("%")] = winsaveview()
+    if !exists("w:SavedBufView")
+        let w:SavedBufView = {}
+    endif
+    let w:SavedBufView[bufnr("%")] = winsaveview()
 endfunction
 
 " Restore current view settings.
 function! AutoRestoreWinView()
-  let buf = bufnr("%")
-  if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
-    let v = winsaveview()
-    let atStartOfFile = v.lnum == 1 && v.col == 0
-    if atStartOfFile && !&diff
-      call winrestview(w:SavedBufView[buf])
+    let buf = bufnr("%")
+    if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
+        let v = winsaveview()
+        let atStartOfFile = v.lnum == 1 && v.col == 0
+        if atStartOfFile && !&diff
+            call winrestview(w:SavedBufView[buf])
+        endif
+        unlet w:SavedBufView[buf]
     endif
-    unlet w:SavedBufView[buf]
-  endif
 endfunction
 
 " When switching buffers, preserve window view.
@@ -243,7 +252,7 @@ autocmd BufEnter * call AutoRestoreWinView()
 " detected filetype. Per default Debian Vim only load filetype specific
 " plugins.
 if has("autocmd")
-  filetype indent on
+    filetype indent on
 endif
 
 " The following are commented out as they cause vim to behave a lot
@@ -253,6 +262,7 @@ set showmatch		" Show matching brackets.
 set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
 set incsearch		" Incremental search
+set inccommand=nosplit
 set autowrite		" Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
 set mouse=a         " Enable mouse usage (all modes) in terminals
@@ -303,23 +313,23 @@ set notimeout ttimeout ttimeoutlen=200
 set nostartofline
 
 if s:running_windows
-  set backupdir=~/vimfiles/backup " where to put backup files
-  set undodir=~/vimfiles/undo " where to put undo files
-  set directory=~/vimfiles/temp " directory to place swap files in
+    set backupdir=~/vimfiles/backup " where to put backup files
+    set undodir=~/vimfiles/undo " where to put undo files
+    set directory=~/vimfiles/temp " directory to place swap files in
 else
-  set backupdir=~/.vim/backup " where to put backup files
-  set undodir=~/.vim/undo " where to put undo files
-  set directory=~/.vim/temp " directory to place swap files in
+    set backupdir=~/.vim/backup " where to put backup files
+    set undodir=~/.vim/undo " where to put undo files
+    set directory=~/.vim/temp " directory to place swap files in
 endif
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
-  call mkdir(expand(&undodir), "p")
+    call mkdir(expand(&undodir), "p")
 endif
 if !isdirectory(expand(&backupdir))
-  call mkdir(expand(&backupdir), "p")
+    call mkdir(expand(&backupdir), "p")
 endif
 if !isdirectory(expand(&directory))
-  call mkdir(expand(&directory), "p")
+    call mkdir(expand(&directory), "p")
 endif
 
 
@@ -347,12 +357,12 @@ set softtabstop=4
 
 if has("spell")
 
-  " they were using white on white
-  highlight PmenuSel ctermfg=black ctermbg=lightgray
-  highlight SpellBad term=reverse ctermbg=1
+    " they were using white on white
+    highlight PmenuSel ctermfg=black ctermbg=lightgray
+    highlight SpellBad term=reverse ctermbg=1
 
-  " limit it to just the top 10 items
-  set sps=best,10
+    " limit it to just the top 10 items
+    set sps=best,10
 endif
 
 set number
@@ -360,7 +370,7 @@ set numberwidth=5
 
 
 if v:version < 602 || $DISPLAY =~ '^localhost:' || $DISPLAY == ''
-  set clipboard=autoselect,exclude:.*
+    set clipboard=autoselect,exclude:.*
 endif
 
 
@@ -470,22 +480,22 @@ nnoremap <leader>q :cclose<bar>lclose<cr>
 " Todo
 " ----------------------------------------------------------------------------
 function! s:todo() abort
-  let entries = []
-  for cmd in ['git grep -n -e TODO -e FIXME -e XXX 2> /dev/null',
-        \ 'grep -rn -e TODO -e FIXME -e XXX * 2> /dev/null']
-    let lines = split(system(cmd), '\n')
-    if v:shell_error != 0 | continue | endif
-    for line in lines
-      let [fname, lno, text] = matchlist(line, '^\([^:]*\):\([^:]*\):\(.*\)')[1:3]
-      call add(entries, { 'filename': fname, 'lnum': lno, 'text': text })
+    let entries = []
+    for cmd in ['git grep -n -e TODO -e FIXME -e XXX 2> /dev/null',
+                \ 'grep -rn -e TODO -e FIXME -e XXX * 2> /dev/null']
+        let lines = split(system(cmd), '\n')
+        if v:shell_error != 0 | continue | endif
+        for line in lines
+            let [fname, lno, text] = matchlist(line, '^\([^:]*\):\([^:]*\):\(.*\)')[1:3]
+            call add(entries, { 'filename': fname, 'lnum': lno, 'text': text })
+        endfor
+        break
     endfor
-    break
-  endfor
 
-  if !empty(entries)
-    call setqflist(entries)
-    copen
-  endif
+    if !empty(entries)
+        call setqflist(entries)
+        copen
+    endif
 endfunction
 command! Todo call s:todo()
 
@@ -509,19 +519,19 @@ nnoremap zO zCzO
 "
 " I use :sus for the rare times I want to actually background Vim.
 function! MyFoldText() " {{{
-  let line = getline(v:foldstart)
+    let line = getline(v:foldstart)
 
-  let nucolwidth = &fdc + &number * &numberwidth
-  let windowwidth = winwidth(0) - nucolwidth - 3
-  let foldedlinecount = v:foldend - v:foldstart
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
 
-  " expand tabs into spaces
-  let onetab = strpart('          ', 0, &tabstop)
-  let line = substitute(line, '\t', onetab, 'g')
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
 
-  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction " }}}
 set foldtext=MyFoldText()
 
@@ -534,63 +544,64 @@ au FileType qf wincmd J
 " C {{{
 
 augroup ft_c
-  au!
-  au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
-  "au FileType c setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
-  au FileType c setlocal equalprg=clang-format
-  au FileType c setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
+    au!
+    au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
+    "au FileType c setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
+    au FileType c setlocal equalprg=clang-format
+    au FileType c setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 augroup END
 
 " }}}
 " C++ {{{
 
 augroup ft_c
-  au!
-  autocmd BufRead,BufNewFile *.h,*.cpp set filetype=cpp.doxygen
-  au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
-  au FileType cpp set keywordprg=:term\ cppman
-  "au FileType cpp setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
-  au FileType cpp setlocal equalprg=clang-format
-  au FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
+    au!
+    autocmd BufRead,BufNewFile *.h,*.cpp set filetype=cpp
+    " autocmd BufRead,BufNewFile *.h,*.cpp set filetype=cpp.doxygen
+    au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
+    au FileType cpp set keywordprg=:term\ cppman
+    "au FileType cpp setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
+    au FileType cpp setlocal equalprg=clang-format
+    au FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 augroup END
 
 " }}}
 " CSS and LessCSS {{{
 
 augroup ft_css
-  au!
+    au!
 
-  au BufNewFile,BufRead *.less setlocal filetype=less
+    au BufNewFile,BufRead *.less setlocal filetype=less
 
-  au Filetype less,css setlocal foldmethod=marker
-  au Filetype less,css setlocal foldmarker={,}
-  au Filetype less,css setlocal omnifunc=csscomplete#CompleteCSS
-  au Filetype less,css setlocal iskeyword+=-
-  "{{{"}}}
-  " Use <leader>S to sort properties.  Turns this:
-  "
-  "     p {
-  "         width: 200px;
-  "         height: 100px;
-  "         background: red;
-  "
-  "         ...
-  "     }
-  "
-  " into this:
+    au Filetype less,css setlocal foldmethod=marker
+    au Filetype less,css setlocal foldmarker={,}
+    au Filetype less,css setlocal omnifunc=csscomplete#CompleteCSS
+    au Filetype less,css setlocal iskeyword+=-
+    "{{{"}}}
+    " Use <leader>S to sort properties.  Turns this:
+    "
+    "     p {
+    "         width: 200px;
+    "         height: 100px;
+    "         background: red;
+    "
+    "         ...
+    "     }
+    "
+    " into this:
 
-  "     p {
-  "         background: red;
-  "         height: 100px;
-  "         width: 200px;
-  "
-  "         ...
-  "     }
-  au BufNewFile,BufRead *.less,*.css nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+    "     p {
+    "         background: red;
+    "         height: 100px;
+    "         width: 200px;
+    "
+    "         ...
+    "     }
+    au BufNewFile,BufRead *.less,*.css nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
-  " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-  " positioned inside of them AND the following code doesn't get unfolded.
-  au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
+    " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
+    " positioned inside of them AND the following code doesn't get unfolded.
+    au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
 augroup END
 
 " }}}
@@ -599,27 +610,27 @@ augroup END
 "let g:html_indent_tags = ['p', 'li']
 
 augroup ft_html
-  au!
+    au!
 
-  au BufNewFile,BufRead *.html setlocal filetype=htmldjango
-  au BufNewFile,BufRead *.dram setlocal filetype=htmldjango
+    au BufNewFile,BufRead *.html setlocal filetype=htmldjango
+    au BufNewFile,BufRead *.dram setlocal filetype=htmldjango
 
-  au FileType html,jinja,htmldjango setlocal foldmethod=manual
+    au FileType html,jinja,htmldjango setlocal foldmethod=manual
 
-  " Use <localleader>f to fold the current tag.
-  au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>f Vatzf
+    " Use <localleader>f to fold the current tag.
+    au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>f Vatzf
 
-  " Use <localleader>t to fold the current templatetag.
-  au FileType html,jinja,htmldjango nmap <buffer> <localleader>t viikojozf
+    " Use <localleader>t to fold the current templatetag.
+    au FileType html,jinja,htmldjango nmap <buffer> <localleader>t viikojozf
 
-  " Indent tag
-  au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>= Vat=
+    " Indent tag
+    au FileType html,jinja,htmldjango nnoremap <buffer> <localleader>= Vat=
 
-  " Django tags
-  au FileType jinja,htmldjango inoremap <buffer> <c-t> {%<space><space>%}<left><left><left>
+    " Django tags
+    au FileType jinja,htmldjango inoremap <buffer> <c-t> {%<space><space>%}<left><left><left>
 
-  " Django variables
-  au FileType jinja,htmldjango inoremap <buffer> <c-b> {{<space><space>}}<left><left><left>
+    " Django variables
+    au FileType jinja,htmldjango inoremap <buffer> <c-b> {{<space><space>}}<left><left><left>
 augroup END
 
 " }}}
@@ -633,31 +644,31 @@ let g:haddock_browser = "w3m"
 " Java {{{
 
 augroup ft_java
-  au!
+    au!
 
-  au FileType java setlocal foldmethod=marker
-  au FileType java setlocal foldmarker={,}
+    au FileType java setlocal foldmethod=marker
+    au FileType java setlocal foldmarker={,}
 augroup END
 
 " }}}
 " Javascript {{{
 
 augroup ft_javascript
-  au!
+    au!
 
-  au FileType javascript setlocal foldmethod=marker
-  au FileType javascript setlocal foldmarker={,}
-  au FileType javascript setlocal equalprg=js-beautify\ --stdin
+    au FileType javascript setlocal foldmethod=marker
+    au FileType javascript setlocal foldmarker={,}
+    au FileType javascript setlocal equalprg=js-beautify\ --stdin
 
 augroup END
 " }}}
 " Typescript {{{
 augroup ft_typescript
-  au!
+    au!
 
-  au FileType typescript setlocal foldmethod=marker
-  au FileType typescript setlocal foldmarker={,}
-  au FileType typescript setlocal equalprg=tsfmt\ --stdin
+    au FileType typescript setlocal foldmethod=marker
+    au FileType typescript setlocal foldmarker={,}
+    au FileType typescript setlocal equalprg=tsfmt\ --stdin
 
 augroup END
 
@@ -665,167 +676,167 @@ augroup END
 " Mail {{{
 
 augroup ft_mail
-  au!
+    au!
 
-  au Filetype mail setlocal spell
+    au Filetype mail setlocal spell
 augroup END
 
 " }}}
 " Markdown {{{
 
 let g:tagbar_type_markdown = {
-      \ 'ctagstype' : 'markdown',
-      \ 'kinds' : [
-      \ 'h:headings'
-      \ ],
-      \ 'sort' : 0,
-      \ }
+            \ 'ctagstype' : 'markdown',
+            \ 'kinds' : [
+            \ 'h:headings'
+            \ ],
+            \ 'sort' : 0,
+            \ }
 
 augroup pandoc_syntax
-  au! BufNewFile,BufFilePre,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md   set filetype=markdown.pandoc
+    au! BufNewFile,BufFilePre,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md   set filetype=markdown.pandoc
 augroup END
 
 augroup ft_markdown
-  au!
+    au!
 
-  au FileType markdown setlocal foldlevel=1
+    au FileType markdown setlocal foldlevel=1
 
 
-  " Use <localleader>1/2/3 to add headings.
-  au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
-  au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
-  au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
-  au Filetype markdown nnoremap <buffer> <localleader>4 mzI#<space><ESC>`z
+    " Use <localleader>1/2/3 to add headings.
+    au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
+    au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
+    au Filetype markdown nnoremap <buffer> <localleader>3 mzI#<space><ESC>`zll
+    au Filetype markdown nnoremap <buffer> <localleader>4 mzI#<space><ESC>`z
 
-  au Filetype markdown setlocal textwidth=79
-  au Filetype markdown setlocal isfname+=32,&,(,)
-  au Filetype markdown setlocal complete+=kspell
+    au Filetype markdown setlocal textwidth=79
+    au Filetype markdown setlocal isfname+=32,&,(,)
+    au Filetype markdown setlocal complete+=kspell
 augroup END
 " }}}
 " Mercurial {{{
 
 augroup ft_mercurial
-  au!
+    au!
 
-  au BufNewFile,BufRead *hg-editor-*.txt setlocal filetype=hgcommit
+    au BufNewFile,BufRead *hg-editor-*.txt setlocal filetype=hgcommit
 augroup END
 
 " }}}
 " Mutt {{{
 
 augroup ft_muttrc
-  au!
+    au!
 
-  au BufRead,BufNewFile *.muttrc set ft=muttrc
+    au BufRead,BufNewFile *.muttrc set ft=muttrc
 
-  au FileType muttrc setlocal foldmethod=marker foldmarker={{{,}}}
+    au FileType muttrc setlocal foldmethod=marker foldmarker={{{,}}}
 augroup END
 
 " }}}
 " Postgresql {{{
 
 augroup ft_postgres
-  au!
+    au!
 
-  au BufNewFile,BufRead *.sql set filetype=pgsql
-  au FileType pgsql set foldmethod=indent
-  au FileType pgsql set softtabstop=2 shiftwidth=2
-  au FileType pgsql setlocal commentstring=--\ %s comments=:--
+    au BufNewFile,BufRead *.sql set filetype=pgsql
+    au FileType pgsql set foldmethod=indent
+    au FileType pgsql set softtabstop=2 shiftwidth=2
+    au FileType pgsql setlocal commentstring=--\ %s comments=:--
 augroup END
 
 " }}}
 " Python {{{
 
 augroup ft_python
-  au!
+    au!
 
-  au FileType python setlocal define=^\s*\\(def\\\\|class\\)
-  au FileType man nnoremap <buffer> <cr> :q<cr>
+    au FileType python setlocal define=^\s*\\(def\\\\|class\\)
+    au FileType man nnoremap <buffer> <cr> :q<cr>
 
-  " Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
-  " override this in a normal way, could you?
-  au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
+    " Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
+    " override this in a normal way, could you?
+    au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
 
-  au FileType python iabbrev <buffer> afo assert False, "Okay"
+    au FileType python iabbrev <buffer> afo assert False, "Okay"
 augroup END
 
 " }}}
 " QuickFix {{{
 
 augroup ft_quickfix
-  au!
-  au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
+    au!
+    au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
 augroup END
 
 " }}}
 " ReStructuredText {{{
 
 augroup ft_rest
-  au!
+    au!
 
-  au Filetype rst nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
-  au Filetype rst nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
-  au Filetype rst nnoremap <buffer> <localleader>3 yypVr~:redraw<cr>
-  au Filetype rst nnoremap <buffer> <localleader>4 yypVr`:redraw<cr>
+    au Filetype rst nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
+    au Filetype rst nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
+    au Filetype rst nnoremap <buffer> <localleader>3 yypVr~:redraw<cr>
+    au Filetype rst nnoremap <buffer> <localleader>4 yypVr`:redraw<cr>
 augroup END
 
 " }}}
 " Ruby {{{
 
 augroup ft_eruby
-  au!
-  au FileType eruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+    au!
+    au FileType eruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 augroup END
 
 augroup ft_ruby
-  au!
-  au FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-  autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let highlight def link rubyRspec Function
+    au!
+    au FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+    autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let highlight def link rubyRspec Function
 augroup END
 
 " }}}
 " Vim {{{
 
 augroup ft_vim
-  au!
+    au!
 
 
-  "au FileType vim setlocal foldlevelstart=1
-  au FileType vim setlocal foldmethod=marker
-  au FileType help setlocal textwidth=78
-  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+    "au FileType vim setlocal foldlevelstart=1
+    au FileType vim setlocal foldmethod=marker
+    au FileType help setlocal textwidth=78
+    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
 " }}}
 " JSON {{{
 augroup ft_json
-  au!
+    au!
 
-  au FileType json set shiftwidth=2
+    au FileType json set shiftwidth=2
 augroup END
 
 " }}}
 
 augroup ft_yaml
-  au!
+    au!
 
-  au FileType yaml set shiftwidth=2
-  au FileType raml set shiftwidth=2
+    au FileType yaml set shiftwidth=2
+    au FileType raml set shiftwidth=2
 augroup END
 
 " }}}
 " XML {{{
 
 augroup ft_xml
-  au!
+    au!
 
-  au FileType xml setlocal foldmethod=manual
+    au FileType xml setlocal foldmethod=manual
 
-  " Use <localleader>f to fold the current tag.
-  au FileType xml nnoremap <buffer> <localleader>f Vatzf
+    " Use <localleader>f to fold the current tag.
+    au FileType xml nnoremap <buffer> <localleader>f Vatzf
 
-  " Indent tag
-  au FileType xml nnoremap <buffer> <localleader>= Vat=
+    " Indent tag
+    au FileType xml nnoremap <buffer> <localleader>= Vat=
 augroup END
 
 " }}}
@@ -837,9 +848,9 @@ augroup END
 " neotags.nvim {{{
 let g:neotags_run_ctags = 0
 " Doxygen {{{
- let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
- let g:DoxygenToolkit_briefTag_funcName="yes" 
- let g:doxygen_enhanced_color=1
+let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
+let g:DoxygenToolkit_briefTag_funcName="yes"
+let g:doxygen_enhanced_color=1
 " }}}
 " undotree {{{
 let g:undotree_WindowLayout = 2
@@ -864,10 +875,10 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_enable_clipboard = 0
 
 call vimfiler#custom#profile('default', 'context', {
-      \ 'safe' : 0,
-      \ 'auto_expand' : 1,
-      \ 'parent' : 0,
-      \ })
+            \ 'safe' : 0,
+            \ 'auto_expand' : 1,
+            \ 'parent' : 0,
+            \ })
 "
 " Like Textmate icons.
 let g:vimfiler_tree_leaf_icon = ' '
@@ -909,28 +920,28 @@ let g:airline#extensions#tabline#right_alt_sep = ''
 
 
 let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'i'  : 'I',
-      \ 'R'  : 'R',
-      \ 'c'  : 'C',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V',
-      \ '' : 'V',
-      \ 's'  : 'S',
-      \ 'S'  : 'S',
-      \ '' : 'S',
-      \ }
+            \ '__' : '-',
+            \ 'n'  : 'N',
+            \ 'i'  : 'I',
+            \ 'R'  : 'R',
+            \ 'c'  : 'C',
+            \ 'v'  : 'V',
+            \ 'V'  : 'V',
+            \ '' : 'V',
+            \ 's'  : 'S',
+            \ 'S'  : 'S',
+            \ '' : 'S',
+            \ }
 
 if s:running_windows
-  let g:airline_left_sep = '⮀'
-  let g:airline_left_alt_sep = '⮁'
-  let g:airline_right_sep = '⮂'
-  let g:airline_right_alt_sep = '⮃'
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
-  let g:airline#extensions#tabline#right_sep = ''
-  let g:airline#extensions#tabline#right_alt_sep = ''
+    let g:airline_left_sep = '⮀'
+    let g:airline_left_alt_sep = '⮁'
+    let g:airline_right_sep = '⮂'
+    let g:airline_right_alt_sep = '⮃'
+    let g:airline#extensions#tabline#left_sep = ''
+    let g:airline#extensions#tabline#left_alt_sep = ''
+    let g:airline#extensions#tabline#right_sep = ''
+    let g:airline#extensions#tabline#right_alt_sep = ''
 endif
 
 
@@ -940,15 +951,15 @@ hi User1 cterm=bold ctermfg=14 guifg=#40ffff " Identifier
 
 
 function! AirlineInit()
-  "%5*%{expand('%:h')}/
-  call airline#parts#define_raw('file2', "%#User1#%t %m")
-  call airline#parts#define_raw('path2', "%{expand('%:h')}/")
-  let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
+    "%5*%{expand('%:h')}/
+    call airline#parts#define_raw('file2', "%#User1#%t %m")
+    call airline#parts#define_raw('path2', "%{expand('%:h')}/")
+    let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
 
 
-  let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
-  let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
-  let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
+    let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
+    let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
+    let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
 
 endfunction
 autocmd User AirlineAfterInit call AirlineInit()
@@ -994,12 +1005,12 @@ omap F <Plug>Sneak_F
 " Secure Modelines {{{
 
 let g:secure_modelines_allowed_items = [
-      \ "textwidth",   "tw",
-      \ "foldmethod",  "fdm",
-      \ "foldnextmax",  "fdn",
-      \ "foldlevel", "foldlevelstart",
-      \ "spelllang",
-      \ ]
+            \ "textwidth",   "tw",
+            \ "foldmethod",  "fdm",
+            \ "foldnextmax",  "fdn",
+            \ "foldlevel", "foldlevelstart",
+            \ "spelllang",
+            \ ]
 
 " }}}
 " Signify {{{
@@ -1078,10 +1089,10 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_latexmk_progname = 'nvr'
 
 let g:vimtex_quickfix_ignored_warnings = [
-      \ 'Underfull',
-      \ 'Overfull',
-      \ 'specifier changed to',
-      \ ]
+            \ 'Underfull',
+            \ 'Overfull',
+            \ 'specifier changed to',
+            \ ]
 " }}}
 " Jedi {{{
 let g:jedi#auto_vim_configuration = 0
@@ -1100,7 +1111,7 @@ nnoremap <Leader>H :Neomake<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
-let g:neomake_cpp_enabled_makers=['clangtidy']
+" let g:neomake_cpp_enabled_makers=['clangtidy']
 "let g:neomake_typescript_enabled_makers=['tsc', 'tslint']
 "let g:neomake_typescript_tsc_maker = {
 "\ 'args': ['--module', 'system', '--target', 'ES5', '--experimentalDecorators', '--noEmit']}
@@ -1110,28 +1121,48 @@ let g:neomake_cpp_enabled_makers=['clangtidy']
 "let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
 "'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
 let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
+let g:neomake_ft_maker_remove_invalid_entries = 1
 
 " }}}
 " YouCompleteMe {{{
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_auto_trigger = 0
+" let g:ycm_server_python_interpreter = '/usr/bin/python2'
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_confirm_extra_conf = 0
+" let g:ycm_auto_trigger = 0
 
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_insertion = 0
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
-let g:ycm_show_diagnostic_ui = 1
-let g:ycm_server_log_level = 'debug'
+" let g:ycm_add_preview_to_completeopt = 1
+" let g:ycm_autoclose_preview_window_after_insertion = 0
+" let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+" let g:ycm_show_diagnostic_ui = 1
+" let g:ycm_server_log_level = 'debug'
 
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+" " make YCM compatible with UltiSnips (using supertab)
+" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+" let g:SuperTabDefaultCompletionType = '<C-n>'
 
-let g:ycm_goto_buffer_command = 'same-buffer'
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
+" let g:ycm_goto_buffer_command = 'same-buffer'
+" nnoremap <leader>jd :YcmCompleter GoTo<CR>
 
+" }}}
+" deoplete {{{
+let g:deoplete#enable_at_startup =1
+" let g:deoplete#disable_auto_complete = 1
+
+let g:echodoc_enable_at_startup = 1
+" }}}
+" clang_complete {{{
+
+set completeopt-=preview
+let g:clang_snippets = 1
+let g:clang_snippets_engine = 'ultisnips'
+let g:clang_complete_macros = 0
+let g:clang_close_preview = 1
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+let g:clang_omnicppcomplete_compliance = 0
+let g:clang_make_default_keymappings = 1
+let g:clang_auto_user_options = "compile_commands.json, .clang_complete, path"
 " }}}
 " Vim ruby {{{
 let g:rubycomplete_buffer_loading = 1
@@ -1199,96 +1230,96 @@ xnoremap il :<c-u>call <SID>NextTextObject('i', '?')<cr>
 
 
 function! s:NextTextObject(motion, dir)
-  let c = nr2char(getchar())
-  let d = ''
+    let c = nr2char(getchar())
+    let d = ''
 
-  if c ==# "b" || c ==# "(" || c ==# ")"
-    let c = "("
-  elseif c ==# "B" || c ==# "{" || c ==# "}"
-    let c = "{"
-  elseif c ==# "r" || c ==# "[" || c ==# "]"
-    let c = "["
-  elseif c ==# "'"
-    let c = "'"
-  elseif c ==# '"'
-    let c = '"'
-  else
-    return
-  endif
-
-  " Find the next opening-whatever.
-  execute "normal! " . a:dir . c . "\<cr>"
-
-  if a:motion ==# 'a'
-    " If we're doing an 'around' method, we just need to select around it
-    " and we can bail out to Vim.
-    execute "normal! va" . c
-  else
-    " Otherwise we're looking at an 'inside' motion.  Unfortunately these
-    " get tricky when you're dealing with an empty set of delimiters because
-    " Vim does the wrong thing when you say vi(.
-
-    let open = ''
-    let close = ''
-
-    if c ==# "("
-      let open = "("
-      let close = ")"
-    elseif c ==# "{"
-      let open = "{"
-      let close = "}"
-    elseif c ==# "["
-      let open = "\\["
-      let close = "\\]"
+    if c ==# "b" || c ==# "(" || c ==# ")"
+        let c = "("
+    elseif c ==# "B" || c ==# "{" || c ==# "}"
+        let c = "{"
+    elseif c ==# "r" || c ==# "[" || c ==# "]"
+        let c = "["
     elseif c ==# "'"
-      let open = "'"
-      let close = "'"
+        let c = "'"
     elseif c ==# '"'
-      let open = '"'
-      let close = '"'
-    endif
-
-    " We'll start at the current delimiter.
-    let start_pos = getpos('.')
-    let start_l = start_pos[1]
-    let start_c = start_pos[2]
-
-    " Then we'll find it's matching end delimiter.
-    if c ==# "'" || c ==# '"'
-      " searchpairpos() doesn't work for quotes, because fuck me.
-      let end_pos = searchpos(open)
+        let c = '"'
     else
-      let end_pos = searchpairpos(open, '', close)
+        return
     endif
 
-    let end_l = end_pos[0]
-    let end_c = end_pos[1]
+    " Find the next opening-whatever.
+    execute "normal! " . a:dir . c . "\<cr>"
 
-    call setpos('.', start_pos)
-
-    if start_l == end_l && start_c == (end_c - 1)
-      " We're in an empty set of delimiters.  We'll append an "x"
-      " character and select that so most Vim commands will do something
-      " sane.  v is gonna be weird, and so is y.  Oh well.
-      execute "normal! ax\<esc>\<left>"
-      execute "normal! vi" . c
-    elseif start_l == end_l && start_c == (end_c - 2)
-      " We're on a set of delimiters that contain a single, non-newline
-      " character.  We can just select that and we're done.
-      execute "normal! vi" . c
+    if a:motion ==# 'a'
+        " If we're doing an 'around' method, we just need to select around it
+        " and we can bail out to Vim.
+        execute "normal! va" . c
     else
-      " Otherwise these delimiters contain something.  But we're still not
-      " sure Vim's gonna work, because if they contain nothing but
-      " newlines Vim still does the wrong thing.  So we'll manually select
-      " the guts ourselves.
-      let whichwrap = &whichwrap
-      set whichwrap+=h,l
+        " Otherwise we're looking at an 'inside' motion.  Unfortunately these
+        " get tricky when you're dealing with an empty set of delimiters because
+        " Vim does the wrong thing when you say vi(.
 
-      execute "normal! va" . c . "hol"
+        let open = ''
+        let close = ''
 
-      let &whichwrap = whichwrap
+        if c ==# "("
+            let open = "("
+            let close = ")"
+        elseif c ==# "{"
+            let open = "{"
+            let close = "}"
+        elseif c ==# "["
+            let open = "\\["
+            let close = "\\]"
+        elseif c ==# "'"
+            let open = "'"
+            let close = "'"
+        elseif c ==# '"'
+            let open = '"'
+            let close = '"'
+        endif
+
+        " We'll start at the current delimiter.
+        let start_pos = getpos('.')
+        let start_l = start_pos[1]
+        let start_c = start_pos[2]
+
+        " Then we'll find it's matching end delimiter.
+        if c ==# "'" || c ==# '"'
+            " searchpairpos() doesn't work for quotes, because fuck me.
+            let end_pos = searchpos(open)
+        else
+            let end_pos = searchpairpos(open, '', close)
+        endif
+
+        let end_l = end_pos[0]
+        let end_c = end_pos[1]
+
+        call setpos('.', start_pos)
+
+        if start_l == end_l && start_c == (end_c - 1)
+            " We're in an empty set of delimiters.  We'll append an "x"
+            " character and select that so most Vim commands will do something
+            " sane.  v is gonna be weird, and so is y.  Oh well.
+            execute "normal! ax\<esc>\<left>"
+            execute "normal! vi" . c
+        elseif start_l == end_l && start_c == (end_c - 2)
+            " We're on a set of delimiters that contain a single, non-newline
+            " character.  We can just select that and we're done.
+            execute "normal! vi" . c
+        else
+            " Otherwise these delimiters contain something.  But we're still not
+            " sure Vim's gonna work, because if they contain nothing but
+            " newlines Vim still does the wrong thing.  So we'll manually select
+            " the guts ourselves.
+            let whichwrap = &whichwrap
+            set whichwrap+=h,l
+
+            execute "normal! va" . c . "hol"
+
+            let &whichwrap = whichwrap
+        endif
     endif
-  endif
 endfunction
 
 " }}}
@@ -1308,19 +1339,19 @@ onoremap iN :<c-u>call <SID>NumberTextObject(1)<cr>
 xnoremap iN :<c-u>call <SID>NumberTextObject(1)<cr>
 
 function! s:NumberTextObject(whole)
-  normal! v
+    normal! v
 
-  while getline('.')[col('.')] =~# '\v[0-9]'
-    normal! l
-  endwhile
-
-  if a:whole
-    normal! o
-
-    while col('.') > 1 && getline('.')[col('.') - 2] =~# '\v[0-9]'
-      normal! h
+    while getline('.')[col('.')] =~# '\v[0-9]'
+        normal! l
     endwhile
-  endif
+
+    if a:whole
+        normal! o
+
+        while col('.') > 1 && getline('.')[col('.') - 2] =~# '\v[0-9]'
+            normal! h
+        endwhile
+    endif
 endfunction
 
 " }}}
