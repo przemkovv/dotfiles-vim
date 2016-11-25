@@ -26,6 +26,8 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'rakr/vim-one'
 Plug 'iCyMind/NeoSolarized'
 Plug 'NLKNguyen/papercolor-theme'
+" Plug 'crusoexia/vim-monokai'
+Plug 'lsdr/monokai'
 
 "Plug 'justinmk/vim-dirvish'
 Plug 'Shougo/vimfiler.vim'
@@ -101,7 +103,8 @@ Plug 'mhartington/deoplete-typescript'
 Plug 'Rip-Rip/clang_complete'
 
 "Plug 'tommcdo/vim-exchange'
-"Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
+Plug 'lifepillar/pgsql.vim'
+Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 "Plug 'terryma/vim-expand-region'
 "Plug 'tpope/vim-sleuth'
 "
@@ -191,6 +194,9 @@ let g:gruvbox_italic=1
 "colorscheme gruvbox
 "colorscheme apprentice
 
+" let g:monokai_term_italic = 1
+" let g:monokai_gui_italic = 1
+
 let g:solarized_term_italics =1
 "let g:solarized_termtrans= 1
 "colorscheme solarized8_dark_flat
@@ -248,6 +254,9 @@ endfunction
 autocmd BufLeave * call AutoSaveWinView()
 autocmd BufEnter * call AutoRestoreWinView()
 
+
+
+
 " Uncomment the following to have Vim load indentation rules according to the
 " detected filetype. Per default Debian Vim only load filetype specific
 " plugins.
@@ -279,7 +288,6 @@ set wildignore+=*/vendor/**
 set wildignorecase
 set wildmode=list:longest,full
 set title
-set relativenumber
 set undofile
 set showmode
 set wildmenu
@@ -289,6 +297,7 @@ set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+set report=0
 
 set list listchars=trail:•,space:·,tab:»·
 
@@ -367,7 +376,19 @@ endif
 
 set number
 set numberwidth=5
+set relativenumber
+set cursorline
 
+" Number line settings {{{
+" --------------------------------------------------------------------------------
+autocmd FocusLost * set norelativenumber
+autocmd WinLeave * set norelativenumber
+autocmd InsertEnter * set norelativenumber
+
+autocmd FocusGained * set relativenumber
+autocmd WinEnter * set relativenumber
+autocmd InsertLeave * set relativenumber
+" }}}
 
 if v:version < 602 || $DISPLAY =~ '^localhost:' || $DISPLAY == ''
     set clipboard=autoselect,exclude:.*
@@ -441,8 +462,10 @@ nnoremap L  g$
 nnoremap Y y$
 
 " easier moving of code blocks
-vnoremap < <gv   " better indentation
-vnoremap > >gv   " better indentation
+nnoremap > >>
+nnoremap < <<
+xnoremap < <gv   " better indentation
+xnoremap > >gv   " better indentation
 
 " saving file
 nnoremap <Leader>w :w<CR>
@@ -984,6 +1007,11 @@ let g:pymode_doc_bind =''
 " }}}
 " dbext {{{
 let g:dbext_default_usermaps = 0
+vnoremap <unique> <localleader>se :DBExecVisualSQL<CR>
+vnoremap <unique> <localleader>st :DBSelectFromTable<CR>
+nnoremap <unique> <localleader>se :DBExecSQLUnderCursor<CR>
+nnoremap <unique> <localleader>slc :DBListColumn<CR>
+nnoremap <unique> <localleader>sdt :DBDescribeTable<CR>
 " }}}
 " Sneak {{{
 
@@ -1156,7 +1184,7 @@ let g:echodoc_enable_at_startup = 1
 set completeopt-=preview
 let g:clang_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
-let g:clang_complete_macros = 0
+let g:clang_complete_macros = 1
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
