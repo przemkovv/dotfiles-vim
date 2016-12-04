@@ -75,7 +75,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'kana/vim-textobj-user'
 "Plug 'kana/vim-textobj-entire' " ae, ie conflicts with latex environments
-Plug 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
+" Plug 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
 "Plug 'kana/vim-textobj-line' " al, il
 "Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
 Plug 'kana/vim-textobj-function' " af, if, aF, iF
@@ -159,7 +159,7 @@ Plug 'jalcine/cmake.vim'
 
 
 " CSV
-Plug 'chrisbra/csv.vim' " A Filetype plugin for csv files
+Plug 'chrisbra/csv.vim', { 'for': 'csv'}  " A Filetype plugin for csv files
 
 "Plug 'critiqjo/lldb.nvim'
 
@@ -1175,18 +1175,27 @@ let g:neomake_ft_maker_remove_invalid_entries = 1
 " }}}
 " deoplete {{{
 let g:deoplete#enable_at_startup =1
-" let g:deoplete#disable_auto_complete = 1
+let g:deoplete#disable_auto_complete = 1
 
 let g:echodoc_enable_at_startup = 1
+let g:deoplete#tag#cache_limit_size = 5000000
+let g:deoplete#auto_refresh_delay = 150
+
+inoremap <silent><expr><C-k> deoplete#mappings#manual_complete()
+inoremap <expr><C-l>     deoplete#refresh()
+
+
 " }}}
 " clang_complete {{{
 
 set completeopt-=preview
+set completeopt+=noinsert
+set completeopt+=noselect
 let g:clang_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
 let g:clang_complete_macros = 1
 let g:clang_close_preview = 1
-let g:clang_complete_auto = 0
+let g:clang_complete_auto = 1
 let g:clang_auto_select = 0
 let g:clang_omnicppcomplete_compliance = 0
 let g:clang_make_default_keymappings = 1
