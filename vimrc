@@ -98,7 +98,7 @@ Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/context_filetype.vim'
 Plug 'Shougo/vinarise.vim'
-Plug 'mhartington/deoplete-typescript'
+Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
 
 Plug 'Rip-Rip/clang_complete'
 
@@ -128,7 +128,7 @@ Plug 'wannesm/wmgraphviz.vim'
 Plug 'tpope/vim-ragtag', { 'for': 'html'}
 Plug 'othree/html5.vim', { 'for': 'html'}
 
-Plug 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 "Plug 'magarcia/vim-angular2-snippets'
 
 
@@ -226,7 +226,7 @@ if has("autocmd")
 endif
 
 if exists('&inccommand')
-  set inccommand=nosplit
+    set inccommand=nosplit
 endif
 
 " Save current view settings on a per-window, per-buffer basis.
@@ -421,6 +421,10 @@ nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>
 nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
+nnoremap    <M-k>       <C-W>k
+nnoremap    <M-j>       <C-W>j
+nnoremap    <M-l>       <C-W>l
+nnoremap    <M-h>       <C-W>h
 "===============================================================================
 " Command-line Mode Key Mappings
 "===============================================================================
@@ -1179,11 +1183,14 @@ let g:deoplete#disable_auto_complete = 1
 
 let g:echodoc_enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 5000000
-let g:deoplete#auto_refresh_delay = 150
+" let g:deoplete#auto_refresh_delay = 150
 
 inoremap <silent><expr><C-k> deoplete#mappings#manual_complete()
 inoremap <expr><C-l>     deoplete#refresh()
 
+" Use head matcher instead of fuzzy matcher
+" call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+" call deoplete#custom#set('ultisnips', 'rank', 1000)
 
 " }}}
 " clang_complete {{{
