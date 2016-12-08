@@ -63,6 +63,7 @@ function! SymlinkSnippets(info)
     endif
 endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
+Plug 'dawikur/algorithm-mnemonics.vim'
 
 " Status bar
 Plug 'vim-airline/vim-airline'
