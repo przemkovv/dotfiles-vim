@@ -953,7 +953,7 @@ function! AirlineInit()
 
 
     " let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
-    unlet g:airline_section_x
+    let g:airline_section_x = airline#section#create(['%{gutentags#statusline()}'])
     let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
     let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
 
