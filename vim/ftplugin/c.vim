@@ -1,17 +1,4 @@
 
-"let g:syntastic_cpp_compiler_options=' -std=c++11 '
-"let g:syntastic_check_on_open=1
-"let g:syntastic_auto_loc_list=1
-"let g:syntastic_loc_list_height=5
-"let g:syntastic_cpp_include_dirs= ['/usr/src/linux-3.4.4/include']
-"let g:syntastic_c_include_dirs= ['/usr/src/linux-3.4.4/include']
-"let g:syntastic_cpp_check_header=1
-"let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
-"let g:syntastic_c_config_file = '.syntastic_c_config'
-"let g:syntastic_c_remove_include_errors = 1
-"let g:syntastic_cpp_remove_include_errors = 1
-
-
 if has('cscope')
       set cscopetag nocscopeverbose
 
