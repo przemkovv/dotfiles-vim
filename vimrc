@@ -10,7 +10,7 @@ let s:editor_root=expand("~/.vim")
 
 " Plugins -------------------------------------------------------------------- {{{
 
-" Setting up plugins
+" Setting up plugins {{{
 if empty(glob(s:editor_root . '/autoload/plug.vim'))
     autocmd VimEnter * echom "Downloading and installing vim-plug..."
     silent execute "!curl -fLo " . s:editor_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -18,7 +18,9 @@ if empty(glob(s:editor_root . '/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged/')
+" }}}
 
+" Colorschemes {{{
 Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
 Plug 'rakr/vim-two-firewatch'
@@ -26,52 +28,48 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'rakr/vim-one'
 Plug 'iCyMind/NeoSolarized'
 Plug 'NLKNguyen/papercolor-theme'
-" Plug 'crusoexia/vim-monokai'
 Plug 'lsdr/monokai'
+" }}}
 
+" File navigation {{{
 "Plug 'justinmk/vim-dirvish'
-Plug 'Shougo/vimfiler.vim'
-Plug 'Shougo/unite.vim'
+" Plug 'Shougo/vimfiler.vim'
+" Plug 'Shougo/unite.vim'
 " Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'FSwitch'
+" }}}
 
+" To sort {{{
+Plug 'mbbill/undotree'
 " Plug 'Shougo/vimproc', { 'do' : 'make' }
 
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
+
 Plug 'tpope/vim-unimpaired'
 
-Plug 'benekastah/neomake'
-
-Plug 'tpope/vim-fugitive'
 Plug 'ciaranm/securemodelines'
-Plug 'vim-scripts/utl.vim'
+" Plug 'vim-scripts/utl.vim' " TODO: remove
 Plug 'embear/vim-localvimrc'
 Plug 'mhinz/vim-signify'
-Plug 'vim-pandoc/vim-pandoc-syntax'
 
-
-"Plug 'dhruvasagar/vim-table-mode'
 Plug 'bronson/vim-trailing-whitespace'
+"Plug 'ryanoasis/vim-devicons'
+Plug 'scrooloose/nerdcommenter'
+" }}}
 
-
-" Snippets
-" Set up ultisnips - need to symlink vim scripts to be run when files are opened
-function! SymlinkSnippets(info)
-    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-    endif
-endfunction
-Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
-Plug 'dawikur/algorithm-mnemonics.vim'
-
-" Status bar
+" Status bar {{{
 Plug 'vim-airline/vim-airline'
+" }}}
 
-" Search
+" Search {{{
 Plug 'justinmk/vim-sneak'
+" }}}
 
-" Text Objects
+" Text Objects {{{
+Plug 'wellle/targets.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'kana/vim-textobj-user'
@@ -80,17 +78,18 @@ Plug 'kana/vim-textobj-user'
 "Plug 'kana/vim-textobj-line' " al, il
 "Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
 Plug 'kana/vim-textobj-function' " af, if, aF, iF
-"Plug 'lucapette/vim-textobj-underscore' " a_, i_
+Plug 'kana/vim-textobj-fold' " az, iz
 "Plug 'bps/vim-textobj-python' " af, if, ac, ic
+" }}}
 
-" Tags
+" Tags {{{
 Plug 'ludovicchabant/vim-gutentags'
 "Plug 'c0r73x/neotags.nvim'
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 Plug 'octol/vim-cpp-enhanced-highlight'
+" }}}
 
-Plug 'vim-scripts/DoxygenToolkit.vim'
-
+" Completion {{{
 " if !s:running_windows
 " Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer --system-libclang --system-boost --tern-completer'}
 " endif
@@ -98,94 +97,79 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/context_filetype.vim'
-Plug 'Shougo/vinarise.vim'
 Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
 
 Plug 'Rip-Rip/clang_complete'
+" }}}
 
-"Plug 'tommcdo/vim-exchange'
+" Snippets {{{
+" Set up ultisnips - need to symlink vim scripts to be run when files are opened
+function! SymlinkSnippets(info)
+    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+    endif
+endfunction
+Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
+Plug 'dawikur/algorithm-mnemonics.vim'
+" }}} 
+
+" Database {{{
 Plug 'lifepillar/pgsql.vim'
 Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
-"Plug 'terryma/vim-expand-region'
-"Plug 'tpope/vim-sleuth'
-"
-Plug 'mbbill/undotree'
+" }}}
 
-" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'scrooloose/nerdcommenter'
-" Plug 'tpope/vim-commentary'
-Plug 'wellle/targets.vim'
-Plug 'FSwitch'
-"Plug 'ryanoasis/vim-devicons'
+" Dev Tools {{{
+Plug 'tpope/vim-fugitive'
+Plug 'Shougo/vinarise.vim'
+Plug 'diepm/vim-rest-console' " A REST console for Vim.
+Plug 'jalcine/cmake.vim'
+Plug 'benekastah/neomake'
 
+Plug 'vim-scripts/DoxygenToolkit.vim'
+" }}}
 
-" Latex
+" Filetype specific {{{
+
+Plug 'IN3D/vim-raml' " RAML plugin for VIM
+Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'lervag/vimtex', { 'for': 'tex' }
-
-" dot - graphviz
 Plug 'wannesm/wmgraphviz.vim'
+Plug 'chrisbra/csv.vim', { 'for': 'csv'}  " A Filetype plugin for csv files
 
-" HTML/CSS
+" HTML/CSS/Javascript/Typescript {{{
 Plug 'tpope/vim-ragtag', { 'for': 'html'}
 Plug 'othree/html5.vim', { 'for': 'html'}
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 "Plug 'magarcia/vim-angular2-snippets'
-
-
-" Ruby
+" }}}
+" Ruby {{{
 "Plug 'tpope/vim-bundler', { 'for': 'ruby'}
 "Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
 "Plug 'tpope/vim-rails', { 'for': 'ruby'}
 "Plug 'tpope/vim-endwise'
 "Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
 "Plug 'groenewege/vim-less', { 'for': 'less'}
-
-"" Clojure
+" }}}
+" Clojure {{{
 "Plug 'guns/vim-clojure-static', { 'for': 'clojure'} " Meikel Brandmeyer's excellent Clojure runtime files
 "Plug 'tpope/vim-fireplace', { 'for': 'clojure'} " fireplace.vim: Clojure REPL support
 "Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from the Java class path
-
-" Python
+" }}}
+" Python {{{
 Plug 'klen/python-mode', { 'for': 'python'}
 Plug 'davidhalter/jedi-vim', { 'for': 'python'}
-
-Plug 'IN3D/vim-raml' " RAML plugin for VIM
-"Plug 'kennethzfeng/vim-raml' " RAML plugin for VIM
-"
-Plug 'diepm/vim-rest-console' " A REST console for Vim.
-
-" Cmake
-Plug 'jalcine/cmake.vim'
-
-
-" CSV
-Plug 'chrisbra/csv.vim', { 'for': 'csv'}  " A Filetype plugin for csv files
-
-"Plug 'critiqjo/lldb.nvim'
+" }}}
+" }}}
 
 call plug#end()
 " }}}
 
-filetype off
-
-if s:running_windows
-    if has("multi_byte")
-        if &termencoding == ""
-            let &termencoding = &encoding
-        endif
-        set encoding=utf-8
-        setglobal fileencoding=utf-8
-        "setglobal bomb
-        set fileencodings=ucs-bom,utf-8,latin1
-    endif
-    set langmenu=pl_PL.UTF-8
-    let $LANG = 'pl_PL.UTF-8'
-endif
+filetype on
 
 filetype plugin indent on
 
-
+" Colors {{{
 syntax on
 
 set background=dark
@@ -217,18 +201,18 @@ colorscheme NeoSolarized
 " highlight Normal guibg=NONE ctermbg=NONE
 " au ColorScheme * hi Normal ctermbg=NONE guibg=NONE
 
-if has("autocmd")
-    " Uncomment the following to have Vim jump to the last position when
-    " reopening a file
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-                \| exe "normal g'\"" | endif
-
-
-endif
+" }}}
 
 if exists('&inccommand')
     set inccommand=nosplit
 endif
+
+if has("autocmd")
+    " Vim jump to the last position when reopening a file
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+                \| exe "normal g'\"" | endif
+endif
+" http://vim.wikia.com/wiki/Avoid_scrolling_when_switch_buffers {{{
 
 " Save current view settings on a per-window, per-buffer basis.
 function! AutoSaveWinView()
@@ -254,16 +238,7 @@ endfunction
 " When switching buffers, preserve window view.
 autocmd BufLeave * call AutoSaveWinView()
 autocmd BufEnter * call AutoRestoreWinView()
-
-
-
-
-" Uncomment the following to have Vim load indentation rules according to the
-" detected filetype. Per default Debian Vim only load filetype specific
-" plugins.
-if has("autocmd")
-    filetype indent on
-endif
+" }}}
 
 " The following are commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
@@ -322,6 +297,7 @@ set notimeout ttimeout ttimeoutlen=200
 " coming from other editors would expect.
 set nostartofline
 
+" Vim directories settings {{{
 if s:running_windows
     set backupdir=~/vimfiles/backup " where to put backup files
     set undodir=~/vimfiles/undo " where to put undo files
@@ -341,6 +317,7 @@ endif
 if !isdirectory(expand(&directory))
     call mkdir(expand(&directory), "p")
 endif
+" }}}
 
 
 let mapleader = "\<Space>"
@@ -355,10 +332,6 @@ au BufNewFile,BufRead *.flex set filetype=lex
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-
-let g:tex_indent_items=1
-let g:tex_flavor='latex'
-
 
 set tabstop=4
 set shiftwidth=4
@@ -391,26 +364,31 @@ autocmd WinEnter * set relativenumber
 autocmd InsertLeave * set relativenumber
 " }}}
 
-if v:version < 602 || $DISPLAY =~ '^localhost:' || $DISPLAY == ''
+" Automatically create directories on save {{{
+fun! <SID>AutoMakeDirectory()
+    let s:directory = expand("<afile>:p:h")
+    if !isdirectory(s:directory)
+        call mkdir(s:directory, "p")
+    endif
+endfun
+
+autocmd BufWritePre,FileWritePre * :call <SID>AutoMakeDirectory()
+" }}}
+
+if $DISPLAY =~ '^localhost:' || $DISPLAY == ''
     set clipboard=autoselect,exclude:.*
 endif
-
 
 set switchbuf=useopen ",usetab,newtab
 set showtabline=1
 set tabpagemax=15
-
 
 command! -nargs=+ -complete=file_in_path -bar Grep silent! grep! <args> | redraw!
 set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column\ --vimgrep\ --ignore\ '.git'
 
 " Mappings ---------------------------------------------------------------- {{{
 
-cnoremap <c-a> <home>
-cnoremap <c-e> <end>
 
-nnoremap <expr> j v:count ? 'j' : 'gj'
-nnoremap <expr> k v:count ? 'k' : 'gk'
 
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
@@ -418,14 +396,21 @@ nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
-"nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
 nnoremap <Leader>sf :FSHere<CR>
 
+" Window nagiating {{{
 nnoremap    <M-k>       <C-W>k
 nnoremap    <M-j>       <C-W>j
 nnoremap    <M-l>       <C-W>l
 nnoremap    <M-h>       <C-W>h
+" }}}
+
+" Command-line mappings {{{
+
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
+
 "===============================================================================
 " Command-line Mode Key Mappings
 "===============================================================================
@@ -447,12 +432,14 @@ cnoremap <c-f> <left>
 cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
+" }}}
 
 noremap <silent> <leader><bs> :bprevious\|bdelete #<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
-nnoremap <leader>4 :<C-u>VimFiler<CR>
-nnoremap <leader>2 :<C-u>VimFilerExplorer<CR>
+" nnoremap <leader>4 :<C-u>VimFiler<CR>
+nnoremap <leader>4 :<C-u>NERDTreeToggle<CR>
+" nnoremap <leader>2 :<C-u>VimFilerExplorer<CR>
 nnoremap <leader>7 :UndotreeToggle<CR>
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -460,32 +447,32 @@ set pastetoggle=<F12>
 
 nnoremap <leader>z zMzvzz
 
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
+
 nnoremap H  g^
 nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 nnoremap Y y$
 
-" easier moving of code blocks
-nnoremap > >>
-nnoremap < <<
-xnoremap < <gv   " better indentation
-xnoremap > >gv   " better indentation
+" better indentation
+xnoremap < <gv
+xnoremap > >gv
 
-" saving file
+" saving file {{{
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>W :wa<CR>
+" }}}
 
-" copy & paste
+" copy & paste {{{
 vmap <Leader>y "+y
 "vmap <Leader>d "+d
 nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
-
-inoremap <c-f> <c-x><c-f>
-
+" }}}
 
 "===============================================================================
 " Insert Mode Ctrl Key Mappings
@@ -504,13 +491,11 @@ nnoremap n nzzzv
 
 nnoremap <leader>q :cclose<bar>lclose<cr>
 
-" ----------------------------------------------------------------------------
-" Todo
-" ----------------------------------------------------------------------------
+" Todo {{{
 function! s:todo() abort
     let entries = []
-    for cmd in ['git grep -n -e TODO -e FIXME -e XXX 2> /dev/null',
-                \ 'grep -rn -e TODO -e FIXME -e XXX * 2> /dev/null']
+    for cmd in ['git grep -n -e "TODO(" -e "FIXME(" -e "BUG(" -e "XXX(" 2> /dev/null',
+                \ 'grep -rn -e TODO -e FIXME -e BUG -e XXX * 2> /dev/null']
         let lines = split(system(cmd), '\n')
         if v:shell_error != 0 | continue | endif
         for line in lines
@@ -526,6 +511,7 @@ function! s:todo() abort
     endif
 endfunction
 command! Todo call s:todo()
+" }}}
 
 
 " }}}
@@ -560,12 +546,16 @@ function! MyFoldText() " {{{
     let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction " }}}
+endfunction 
 set foldtext=MyFoldText()
+" }}}
 
 " }}}
 " Filetype-specific ------------------------------------------------------- {{{
-
+" LaTex {{{
+let g:tex_indent_items=1
+let g:tex_flavor='latex'
+" }}}
 " QuickFix {{{
 au FileType qf wincmd J
 " }}}
@@ -627,15 +617,8 @@ augroup ft_css
     "     }
     au BufNewFile,BufRead *.less,*.css nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
-    " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-    " positioned inside of them AND the following code doesn't get unfolded.
-    au BufNewFile,BufRead *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
-augroup END
-
 " }}}
 " HTML, Django, Jinja, Dram {{{
-
-"let g:html_indent_tags = ['p', 'li']
 
 augroup ft_html
     au!
@@ -774,7 +757,6 @@ augroup END
 
 " }}}
 " Python {{{
-
 augroup ft_python
     au!
 
@@ -844,7 +826,7 @@ augroup ft_json
 augroup END
 
 " }}}
-
+" YAML {{{
 augroup ft_yaml
     au!
 
@@ -875,6 +857,7 @@ augroup END
 
 " neotags.nvim {{{
 let g:neotags_run_ctags = 0
+" }}}
 " Doxygen {{{
 let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
 let g:DoxygenToolkit_briefTag_funcName="yes"
@@ -896,17 +879,16 @@ let g:cpp_experimental_template_highlight = 1
 let g:NERDSpaceDelims = 1
 " }}}
 " vimfiler {{{
-"
 
 let g:vimfiler_as_default_explorer = 1
 
 let g:vimfiler_enable_clipboard = 0
 
-call vimfiler#custom#profile('default', 'context', {
-            \ 'safe' : 0,
-            \ 'auto_expand' : 1,
-            \ 'parent' : 0,
-            \ })
+" call vimfiler#custom#profile('default', 'context', {
+            " \ 'safe' : 0,
+            " \ 'auto_expand' : 1,
+            " \ 'parent' : 0,
+            " \ })
 "
 " Like Textmate icons.
 let g:vimfiler_tree_leaf_icon = ' '
@@ -946,7 +928,6 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 
-
 let g:airline_mode_map = {
             \ '__' : '-',
             \ 'n'  : 'N',
@@ -961,22 +942,8 @@ let g:airline_mode_map = {
             \ '' : 'S',
             \ }
 
-if s:running_windows
-    let g:airline_left_sep = '⮀'
-    let g:airline_left_alt_sep = '⮁'
-    let g:airline_right_sep = '⮂'
-    let g:airline_right_alt_sep = '⮃'
-    let g:airline#extensions#tabline#left_sep = ''
-    let g:airline#extensions#tabline#left_alt_sep = ''
-    let g:airline#extensions#tabline#right_sep = ''
-    let g:airline#extensions#tabline#right_alt_sep = ''
-endif
-
-
-
 hi User5 cterm=italic ctermfg=245 gui=italic guifg=#928374 " Comment
 hi User1 cterm=bold ctermfg=14 guifg=#40ffff " Identifier
-
 
 function! AirlineInit()
     "%5*%{expand('%:h')}/
@@ -985,7 +952,8 @@ function! AirlineInit()
     let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
 
 
-    let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
+    " let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
+    unlet g:airline_section_x
     let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
     let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
 
@@ -998,25 +966,13 @@ let g:airline#extensions#whitespace#long_format = 'long[%s]'
 let g:airline#extensions#whitespace#mixed_indent_file_format = 'mi[%s]'
 
 "}}}
-" Gista {{{
-
-"let g:gista#client#default_username = 'przemkovv'
-let g:gista#update_on_write = 1
-let g:gista#command#post#default_public = 1
-
-" }}}
-" Pymode {{{
-let g:pymode_breakpoint = 0
-let g:pymode_doc = 0
-let g:pymode_doc_bind =''
-" }}}
 " dbext {{{
 let g:dbext_default_usermaps = 0
-vnoremap <unique> <localleader>se :DBExecVisualSQL<CR>
-vnoremap <unique> <localleader>st :DBSelectFromTable<CR>
-nnoremap <unique> <localleader>se :DBExecSQLUnderCursor<CR>
-nnoremap <unique> <localleader>slc :DBListColumn<CR>
-nnoremap <unique> <localleader>sdt :DBDescribeTable<CR>
+vnoremap  <localleader>se :DBExecVisualSQL<CR>
+vnoremap  <localleader>st :DBSelectFromTable<CR>
+nnoremap  <localleader>se :DBExecSQLUnderCursor<CR>
+nnoremap  <localleader>slc :DBListColumn<CR>
+nnoremap  <localleader>sdt :DBDescribeTable<CR>
 " }}}
 " Sneak {{{
 
@@ -1065,8 +1021,7 @@ let g:localvimrc_sandbox = 0
 let g:localvimrc_persistent = 1
 " }}}
 " UltiSnips {{{
-"
-"
+
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
@@ -1076,7 +1031,6 @@ let g:UltiSnipsUsePythonVersion = 2
 
 " }}}
 " Fugitive {{{
-nnoremap <leader>gb :Gblame<Cr>
 nnoremap <leader>gs :Gstatus<Cr>
 nnoremap <leader>gc :Gcommit<Cr>
 nnoremap <leader>gl :Glog<Cr>
@@ -1138,7 +1092,8 @@ let g:jedi#show_call_signatures = "1"
 let g:jedi#documentation_command = ''
 " }}}
 " Neomake {{{
-"autocmd! BufWritePost * Neomake
+
+" autocmd! BufWritePost * Neomake
 nnoremap <Leader>h :Neomake!<CR>
 nnoremap <Leader>H :Neomake<CR>
 "let g:neomake_verbose=1
