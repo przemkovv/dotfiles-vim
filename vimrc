@@ -276,6 +276,7 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set report=0
 
 set list listchars=trail:•,space:·,tab:»·
+" set list listchars=trail:•,tab:»·
 
 set splitright
 set splitbelow
@@ -396,7 +397,9 @@ nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
-nnoremap <Leader>= mzgg=G`zzz<CR>  " reindent
+"nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+" reindent
+nnoremap <Leader>= :keepjumps normal mzgg=Gg`zzz<CR>
 nnoremap <Leader>sf :FSHere<CR>
 
 " Window nagiating {{{
