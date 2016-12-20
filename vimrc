@@ -3,7 +3,6 @@
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
-set termguicolors
 syntax enable
 
 let s:editor_root=expand("~/.vim")
@@ -29,6 +28,9 @@ Plug 'rakr/vim-one'
 Plug 'iCyMind/NeoSolarized'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'lsdr/monokai'
+Plug 'tomasr/molokai'
+Plug 'whatyouhide/vim-gotham'
+Plug 'sjl/badwolf'
 " }}}
 
 " File navigation {{{
@@ -56,8 +58,10 @@ Plug 'embear/vim-localvimrc'
 Plug 'mhinz/vim-signify'
 
 Plug 'bronson/vim-trailing-whitespace'
-"Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
+Plug 'chrisbra/unicode.vim'
+
 " }}}
 
 " Status bar {{{
@@ -86,7 +90,6 @@ Plug 'kana/vim-textobj-fold' " az, iz
 Plug 'ludovicchabant/vim-gutentags'
 "Plug 'c0r73x/neotags.nvim'
 " Plug 'majutsushi/tagbar'
-Plug 'octol/vim-cpp-enhanced-highlight'
 " }}}
 
 " Completion {{{
@@ -130,6 +133,8 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " Filetype specific {{{
 
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'vim-jp/vim-cpp'
 Plug 'IN3D/vim-raml' " RAML plugin for VIM
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'lervag/vimtex', { 'for': 'tex' }
@@ -172,15 +177,19 @@ filetype plugin indent on
 " Colors {{{
 syntax on
 
+set termguicolors
 set background=dark
+
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
 "colorscheme gruvbox
 "colorscheme apprentice
 
-" let g:monokai_term_italic = 1
-" let g:monokai_gui_italic = 1
+let g:monokai_term_italic = 1
+let g:monokai_gui_italic = 1
+"colorscheme monokai
+
 
 let g:solarized_term_italics =1
 "let g:solarized_termtrans= 1
@@ -196,7 +205,8 @@ let g:neosolarized_visibility = "low"
 let g:neosolarized_bold = 1
 let g:neosolarized_underline = 1
 let g:neosolarized_italic = 1
-colorscheme NeoSolarized
+" colorscheme NeoSolarized
+colorscheme gotham
 
 " highlight Normal guibg=NONE ctermbg=NONE
 " au ColorScheme * hi Normal ctermbg=NONE guibg=NONE
@@ -876,6 +886,7 @@ let g:table_mode_map_prefix = "<localleader>t"
 " vim-cpp-enhanced-highlight {{{
 let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlights = 1
 " }}}
 " nerdcommenter {{{
 "let g:NERDAltDelims_cpp = 1
