@@ -35,8 +35,8 @@ Plug 'sjl/badwolf'
 
 " File navigation {{{
 "Plug 'justinmk/vim-dirvish'
-" Plug 'Shougo/vimfiler.vim'
-" Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimfiler.vim'
+Plug 'Shougo/unite.vim'
 " Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -103,6 +103,7 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
 
 Plug 'Rip-Rip/clang_complete'
+Plug 'eagletmt/neco-ghc'
 " }}}
 
 " Snippets {{{
@@ -114,7 +115,7 @@ function! SymlinkSnippets(info)
 endfunction
 Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
 Plug 'dawikur/algorithm-mnemonics.vim'
-" }}} 
+" }}}
 
 " Database {{{
 Plug 'lifepillar/pgsql.vim'
@@ -123,6 +124,7 @@ Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, 
 
 " Dev Tools {{{
 Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
 Plug 'jalcine/cmake.vim'
@@ -146,6 +148,7 @@ Plug 'tpope/vim-ragtag', { 'for': 'html'}
 Plug 'othree/html5.vim', { 'for': 'html'}
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'lumiliet/vim-twig' ", { 'for': 'htmldjango.twig' }
 "Plug 'magarcia/vim-angular2-snippets'
 " }}}
 " Ruby {{{
@@ -164,6 +167,9 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 " Python {{{
 Plug 'klen/python-mode', { 'for': 'python'}
 Plug 'davidhalter/jedi-vim', { 'for': 'python'}
+" }}}
+" Haskell {{{
+Plug 'neovimhaskell/haskell-vim'
 " }}}
 " }}}
 
@@ -282,7 +288,6 @@ set scrolloff=5 " Keep 5 lines (top/bottom)
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set report=0
 
 set list listchars=trail:•,space:·,tab:»·
@@ -459,6 +464,7 @@ inoremap <F12> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F12>
 
 nnoremap <leader>z zMzvzz
+nnoremap <leader>ss O//<esc>70A-<esc>
 
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
@@ -559,7 +565,7 @@ function! MyFoldText() " {{{
     let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction 
+endfunction
 set foldtext=MyFoldText()
 " }}}
 
@@ -568,6 +574,12 @@ set foldtext=MyFoldText()
 " LaTex {{{
 let g:tex_indent_items=1
 let g:tex_flavor='latex'
+augroup ft_latex
+    au!
+    " au FileType tex setlocal conceallevel=2 concealcursor=nvc
+    au FileType tex let g:tex_conceal="adgms"
+augroup END
+
 " }}}
 " QuickFix {{{
 au FileType qf wincmd J
@@ -663,6 +675,8 @@ augroup END
 " use ghc functionality for haskell files
 au Bufenter *.hs compiler ghc
 let g:haddock_browser = "w3m"
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 " }}}
 " Java {{{
@@ -868,6 +882,15 @@ augroup END
 
 " Plugin settings --------------------------------------------------------- {{{
 
+" haskell-vim {{{
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+" }}}
 " neotags.nvim {{{
 let g:neotags_run_ctags = 0
 " }}}
@@ -1089,11 +1112,13 @@ let g:vimtex_fold_enabled = 0
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_latexmk_progname = 'nvr'
 
-let g:vimtex_quickfix_ignored_warnings = [
-            \ 'Underfull',
-            \ 'Overfull',
-            \ 'specifier changed to',
-            \ ]
+   let g:vimtex_quickfix_warnings = {
+          \ 'overfull' : 0,
+          \ 'underfull' : 0,
+          \ 'packages' : {
+          \   'default' : 0,
+          \ },
+\}
 " }}}
 " Jedi {{{
 let g:jedi#auto_vim_configuration = 0
@@ -1113,6 +1138,7 @@ nnoremap <Leader>H :Neomake<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
+let g:neomake_verbose = 0
 " let g:neomake_cpp_enabled_makers=['clangtidy']
 "let g:neomake_typescript_enabled_makers=['tsc', 'tslint']
 "let g:neomake_typescript_tsc_maker = {
@@ -1159,7 +1185,8 @@ inoremap <silent><expr><C-k> deoplete#mappings#manual_complete()
 inoremap <expr><C-l>     deoplete#refresh()
 
 " Use head matcher instead of fuzzy matcher
-" call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+let g:deoplete#ignore_sources = ['around']
 " call deoplete#custom#set('ultisnips', 'rank', 1000)
 
 " }}}
