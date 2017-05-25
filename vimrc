@@ -41,7 +41,7 @@ Plug 'Shougo/unite.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'FSwitch'
+Plug 'vim-scripts/FSwitch'
 " }}}
 
 " To sort {{{
@@ -61,6 +61,7 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
+Plug 'sbdchd/neoformat'
 
 " }}}
 
@@ -104,6 +105,7 @@ Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
 
 Plug 'Rip-Rip/clang_complete'
 Plug 'eagletmt/neco-ghc'
+" Plug 'myfreeweb/intero.nvim'
 " }}}
 
 " Snippets {{{
@@ -119,7 +121,7 @@ Plug 'dawikur/algorithm-mnemonics.vim'
 
 " Database {{{
 Plug 'lifepillar/pgsql.vim'
-Plug 'dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
+Plug 'vim-scripts/dbext.vim' " 2.00  Provides database access to many DBMS (Oracle, Sybase, Microsoft, MySQL, DBI,..)
 " }}}
 
 " Dev Tools {{{
@@ -170,6 +172,7 @@ Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 " }}}
 " Haskell {{{
 Plug 'neovimhaskell/haskell-vim'
+Plug 'bitc/vim-hdevtools'
 " }}}
 " }}}
 
@@ -673,10 +676,12 @@ augroup END
 " Haskell {{{
 
 " use ghc functionality for haskell files
-au Bufenter *.hs compiler ghc
+" au Bufenter *.hs compiler ghc
 let g:haddock_browser = "w3m"
-let g:haskellmode_completion_ghc = 0
+" let g:haskellmode_completion_ghc = 0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+" autocmd FileType haskell setlocal omnifunc=intero#omnifunc
+autocmd FileType haskell setlocal equalprg=hindent\ --style\ cramer
 
 " }}}
 " Java {{{
