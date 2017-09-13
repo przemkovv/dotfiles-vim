@@ -172,6 +172,7 @@ Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 " }}}
 " Haskell {{{
 Plug 'neovimhaskell/haskell-vim'
+Plug 'enomsg/vim-haskellConcealPlus'
 Plug 'bitc/vim-hdevtools'
 " }}}
 " }}}
@@ -414,6 +415,7 @@ nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
+nnoremap <C-J> i<CR><Esc>k$
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
 "nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 " reindent
@@ -675,6 +677,13 @@ augroup END
 " }}}
 " Haskell {{{
 
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 " use ghc functionality for haskell files
 " au Bufenter *.hs compiler ghc
 let g:haddock_browser = "w3m"
@@ -953,6 +962,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#show_buffers = 0
 
+let g:airline#extensions#vimtex#enabled = 1
+
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#hunks#enabled = 0
@@ -1117,7 +1128,45 @@ let g:vimtex_fold_enabled = 0
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_latexmk_progname = 'nvr'
 
-   let g:vimtex_quickfix_warnings = {
+    let g:vimtex_compiler_latexmk = {
+    \ 'backend' : 'nvim',
+    \ 'background' : 1,
+    \ 'build_dir' : '',
+    \ 'callback' : 1,
+    \ 'continuous' : 1,
+    \ 'executable' : 'latexmk',
+    \}
+    let g:vimtex_quickfix_latexlog = {
+          \ 'default' : 1,
+          \ 'general' : 1,
+          \ 'references' : 1,
+          \ 'overfull' : 0,
+          \ 'underfull' : 0,
+          \ 'font' : 1,
+          \ 'packages' : {
+          \   'default' : 1,
+          \   'natbib' : 1,
+          \   'biblatex' : 1,
+          \   'babel' : 1,
+          \   'hyperref' : 1,
+          \   'scrreprt' : 1,
+          \   'fixltx2e' : 1,
+          \   'titlesec' : 1,
+          \ },
+          \}
+
+" }}}
+" Jedi {{{
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+let g:jedi#completions_enabled = 0
+let g:jedi#completions_command = ""
+let g:jedi#show_call_signatures = "1"
+
+let g:jedi#documentation_command = ''
+" }}}
+   let g:vimtex_quickfix_latexlog = {
           \ 'overfull' : 0,
           \ 'underfull' : 0,
           \ 'packages' : {
@@ -1193,6 +1242,24 @@ inoremap <expr><C-l>     deoplete#refresh()
 call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
 let g:deoplete#ignore_sources = ['around']
 " call deoplete#custom#set('ultisnips', 'rank', 1000)
+
+  if !exists('g:deoplete#omni#input_patterns')
+      let g:deoplete#omni#input_patterns = {}
+  endif
+
+  let g:deoplete#omni#input_patterns.tex = '\\(?:'
+        \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+        \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
+        \ . '|hyperref\s*\[[^]]*'
+        \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|(?:include(?:only)?|input)\s*\{[^}]*'
+        \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . '|usepackage(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . '|documentclass(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . '|\w*'
+        \ .')'
 
 " }}}
 " clang_complete {{{
