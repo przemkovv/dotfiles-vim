@@ -1,12 +1,12 @@
 
 
-if has('cscope')
-      set cscopetag nocscopeverbose
+" if has('cscope')
+      " set cscopetag nocscopeverbose
 
-        if has('quickfix')
-                set cscopequickfix=s-,c-,d-,i-,t-,e-
-    endif
-endif
+        " if has('quickfix')
+                " set cscopequickfix=s-,c-,d-,i-,t-,e-
+    " endif
+" endif
 
 "set tags+=./tags
 "set tags+=/usr/src/linux-3.4.4/tags

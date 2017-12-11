@@ -1276,6 +1276,8 @@ let g:clang_auto_select = 0
 let g:clang_omnicppcomplete_compliance = 0
 let g:clang_make_default_keymappings = 1
 let g:clang_auto_user_options = "compile_commands.json, .clang_complete, path"
+let g:clang_library_path = '/usr/lib/libclang.so'
+let g:clang_use_library = 1
 " }}}
 " Vim ruby {{{
 let g:rubycomplete_buffer_loading = 1
