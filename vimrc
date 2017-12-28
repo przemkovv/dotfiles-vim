@@ -31,12 +31,14 @@ Plug 'lsdr/monokai'
 Plug 'tomasr/molokai'
 Plug 'whatyouhide/vim-gotham'
 Plug 'sjl/badwolf'
+Plug 'flazz/vim-colorschemes'
+Plug 'felixhummel/setcolors.vim'
 " }}}
 
 " File navigation {{{
 "Plug 'justinmk/vim-dirvish'
-Plug 'Shougo/vimfiler.vim'
-Plug 'Shougo/unite.vim'
+" Plug 'Shougo/vimfiler.vim'
+" Plug 'Shougo/unite.vim'
 " Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -62,6 +64,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
 Plug 'sbdchd/neoformat'
+Plug 'skywind3000/asyncrun.vim'
 
 " }}}
 
@@ -129,7 +132,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
-Plug 'jalcine/cmake.vim'
+" Plug 'jalcine/cmake.vim'
 Plug 'benekastah/neomake'
 
 Plug 'vim-scripts/DoxygenToolkit.vim'
@@ -194,11 +197,12 @@ let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
 "colorscheme gruvbox
-"colorscheme apprentice
+colorscheme apprentice
 
 let g:monokai_term_italic = 1
 let g:monokai_gui_italic = 1
-"colorscheme monokai
+" colorscheme monokai
+" colorscheme twilight
 
 
 let g:solarized_term_italics =1
@@ -216,7 +220,7 @@ let g:neosolarized_bold = 1
 let g:neosolarized_underline = 1
 let g:neosolarized_italic = 1
 " colorscheme NeoSolarized
-colorscheme gotham
+" colorscheme gotham
 
 " highlight Normal guibg=NONE ctermbg=NONE
 " au ColorScheme * hi Normal ctermbg=NONE guibg=NONE
@@ -294,7 +298,8 @@ set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 set report=0
 
-set list listchars=trail:•,space:·,tab:»·
+" set list listchars=trail:•,space:·,tab:»·
+set list listchars=trail:•,tab:»·
 " set list listchars=trail:•,tab:»·
 
 set splitright
@@ -923,6 +928,7 @@ let g:table_mode_map_prefix = "<localleader>t"
 " vim-cpp-enhanced-highlight {{{
 let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
+let g:cpp_member_variable_highight = 1
 let g:cpp_concepts_highlights = 1
 " }}}
 " nerdcommenter {{{
@@ -1115,6 +1121,25 @@ let g:fzf_files_options=' --bind alt-a:select-all,alt-d:deselect-all '
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" An action can be a reference to a function that processes selected lines
+function! s:build_quickfix_list(lines)
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
+endfunction
+
+function! s:build_location_list(lines)
+  call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
+  lopen
+  ll
+endfunction
+
+let g:fzf_action = {
+    \ 'ctrl-q': function('s:build_location_list'),
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
 "
 " }}}
 
@@ -1202,7 +1227,7 @@ let g:neomake_verbose = 0
 "let g:neomake_cpp_enabled_makers=['clang', 'clangtidy']
 "let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
 "'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
-let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
+" let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
 let g:neomake_ft_maker_remove_invalid_entries = 1
 
 " }}}
@@ -1232,7 +1257,7 @@ let g:deoplete#enable_at_startup =1
 let g:deoplete#disable_auto_complete = 1
 
 let g:echodoc_enable_at_startup = 1
-let g:deoplete#tag#cache_limit_size = 5000000
+let g:deoplete#tag#cache_limit_size = 500000
 " let g:deoplete#auto_refresh_delay = 150
 
 inoremap <silent><expr><C-k> deoplete#mappings#manual_complete()
@@ -1267,11 +1292,11 @@ let g:deoplete#ignore_sources = ['around']
 set completeopt-=preview
 set completeopt+=noinsert
 set completeopt+=noselect
-let g:clang_snippets = 1
+let g:clang_snippets = 0
 let g:clang_snippets_engine = 'ultisnips'
 let g:clang_complete_macros = 1
 let g:clang_close_preview = 1
-let g:clang_complete_auto = 1
+let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
 let g:clang_omnicppcomplete_compliance = 0
 let g:clang_make_default_keymappings = 1
