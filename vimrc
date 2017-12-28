@@ -51,6 +51,7 @@ Plug 'mbbill/undotree'
 " Plug 'Shougo/vimproc', { 'do' : 'make' }
 
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
+Plug 'radenling/vim-dispatch-neovim'
 
 Plug 'tpope/vim-unimpaired'
 
@@ -64,7 +65,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
 Plug 'sbdchd/neoformat'
-Plug 'skywind3000/asyncrun.vim'
 
 " }}}
 
@@ -516,6 +516,7 @@ inoremap <c-u> <c-g>u<c-u>
 " Normal Mode Key Mappings
 "===============================================================================
 "n: Next, keep search matches in the middle of the window
+"
 nnoremap n nzzzv
 
 nnoremap <leader>q :cclose<bar>lclose<cr>
