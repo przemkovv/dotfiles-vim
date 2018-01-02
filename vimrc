@@ -36,10 +36,6 @@ Plug 'felixhummel/setcolors.vim'
 " }}}
 
 " File navigation {{{
-"Plug 'justinmk/vim-dirvish'
-" Plug 'Shougo/vimfiler.vim'
-" Plug 'Shougo/unite.vim'
-" Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -56,7 +52,6 @@ Plug 'radenling/vim-dispatch-neovim'
 Plug 'tpope/vim-unimpaired'
 
 Plug 'ciaranm/securemodelines'
-" Plug 'vim-scripts/utl.vim' " TODO: remove
 Plug 'embear/vim-localvimrc'
 Plug 'mhinz/vim-signify'
 
@@ -81,34 +76,23 @@ Plug 'wellle/targets.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'kana/vim-textobj-user'
-"Plug 'kana/vim-textobj-entire' " ae, ie conflicts with latex environments
-" Plug 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
-"Plug 'kana/vim-textobj-line' " al, il
-"Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
 Plug 'kana/vim-textobj-function' " af, if, aF, iF
 Plug 'kana/vim-textobj-fold' " az, iz
-"Plug 'bps/vim-textobj-python' " af, if, ac, ic
 " }}}
 
 " Tags {{{
-Plug 'ludovicchabant/vim-gutentags'
-"Plug 'c0r73x/neotags.nvim'
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 " }}}
 
 " Completion {{{
-" if !s:running_windows
-" Plug 'Valloric/YouCompleteMe', {'do': 'python2 ./install.py --clang-completer --system-libclang --system-boost --tern-completer'}
-" endif
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'make release'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/context_filetype.vim'
 Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
 
-Plug 'Rip-Rip/clang_complete'
 Plug 'eagletmt/neco-ghc'
-" Plug 'myfreeweb/intero.nvim'
+
 " }}}
 
 " Snippets {{{
@@ -132,7 +116,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
-" Plug 'jalcine/cmake.vim'
 Plug 'benekastah/neomake'
 
 Plug 'vim-scripts/DoxygenToolkit.vim'
@@ -154,20 +137,6 @@ Plug 'othree/html5.vim', { 'for': 'html'}
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'lumiliet/vim-twig' ", { 'for': 'htmldjango.twig' }
-"Plug 'magarcia/vim-angular2-snippets'
-" }}}
-" Ruby {{{
-"Plug 'tpope/vim-bundler', { 'for': 'ruby'}
-"Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
-"Plug 'tpope/vim-rails', { 'for': 'ruby'}
-"Plug 'tpope/vim-endwise'
-"Plug 'kchmck/vim-coffee-script', { 'for': 'coffee'}
-"Plug 'groenewege/vim-less', { 'for': 'less'}
-" }}}
-" Clojure {{{
-"Plug 'guns/vim-clojure-static', { 'for': 'clojure'} " Meikel Brandmeyer's excellent Clojure runtime files
-"Plug 'tpope/vim-fireplace', { 'for': 'clojure'} " fireplace.vim: Clojure REPL support
-"Plug 'tpope/vim-classpath', { 'for': 'clojure'} " classpath.vim: Set 'path' from the Java class path
 " }}}
 " Python {{{
 Plug 'klen/python-mode', { 'for': 'python'}
@@ -227,15 +196,9 @@ let g:neosolarized_italic = 1
 
 " }}}
 
-if exists('&inccommand')
-    set inccommand=nosplit
-endif
-
-if has("autocmd")
-    " Vim jump to the last position when reopening a file
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-                \| exe "normal g'\"" | endif
-endif
+" Vim jump to the last position when reopening a file
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+            \| exe "normal g'\"" | endif
 " http://vim.wikia.com/wiki/Avoid_scrolling_when_switch_buffers {{{
 
 " Save current view settings on a per-window, per-buffer basis.
@@ -298,9 +261,7 @@ set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 set report=0
 
-" set list listchars=trail:•,space:·,tab:»·
 set list listchars=trail:•,tab:»·
-" set list listchars=trail:•,tab:»·
 
 set splitright
 set splitbelow
@@ -311,7 +272,7 @@ set breakindentopt+=sbr
 set tags=tags,./tags,~/.vimtags
 
 " Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
+" press <Enter> to continue
 set cmdheight=2
 
 " Quickly time out on keycodes, but never time out on mappings
@@ -348,8 +309,6 @@ endif
 let mapleader = "\<Space>"
 let maplocalleader = ","
 set colorcolumn=81
-
-let g:pymode_rope = 0
 
 set nocp
 filetype plugin on
@@ -413,8 +372,6 @@ set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column\ --vimgrep\ --igno
 
 " Mappings ---------------------------------------------------------------- {{{
 
-
-
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
@@ -422,7 +379,7 @@ nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <C-J> i<CR><Esc>k$
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
-"nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+
 " reindent
 nnoremap <Leader>= :keepjumps normal mzgg=Gg`zzz<CR>
 nnoremap <Leader>sf :FSHere<CR>
@@ -465,9 +422,7 @@ cnoremap w!! w !sudo tee % >/dev/null
 noremap <silent> <leader><bs> :bprevious\|bdelete #<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
-" nnoremap <leader>4 :<C-u>VimFiler<CR>
 nnoremap <leader>4 :<C-u>NERDTreeToggle<CR>
-" nnoremap <leader>2 :<C-u>VimFilerExplorer<CR>
 nnoremap <leader>7 :UndotreeToggle<CR>
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
@@ -479,8 +434,8 @@ nnoremap <leader>ss O//<esc>70A-<esc>
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
-nnoremap H  g^
-nnoremap L  g$
+" nnoremap H  g^
+" nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 nnoremap Y y$
@@ -518,6 +473,7 @@ inoremap <c-u> <c-g>u<c-u>
 "n: Next, keep search matches in the middle of the window
 "
 nnoremap n nzzzv
+nnoremap N Nzzzv
 
 nnoremap <leader>q :cclose<bar>lclose<cr>
 
@@ -600,7 +556,6 @@ au FileType qf wincmd J
 augroup ft_c
     au!
     au FileType c setlocal foldmethod=marker foldmarker={,} foldlevel=99
-    "au FileType c setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
     au FileType c setlocal equalprg=clang-format
     au FileType c setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 augroup END
@@ -608,13 +563,12 @@ augroup END
 " }}}
 " C++ {{{
 
-augroup ft_c
+augroup ft_cpp
     au!
     autocmd BufRead,BufNewFile *.h,*.cpp set filetype=cpp
-    " autocmd BufRead,BufNewFile *.h,*.cpp set filetype=cpp.doxygen
+    au BufEnter *.cpp let b:fswitchdst = 'h,hpp' | let b:fswitchlocs = '.'
     au FileType cpp setlocal foldmethod=marker foldmarker={,} foldlevel=99
     au FileType cpp set keywordprg=:term\ cppman
-    "au FileType cpp setlocal equalprg=astyle\ -A4UHM60k3xefxyjOCS
     au FileType cpp setlocal equalprg=clang-format
     au FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 augroup END
@@ -624,34 +578,13 @@ augroup END
 
 augroup ft_css
     au!
-
     au BufNewFile,BufRead *.less setlocal filetype=less
 
     au Filetype less,css setlocal foldmethod=marker
     au Filetype less,css setlocal foldmarker={,}
     au Filetype less,css setlocal omnifunc=csscomplete#CompleteCSS
     au Filetype less,css setlocal iskeyword+=-
-    "{{{"}}}
-    " Use <leader>S to sort properties.  Turns this:
-    "
-    "     p {
-    "         width: 200px;
-    "         height: 100px;
-    "         background: red;
-    "
-    "         ...
-    "     }
-    "
-    " into this:
-
-    "     p {
-    "         background: red;
-    "         height: 100px;
-    "         width: 200px;
-    "
-    "         ...
-    "     }
-    au BufNewFile,BufRead *.less,*.css nnoremap <buffer> <localleader>S ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+augroup END
 
 " }}}
 " HTML, Django, Jinja, Dram {{{
@@ -695,18 +628,7 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 let g:haddock_browser = "w3m"
 " let g:haskellmode_completion_ghc = 0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-" autocmd FileType haskell setlocal omnifunc=intero#omnifunc
 autocmd FileType haskell setlocal equalprg=hindent\ --style\ cramer
-
-" }}}
-" Java {{{
-
-augroup ft_java
-    au!
-
-    au FileType java setlocal foldmethod=marker
-    au FileType java setlocal foldmarker={,}
-augroup END
 
 " }}}
 " Javascript {{{
@@ -731,15 +653,6 @@ augroup ft_typescript
 augroup END
 
 " }}}
-" Mail {{{
-
-augroup ft_mail
-    au!
-
-    au Filetype mail setlocal spell
-augroup END
-
-" }}}
 " Markdown {{{
 
 let g:tagbar_type_markdown = {
@@ -759,7 +672,6 @@ augroup ft_markdown
 
     au FileType markdown setlocal foldlevel=1
 
-
     " Use <localleader>1/2/3 to add headings.
     au Filetype markdown nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
     au Filetype markdown nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
@@ -771,31 +683,10 @@ augroup ft_markdown
     au Filetype markdown setlocal complete+=kspell
 augroup END
 " }}}
-" Mercurial {{{
-
-augroup ft_mercurial
-    au!
-
-    au BufNewFile,BufRead *hg-editor-*.txt setlocal filetype=hgcommit
-augroup END
-
-" }}}
-" Mutt {{{
-
-augroup ft_muttrc
-    au!
-
-    au BufRead,BufNewFile *.muttrc set ft=muttrc
-
-    au FileType muttrc setlocal foldmethod=marker foldmarker={{{,}}}
-augroup END
-
-" }}}
 " Postgresql {{{
 
 augroup ft_postgres
     au!
-
     au BufNewFile,BufRead *.sql set filetype=pgsql
     au FileType pgsql set foldmethod=indent
     au FileType pgsql set softtabstop=2 shiftwidth=2
@@ -814,7 +705,6 @@ augroup ft_python
     " override this in a normal way, could you?
     au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
 
-    au FileType python iabbrev <buffer> afo assert False, "Okay"
 augroup END
 
 " }}}
@@ -823,18 +713,6 @@ augroup END
 augroup ft_quickfix
     au!
     au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
-augroup END
-
-" }}}
-" ReStructuredText {{{
-
-augroup ft_rest
-    au!
-
-    au Filetype rst nnoremap <buffer> <localleader>1 yypVr=:redraw<cr>
-    au Filetype rst nnoremap <buffer> <localleader>2 yypVr-:redraw<cr>
-    au Filetype rst nnoremap <buffer> <localleader>3 yypVr~:redraw<cr>
-    au Filetype rst nnoremap <buffer> <localleader>4 yypVr`:redraw<cr>
 augroup END
 
 " }}}
@@ -856,9 +734,6 @@ augroup END
 
 augroup ft_vim
     au!
-
-
-    "au FileType vim setlocal foldlevelstart=1
     au FileType vim setlocal foldmethod=marker
     au FileType help setlocal textwidth=78
     au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
@@ -868,7 +743,6 @@ augroup END
 " JSON {{{
 augroup ft_json
     au!
-
     au FileType json set shiftwidth=2
 augroup END
 
@@ -876,7 +750,6 @@ augroup END
 " YAML {{{
 augroup ft_yaml
     au!
-
     au FileType yaml set shiftwidth=2
     au FileType raml set shiftwidth=2
 augroup END
@@ -886,7 +759,6 @@ augroup END
 
 augroup ft_xml
     au!
-
     au FileType xml setlocal foldmethod=manual
 
     " Use <localleader>f to fold the current tag.
@@ -911,9 +783,6 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 " }}}
-" neotags.nvim {{{
-let g:neotags_run_ctags = 0
-" }}}
 " Doxygen {{{
 let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
 let g:DoxygenToolkit_briefTag_funcName="yes"
@@ -921,10 +790,7 @@ let g:doxygen_enhanced_color=1
 " }}}
 " undotree {{{
 let g:undotree_WindowLayout = 2
-" }}}
-" vim-table-mode {{{
-"let g:table_mode_disable_mappings = 1
-let g:table_mode_map_prefix = "<localleader>t"
+let g:undotree_SplitWidth = 33
 " }}}
 " vim-cpp-enhanced-highlight {{{
 let g:cpp_class_scope_highlight = 1
@@ -933,35 +799,11 @@ let g:cpp_member_variable_highight = 1
 let g:cpp_concepts_highlights = 1
 " }}}
 " nerdcommenter {{{
-"let g:NERDAltDelims_cpp = 1
 let g:NERDSpaceDelims = 1
 " }}}
-" vimfiler {{{
-
-let g:vimfiler_as_default_explorer = 1
-
-let g:vimfiler_enable_clipboard = 0
-
-" call vimfiler#custom#profile('default', 'context', {
-            " \ 'safe' : 0,
-            " \ 'auto_expand' : 1,
-            " \ 'parent' : 0,
-            " \ })
-"
-" Like Textmate icons.
-let g:vimfiler_tree_leaf_icon = ' '
-let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_file_icon = ' '
-let g:vimfiler_readonly_file_icon = '✗'
-let g:vimfiler_marked_file_icon = '✓'
-
-" }}}
 " netrw {{{
-
 let g:loaded_netrwPlugin = 1
 let g:netrw_winsize = -40
-
 " }}}
 " airline {{{
 
@@ -976,7 +818,6 @@ let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#hunks#enabled = 0
 let g:airline_inactive_collapse = 1
 let g:airline_detect_modified=0
-
 
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
@@ -1006,17 +847,12 @@ hi User5 cterm=italic ctermfg=245 gui=italic guifg=#928374 " Comment
 hi User1 cterm=bold ctermfg=14 guifg=#40ffff " Identifier
 
 function! AirlineInit()
-    "%5*%{expand('%:h')}/
     call airline#parts#define_raw('file2', "%#User1#%t %m")
     call airline#parts#define_raw('path2', "%{expand('%:h')}/")
     let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
 
-
-    " let g:airline_section_x = airline#section#create(['%{airline#extensions#tagbar#currenttag()}'])
-    let g:airline_section_x = airline#section#create(['%{gutentags#statusline()}'])
     let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
     let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
-
 endfunction
 autocmd User AirlineAfterInit call AirlineInit()
 
@@ -1052,7 +888,6 @@ omap f <Plug>Sneak_f
 omap F <Plug>Sneak_F
 " }}}
 " Secure Modelines {{{
-
 let g:secure_modelines_allowed_items = [
             \ "textwidth",   "tw",
             \ "foldmethod",  "fdm",
@@ -1060,14 +895,11 @@ let g:secure_modelines_allowed_items = [
             \ "foldlevel", "foldlevelstart",
             \ "spelllang",
             \ ]
-
 " }}}
 " Signify {{{
 let g:signify_vcs_list = [ 'git', 'svn' ]
 let g:signify_mapping_next_hunk = ']c'
 let g:signify_mapping_prev_hunk = '[c'
-"let g:signify_mapping_toggle_highlight = ''
-"let g:signify_mapping_toggle = ''
 nmap <nop> <plug>(signify-toggle-highlight)
 nmap <nop> <plug>(signify-toggle)
 omap ic <plug>(signify-motion-inner-pending)
@@ -1097,7 +929,6 @@ nnoremap <leader>gl :Glog<Cr>
 nnoremap <leader>gw :Gwrite<Cr>
 nnoremap <leader>gd :Gvdiff<Cr>
 " }}}
-
 " fzf {{{
 "
 " [Buffers] Jump to the existing window if possible
@@ -1131,19 +962,18 @@ function! s:build_quickfix_list(lines)
 endfunction
 
 function! s:build_location_list(lines)
-  call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
-  lopen
-  ll
+    call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
+    lopen
+    ll
 endfunction
 
 let g:fzf_action = {
-    \ 'ctrl-q': function('s:build_location_list'),
-    \ 'ctrl-t': 'tab split',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
+            \ 'ctrl-q': function('s:build_location_list'),
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
 "
 " }}}
-
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 33
@@ -1154,51 +984,40 @@ let g:vimtex_fold_enabled = 0
 let g:vimtex_view_method = 'zathura'
 let g:vimtex_latexmk_progname = 'nvr'
 
-    let g:vimtex_compiler_latexmk = {
-    \ 'backend' : 'nvim',
-    \ 'background' : 1,
-    \ 'build_dir' : '',
-    \ 'callback' : 1,
-    \ 'continuous' : 1,
-    \ 'executable' : 'latexmk',
-    \}
-    let g:vimtex_quickfix_latexlog = {
-          \ 'default' : 1,
-          \ 'general' : 1,
-          \ 'references' : 1,
-          \ 'overfull' : 0,
-          \ 'underfull' : 0,
-          \ 'font' : 1,
-          \ 'packages' : {
-          \   'default' : 1,
-          \   'natbib' : 1,
-          \   'biblatex' : 1,
-          \   'babel' : 1,
-          \   'hyperref' : 1,
-          \   'scrreprt' : 1,
-          \   'fixltx2e' : 1,
-          \   'titlesec' : 1,
-          \ },
-          \}
+let g:vimtex_compiler_latexmk = {
+            \ 'backend' : 'nvim',
+            \ 'background' : 1,
+            \ 'build_dir' : '',
+            \ 'callback' : 1,
+            \ 'continuous' : 1,
+            \ 'executable' : 'latexmk',
+            \}
+let g:vimtex_quickfix_latexlog = {
+            \ 'default' : 1,
+            \ 'general' : 1,
+            \ 'references' : 1,
+            \ 'overfull' : 0,
+            \ 'underfull' : 0,
+            \ 'font' : 1,
+            \ 'packages' : {
+            \   'default' : 1,
+            \   'natbib' : 1,
+            \   'biblatex' : 1,
+            \   'babel' : 1,
+            \   'hyperref' : 1,
+            \   'scrreprt' : 1,
+            \   'fixltx2e' : 1,
+            \   'titlesec' : 1,
+            \ },
+            \}
 
-" }}}
-" Jedi {{{
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 0
-let g:jedi#completions_enabled = 0
-let g:jedi#completions_command = ""
-let g:jedi#show_call_signatures = "1"
-
-let g:jedi#documentation_command = ''
-" }}}
-   let g:vimtex_quickfix_latexlog = {
-          \ 'overfull' : 0,
-          \ 'underfull' : 0,
-          \ 'packages' : {
-          \   'default' : 0,
-          \ },
-\}
+let g:vimtex_quickfix_latexlog = {
+            \ 'overfull' : 0,
+            \ 'underfull' : 0,
+            \ 'packages' : {
+            \   'default' : 0,
+            \ },
+            \}
 " }}}
 " Jedi {{{
 let g:jedi#auto_vim_configuration = 0
@@ -1212,50 +1031,37 @@ let g:jedi#documentation_command = ''
 " }}}
 " Neomake {{{
 
-" autocmd! BufWritePost * Neomake
 nnoremap <Leader>h :Neomake!<CR>
 nnoremap <Leader>H :Neomake<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
 let g:neomake_verbose = 0
-" let g:neomake_cpp_enabled_makers=['clangtidy']
-"let g:neomake_typescript_enabled_makers=['tsc', 'tslint']
-"let g:neomake_typescript_tsc_maker = {
-"\ 'args': ['--module', 'system', '--target', 'ES5', '--experimentalDecorators', '--noEmit']}
-"let g:neomake_verbose = 3
-"let g:neomake_logfile='neomake.log'
-"let g:neomake_cpp_enabled_makers=['clang', 'clangtidy']
-"let g:neomake_cpp_clang_args = [ '-fsyntax-only', '-Wall', '-Wextra']
-"'-std=c++14', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined',"-g"]
-" let g:neomake_cpp_clang_args = ['-std=c++1z', '-fsyntax-only', '-Wextra', '-Wall', '-fsanitize=undefined','-g']
 let g:neomake_ft_maker_remove_invalid_entries = 1
 
 " }}}
-" YouCompleteMe {{{
-" let g:ycm_server_python_interpreter = '/usr/bin/python2'
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_confirm_extra_conf = 0
-" let g:ycm_auto_trigger = 0
-
-" let g:ycm_add_preview_to_completeopt = 1
-" let g:ycm_autoclose_preview_window_after_insertion = 0
-" let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
-" let g:ycm_show_diagnostic_ui = 1
-" let g:ycm_server_log_level = 'debug'
-
-" " make YCM compatible with UltiSnips (using supertab)
-" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-" let g:SuperTabDefaultCompletionType = '<C-n>'
-
-" let g:ycm_goto_buffer_command = 'same-buffer'
-" nnoremap <leader>jd :YcmCompleter GoTo<CR>
-
+" LanguageClient-neovim {{{
+let g:LanguageClient_serverCommands = {
+            \ 'python': ['pyls'],
+            \ 'cpp': ['cquery','--language-server','--log-file=/tmp/cquery.log']
+            \ }
+let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_rootMarkers = {
+            \ 'cpp': ['compile_commands.json', 'build'],
+            \ }
+" let g:LanguageClient_loggingLevel='DEBUG'
+augroup lsp_client
+    autocmd!
+    autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
+    autocmd FileType python,cpp,c  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+    autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <leader>d :call LanguageClient_textDocument_references()<CR>
+    autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+augroup END
 " }}}
 " deoplete {{{
 let g:deoplete#enable_at_startup =1
 let g:deoplete#disable_auto_complete = 1
+let g:deoplete#enable_smart_case =1
 
 let g:echodoc_enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 500000
@@ -1269,47 +1075,26 @@ call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
 let g:deoplete#ignore_sources = ['around']
 " call deoplete#custom#set('ultisnips', 'rank', 1000)
 
-  if !exists('g:deoplete#omni#input_patterns')
-      let g:deoplete#omni#input_patterns = {}
-  endif
+if !exists('g:deoplete#omni#input_patterns')
+    let g:deoplete#omni#input_patterns = {}
+endif
 
-  let g:deoplete#omni#input_patterns.tex = '\\(?:'
-        \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
-        \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
-        \ . '|hyperref\s*\[[^]]*'
-        \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-        \ . '|(?:include(?:only)?|input)\s*\{[^}]*'
-        \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-        \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
-        \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
-        \ . '|usepackage(\s*\[[^]]*\])?\s*\{[^}]*'
-        \ . '|documentclass(\s*\[[^]]*\])?\s*\{[^}]*'
-        \ . '|\w*'
-        \ .')'
+let g:deoplete#omni#input_patterns.tex = '\\(?:'
+            \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+            \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
+            \ . '|hyperref\s*\[[^]]*'
+            \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+            \ . '|(?:include(?:only)?|input)\s*\{[^}]*'
+            \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+            \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
+            \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
+            \ . '|usepackage(\s*\[[^]]*\])?\s*\{[^}]*'
+            \ . '|documentclass(\s*\[[^]]*\])?\s*\{[^}]*'
+            \ . '|\w*'
+            \ .')'
 
-" }}}
-" clang_complete {{{
 
-set completeopt-=preview
-set completeopt+=noinsert
-set completeopt+=noselect
-let g:clang_snippets = 0
-let g:clang_snippets_engine = 'ultisnips'
-let g:clang_complete_macros = 1
-let g:clang_close_preview = 1
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
-let g:clang_omnicppcomplete_compliance = 0
-let g:clang_make_default_keymappings = 1
-let g:clang_auto_user_options = "compile_commands.json, .clang_complete, path"
-let g:clang_library_path = '/usr/lib/libclang.so'
-let g:clang_use_library = 1
-" }}}
-" Vim ruby {{{
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-let g:rubycomplete_load_gemfile = 1
+" inoremap <silent><expr><CR> pumvisible() ? deoplete#mappings#close_popup()."\<Plug>(neosnippet_expand_or_jump)" : "\<CR>"
 " }}}
 " Vim-notes {{{
 let g:notes_directories = ['~/Documents/notes']
@@ -1317,6 +1102,7 @@ let g:notes_directories = ['~/Documents/notes']
 " CSV {{{
 let g:csv_autocmd_arrange = 1
 " }}}
+
 " }}}
 " Text objects ------------------------------------------------------------ {{{
 " Shortcut for [] {{{
