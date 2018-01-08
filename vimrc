@@ -85,14 +85,16 @@ Plug 'majutsushi/tagbar'
 " }}}
 
 " Completion {{{
-Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'make release'}
+" Plug 'autozimu/LanguageClient-neovim', {'tag': 'binary-0.1.16-x86_64-unknown-linux-musl'}
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/context_filetype.vim'
 Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
-
 Plug 'eagletmt/neco-ghc'
 
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
 " }}}
 
 " Snippets {{{
@@ -1041,22 +1043,35 @@ let g:neomake_ft_maker_remove_invalid_entries = 1
 
 " }}}
 " LanguageClient-neovim {{{
+let g:LanguageClient_diagnosticsList = "Location"
 let g:LanguageClient_serverCommands = {
             \ 'python': ['pyls'],
-            \ 'cpp': ['cquery','--language-server','--log-file=/tmp/cquery.log']
+            \ 'cpp': ['cquery','--language-server','--log-file=/tmp/cquery.log', '--log-stdin-stdout-to-stderr', '--log-all-to-stderr']
             \ }
+" \ 'cpp': ['clangd']
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_rootMarkers = {
             \ 'cpp': ['compile_commands.json', 'build'],
             \ }
-" let g:LanguageClient_loggingLevel='DEBUG'
+let g:LanguageClient_loggingLevel='DEBUG'
 augroup lsp_client
     autocmd!
     autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
-    autocmd FileType python,cpp,c  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+    autocmd FileType python,cpp,c  nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>
     autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <leader>d :call LanguageClient_textDocument_references()<CR>
     autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 augroup END
+" }}}
+" vim-lsp {{{
+" if executable('cquery')
+" au User lsp_setup call lsp#register_server({
+" \ 'name': 'cquery',
+" \ 'cmd': {server_info->['cquery','--language-server','--log-file=/tmp/cquery.log', '--log-all-to-stderr' ]},
+" \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+" \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
+" \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+" \ })
+" endif
 " }}}
 " deoplete {{{
 let g:deoplete#enable_at_startup =1
