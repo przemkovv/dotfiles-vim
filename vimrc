@@ -98,14 +98,14 @@ Plug 'eagletmt/neco-ghc'
 " }}}
 
 " Snippets {{{
-" Set up ultisnips - need to symlink vim scripts to be run when files are opened
-function! SymlinkSnippets(info)
-    if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
-        silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
-    endif
-endfunction
-Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
-Plug 'dawikur/algorithm-mnemonics.vim'
+" " Set up ultisnips - need to symlink vim scripts to be run when files are opened
+" function! SymlinkSnippets(info)
+    " if a:info.status == 'installed' || a:info.force && !isdirectory(s:editor_root . "/ftdetect")
+        " silent execute "!ln -s " . s:editor_root . "/plugged/ultisnips/ftdetect " . s:editor_root . "/"
+    " endif
+" endfunction
+" Plug 'SirVer/ultisnips', { 'do': function('SymlinkSnippets') } | Plug 'honza/vim-snippets'
+" Plug 'dawikur/algorithm-mnemonics.vim'
 " }}}
 
 " Database {{{
@@ -380,7 +380,7 @@ nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <C-J> i<CR><Esc>k$
-nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr><c-l>
+nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:sign unplace *<cr><c-l>
 
 " reindent
 nnoremap <Leader>= :keepjumps normal mzgg=Gg`zzz<CR>
@@ -706,6 +706,8 @@ augroup ft_python
     " Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
     " override this in a normal way, could you?
     au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
+    au FileType python setlocal equalprg=autopep8\ -
+    au FileType python setlocal formatprg=autopep8\ -
 
 augroup END
 
@@ -1046,18 +1048,18 @@ let g:neomake_ft_maker_remove_invalid_entries = 1
 let g:LanguageClient_diagnosticsList = "Location"
 let g:LanguageClient_serverCommands = {
             \ 'python': ['pyls'],
-            \ 'cpp': ['cquery','--language-server','--log-file=/tmp/cquery.log', '--log-stdin-stdout-to-stderr', '--log-all-to-stderr']
+            \ 'cpp': ['cquery','--language-server']
             \ }
-" \ 'cpp': ['clangd']
+            " \ 'cpp': ['cquery','--language-server','--log-file=/tmp/cquery.log', '--log-stdin-stdout-to-stderr', '--log-all-to-stderr']
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_rootMarkers = {
             \ 'cpp': ['compile_commands.json', 'build'],
             \ }
-let g:LanguageClient_loggingLevel='DEBUG'
+" let g:LanguageClient_loggingLevel='DEBUG'
 augroup lsp_client
     autocmd!
     autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
-    autocmd FileType python,cpp,c  nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>
+    autocmd FileType python,cpp,c  nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>zz
     autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <leader>d :call LanguageClient_textDocument_references()<CR>
     autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 augroup END
@@ -1113,6 +1115,10 @@ let g:deoplete#omni#input_patterns.tex = '\\(?:'
 " }}}
 " Vim-notes {{{
 let g:notes_directories = ['~/Documents/notes']
+" }}}
+" pymode {{{
+let g:pymode_breakpoint = 0
+let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
 " }}}
 " CSV {{{
 let g:csv_autocmd_arrange = 1
