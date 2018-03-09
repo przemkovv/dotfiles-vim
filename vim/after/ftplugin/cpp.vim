@@ -1,9 +1,9 @@
 
-let b:fswitchdst = 'h,hpp' 
+" let b:fswitchdst = 'cpp,h,hpp' 
 let b:fswitchlocs = '.'
 setlocal foldmethod=marker foldmarker={,} foldlevel=99
 setlocal keywordprg=:term\ cppman
-setlocal equalprg=clang-format
+setlocal equalprg=clang-format\ -assume-filename=%
 setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 
 " vim-cpp-enhanced-highlight {{{

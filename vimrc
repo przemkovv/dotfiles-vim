@@ -407,11 +407,6 @@ nnoremap    <M-l>       <C-W>l
 nnoremap    <M-h>       <C-W>h
 " }}}
 
-" Command-line mappings {{{
-
-cnoremap <c-a> <home>
-cnoremap <c-e> <end>
-
 "===============================================================================
 " Command-line Mode Key Mappings
 "===============================================================================
@@ -450,8 +445,6 @@ nnoremap <leader>ss O//<esc>70A-<esc>
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
-" nnoremap H  g^
-" nnoremap L  g$
 " Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
 " which is the default
 nnoremap Y y$
@@ -640,7 +633,8 @@ function! AirlineInit()
   let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
 
   let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
-  let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
+  " let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
+  let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L'])
 endfunction
 
 augroup Airline
@@ -780,6 +774,17 @@ let g:neomake_place_signs = 1
 let g:neomake_verbose = 0
 let g:neomake_ft_maker_remove_invalid_entries = 1
 
+
+function! MyOnNeomakeJobFinished() abort
+  let context = g:neomake_hook_context
+  echom printf('The job for maker %s exited non-zero: %s',
+        \ context.jobinfo.maker.name, context.jobinfo.exit_code)
+endfunction
+augroup my_neomake_hooks
+  au!
+  autocmd User NeomakeJobFinished call MyOnNeomakeJobFinished()
+augroup END
+
 " }}}
 " LanguageClient-neovim {{{
 let g:LanguageClient_diagnosticsList = "Location"
@@ -799,18 +804,19 @@ augroup lsp_client
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <leader>d :call LanguageClient_textDocument_references()<CR>
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 augroup END
+
+augroup LanguageClient_config
+  au!
+  au BufEnter * let b:Plugin_LanguageClient_started = 0
+  au User LanguageClientStarted setl signcolumn=yes
+  au User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
+  au User LanguageClientStopped setl signcolumn=auto
+  au User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
+  au CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient_textDocument_hover() | endif
+augroup END
+
 " }}}
-" vim-lsp {{{
-" if executable('cquery')
-" au User lsp_setup call lsp#register_server({
-" \ 'name': 'cquery',
-" \ 'cmd': {server_info->['cquery','--language-server','--log-file=/tmp/cquery.log', '--log-all-to-stderr' ]},
-" \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-" \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery' },
-" \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-" \ })
-" endif
-" }}}
+"
 " deoplete {{{
 let g:deoplete#enable_at_startup =1
 let g:deoplete#disable_auto_complete = 1
