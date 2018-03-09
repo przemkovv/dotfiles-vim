@@ -103,6 +103,7 @@ Plug 'eagletmt/neco-ghc'
 " }}}
 
 " Snippets {{{
+" " Set up ultisnips - need to symlink vim scripts to be run when files are opened
 Plug 'SirVer/ultisnips'  | Plug 'honza/vim-snippets'
 Plug 'dawikur/algorithm-mnemonics.vim'
 " }}}
@@ -274,6 +275,8 @@ set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 set report=0
+
+set completeopt+=longest
 
 set list listchars=trail:•,tab:»·
 
