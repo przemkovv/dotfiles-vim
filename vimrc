@@ -33,6 +33,7 @@ Plug 'whatyouhide/vim-gotham'
 Plug 'sjl/badwolf'
 Plug 'flazz/vim-colorschemes'
 Plug 'felixhummel/setcolors.vim'
+Plug 'chriskempson/base16-vim'
 " }}}
 
 " File navigation {{{
@@ -174,7 +175,9 @@ let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='soft'
 let g:gruvbox_italic=1
 "colorscheme gruvbox
-colorscheme apprentice
+" colorscheme apprentice
+" colorscheme Tomorrow-Night-Bright
+colorscheme base16-chalk
 
 let g:monokai_term_italic = 1
 let g:monokai_gui_italic = 1
@@ -793,13 +796,15 @@ augroup END
 let g:LanguageClient_diagnosticsList = "Location"
 let g:LanguageClient_serverCommands = {
       \ 'python': ['pyls'],
-      \ 'cpp': ['cquery','--language-server']
+      \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],
+      \ 'c': ['cquery','--language-server', '--log-file=/tmp/cq.log']
       \ }
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_rootMarkers = {
       \ 'cpp': ['compile_commands.json', 'build'],
       \ }
 " let g:LanguageClient_loggingLevel='DEBUG'
+let g:LanguageClient_settingsPath = '/home/przemkovv/.config/nvim/settings.json'
 augroup lsp_client
   autocmd!
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
@@ -815,7 +820,7 @@ augroup LanguageClient_config
   au User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
   au User LanguageClientStopped setl signcolumn=auto
   au User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
-  au CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient_textDocument_hover() | endif
+  " au CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient_textDocument_hover() | endif
 augroup END
 
 " }}}
@@ -833,9 +838,8 @@ inoremap <silent><expr><C-k> deoplete#mappings#manual_complete()
 inoremap <expr><C-l>     deoplete#refresh()
 
 " Use head matcher instead of fuzzy matcher
-call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
 let g:deoplete#ignore_sources = ['around']
-" call deoplete#custom#set('ultisnips', 'rank', 1000)
 
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}

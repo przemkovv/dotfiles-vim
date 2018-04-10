@@ -1,0 +1,8 @@
+{
+  "initializationOptions": {
+    "cacheDirectory": "/tmp/cquery",
+    "enableComments": 2,
+    "cacheFormat": "json",
+    "extraClangArguments": ["-std=c++17"]
+  }
+}
