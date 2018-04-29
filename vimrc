@@ -105,8 +105,11 @@ Plug 'eagletmt/neco-ghc'
 
 " Snippets {{{
 " " Set up ultisnips - need to symlink vim scripts to be run when files are opened
-Plug 'SirVer/ultisnips'  | Plug 'honza/vim-snippets'
-Plug 'dawikur/algorithm-mnemonics.vim'
+" Plug 'SirVer/ultisnips'
+" Plug 'dawikur/algorithm-mnemonics.vim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
 " }}}
 
 " Database {{{
@@ -570,6 +573,11 @@ augroup ft_vim
   au FileType vim setlocal foldmethod=marker
   au FileType help setlocal textwidth=78
   au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+
+augroup ft_cpp_include
+  autocmd!
+  autocmd BufRead,BufNewFile /usr/include/c++/* set syntax=cpp
 augroup END
 
 " }}}
