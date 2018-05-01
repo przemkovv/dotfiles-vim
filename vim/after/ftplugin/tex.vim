@@ -22,36 +22,40 @@ let g:vimtex_view_method = 'zathura'
 let g:vimtex_latexmk_progname = 'nvr'
 
 let g:vimtex_compiler_latexmk = {
-            \ 'backend' : 'nvim',
-            \ 'background' : 1,
-            \ 'build_dir' : '',
-            \ 'callback' : 1,
-            \ 'continuous' : 1,
-            \ 'executable' : 'latexmk',
-            \}
+      \ 'backend' : 'nvim',
+      \ 'background' : 1,
+      \ 'build_dir' : '',
+      \ 'callback' : 1,
+      \ 'continuous' : 1,
+      \ 'executable' : 'latexmk',
+      \}
 let g:vimtex_quickfix_latexlog = {
-            \ 'default' : 1,
-            \ 'general' : 1,
-            \ 'references' : 1,
-            \ 'overfull' : 0,
-            \ 'underfull' : 0,
-            \ 'font' : 1,
-            \ 'packages' : {
-            \   'default' : 1,
-            \   'natbib' : 1,
-            \   'biblatex' : 1,
-            \   'babel' : 1,
-            \   'hyperref' : 1,
-            \   'scrreprt' : 1,
-            \   'fixltx2e' : 1,
-            \   'titlesec' : 1,
-            \ },
-            \}
+      \ 'default' : 1,
+      \ 'general' : 1,
+      \ 'references' : 1,
+      \ 'overfull' : 0,
+      \ 'underfull' : 0,
+      \ 'font' : 1,
+      \ 'packages' : {
+      \   'default' : 1,
+      \   'natbib' : 1,
+      \   'biblatex' : 1,
+      \   'babel' : 1,
+      \   'hyperref' : 1,
+      \   'scrreprt' : 1,
+      \   'fixltx2e' : 1,
+      \   'titlesec' : 1,
+      \ },
+      \}
 
 let g:vimtex_quickfix_latexlog = {
-            \ 'overfull' : 0,
-            \ 'underfull' : 0,
-            \ 'packages' : {
-            \   'default' : 0,
-            \ },
-            \}
+      \ 'overfull' : 0,
+      \ 'underfull' : 0,
+      \ 'packages' : {
+      \   'default' : 0,
+      \ },
+      \}
+
+call deoplete#custom#var('omni', 'input_patterns', {
+      \ 'tex' : g:vimtex#re#deoplete,
+      \})

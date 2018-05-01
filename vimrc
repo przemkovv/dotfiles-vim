@@ -105,10 +105,10 @@ Plug 'eagletmt/neco-ghc'
 
 " Snippets {{{
 " " Set up ultisnips - need to symlink vim scripts to be run when files are opened
-" Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 " Plug 'dawikur/algorithm-mnemonics.vim'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet'
+" Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 " }}}
 
@@ -402,7 +402,7 @@ nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
-nnoremap <C-J> i<CR><Esc>k$
+" nnoremap <C-J> i<CR><Esc>k$
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:sign unplace *<cr><c-l>
 
 " reindent
@@ -439,7 +439,7 @@ cnoremap <c-g> <right>
 cnoremap w!! w !sudo tee % >/dev/null
 " }}}
 
-noremap <silent> <leader><bs> :bprevious\|bdelete #<CR>
+noremap <silent><leader><bs> :bprevious\|bdelete #<CR>
 noremap <leader><leader><bs> :bdelete!<CR>
 noremap <leader>3 :TagbarToggle<CR>
 nnoremap <leader>4 :<C-u>NERDTreeToggle<CR>
@@ -560,19 +560,19 @@ set foldtext=MyFoldText()
 " QuickFix {{{
 
 augroup ft_quickfix
-  au!
-  au FileType qf wincmd J
-  au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
+  autocmd!
+  autocmd FileType qf wincmd J
+  autocmd Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
 augroup END
 
 " }}}
 " Vim {{{
 
 augroup ft_vim
-  au!
-  au FileType vim setlocal foldmethod=marker
-  au FileType help setlocal textwidth=78
-  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+  autocmd FileType help setlocal textwidth=78
+  autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
 augroup ft_cpp_include
@@ -646,7 +646,9 @@ function! AirlineInit()
   call airline#parts#define_raw('path2', "%{expand('%:h')}/")
   let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
 
-  let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
+  let g:airline_section_x = airline#section#create_right(['tagbar'])
+  let g:airline_section_y = airline#section#create_right(['filetype'])
+  " let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
   " let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
   let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L'])
 endfunction
@@ -717,16 +719,14 @@ let g:localvimrc_persistent = 1
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-let g:UltiSnipsUsePythonVersion = 2
+let g:UltiSnipsJumpBackwardTrigger = "<c-tab>"
 " }}}
 " Fugitive {{{
 nnoremap <leader>gs :Gstatus<Cr>
 nnoremap <leader>gc :Gcommit<Cr>
 nnoremap <leader>gl :Glog<Cr>
-nnoremap <leader>gw :Gwrite<Cr>
-nnoremap <leader>gd :Gvdiff<Cr>
+" nnoremap <leader>gw :Gwrite<Cr>
+" nnoremap <leader>gd :Gvdiff<Cr>
 " }}}
 " fzf {{{
 "
@@ -822,13 +822,13 @@ augroup lsp_client
 augroup END
 
 augroup LanguageClient_config
-  au!
-  au BufEnter * let b:Plugin_LanguageClient_started = 0
-  au User LanguageClientStarted setl signcolumn=yes
-  au User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
-  au User LanguageClientStopped setl signcolumn=auto
-  au User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
-  " au CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient_textDocument_hover() | endif
+  autocmd!
+  autocmd BufEnter * let b:Plugin_LanguageClient_started = 0
+  autocmd User LanguageClientStarted setl signcolumn=yes
+  autocmd User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
+  autocmd User LanguageClientStopped setl signcolumn=auto
+  autocmd User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
+  " autocmd CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient_textDocument_hover() | endif
 augroup END
 
 " }}}
@@ -842,33 +842,13 @@ let g:echodoc_enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 500000
 " let g:deoplete#auto_refresh_delay = 150
 
-inoremap <silent><expr><C-k> deoplete#mappings#manual_complete()
 inoremap <expr><C-l>     deoplete#refresh()
 
 " Use head matcher instead of fuzzy matcher
 call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-let g:deoplete#ignore_sources = ['around']
-
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
-
-let g:deoplete#omni#input_patterns.tex = '\\(?:'
-      \ .  '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
-      \ . '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
-      \ . '|hyperref\s*\[[^]]*'
-      \ . '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|(?:include(?:only)?|input)\s*\{[^}]*'
-      \ . '|\w*(gls|Gls|GLS)(pl)?\w*(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-      \ . '|includepdf(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . '|includestandalone(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . '|usepackage(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . '|documentclass(\s*\[[^]]*\])?\s*\{[^}]*'
-      \ . '|\w*'
-      \ .')'
+call deoplete#custom#option('ignore_sources', {'_': ['arround']})
 
 
-" inoremap <silent><expr><CR> pumvisible() ? deoplete#mappings#close_popup()."\<Plug>(neosnippet_expand_or_jump)" : "\<CR>"
 " }}}
 " Vim-notes {{{
 let g:notes_directories = ['~/Documents/notes']
@@ -878,184 +858,4 @@ let g:csv_autocmd_arrange = 1
 " }}}
 
 " }}}
-" Text objects ------------------------------------------------------------ {{{
-" Shortcut for [] {{{
-
-onoremap ir i[
-onoremap ar a[
-vnoremap ir i[
-vnoremap ar a[
-
-" }}}
-" Next and Last {{{
-"
-" Motion for "next/last object".  "Last" here means "previous", not "final".
-" Unfortunately the "p" motion was already taken for paragraphs.
-"
-" Next acts on the next object of the given type, last acts on the previous
-" object of the given type.  These don't necessarily have to be in the current
-" line.
-"
-" Currently works for (, [, {, and their shortcuts b, r, B.
-"
-" Next kind of works for ' and " as long as there are no escaped versions of
-" them in the string (TODO: fix that).  Last is currently broken for quotes
-" (TODO: fix that).
-"
-" Some examples (C marks cursor positions, V means visually selected):
-"
-" din'  -> delete in next single quotes                foo = bar('spam')
-"                                                      C
-"                                                      foo = bar('')
-"                                                                C
-"
-" canb  -> change around next parens                   foo = bar('spam')
-"                                                      C
-"                                                      foo = bar
-"                                                               C
-"
-" vin"  -> select inside next double quotes            print "hello ", name
-"                                                       C
-"                                                      print "hello ", name
-"                                                             VVVVVV
-
-onoremap an :<c-u>call <SID>NextTextObject('a', '/')<cr>
-xnoremap an :<c-u>call <SID>NextTextObject('a', '/')<cr>
-onoremap in :<c-u>call <SID>NextTextObject('i', '/')<cr>
-xnoremap in :<c-u>call <SID>NextTextObject('i', '/')<cr>
-
-onoremap al :<c-u>call <SID>NextTextObject('a', '?')<cr>
-xnoremap al :<c-u>call <SID>NextTextObject('a', '?')<cr>
-onoremap il :<c-u>call <SID>NextTextObject('i', '?')<cr>
-xnoremap il :<c-u>call <SID>NextTextObject('i', '?')<cr>
-
-
-function! s:NextTextObject(motion, dir)
-  let c = nr2char(getchar())
-  let d = ''
-
-  if c ==# "b" || c ==# "(" || c ==# ")"
-    let c = "("
-  elseif c ==# "B" || c ==# "{" || c ==# "}"
-    let c = "{"
-  elseif c ==# "r" || c ==# "[" || c ==# "]"
-    let c = "["
-  elseif c ==# "'"
-    let c = "'"
-  elseif c ==# '"'
-    let c = '"'
-  else
-    return
-  endif
-
-  " Find the next opening-whatever.
-  execute "normal! " . a:dir . c . "\<cr>"
-
-  if a:motion ==# 'a'
-    " If we're doing an 'around' method, we just need to select around it
-    " and we can bail out to Vim.
-    execute "normal! va" . c
-  else
-    " Otherwise we're looking at an 'inside' motion.  Unfortunately these
-    " get tricky when you're dealing with an empty set of delimiters because
-    " Vim does the wrong thing when you say vi(.
-
-    let open = ''
-    let close = ''
-
-    if c ==# "("
-      let open = "("
-      let close = ")"
-    elseif c ==# "{"
-      let open = "{"
-      let close = "}"
-    elseif c ==# "["
-      let open = "\\["
-      let close = "\\]"
-    elseif c ==# "'"
-      let open = "'"
-      let close = "'"
-    elseif c ==# '"'
-      let open = '"'
-      let close = '"'
-    endif
-
-    " We'll start at the current delimiter.
-    let start_pos = getpos('.')
-    let start_l = start_pos[1]
-    let start_c = start_pos[2]
-
-    " Then we'll find it's matching end delimiter.
-    if c ==# "'" || c ==# '"'
-      " searchpairpos() doesn't work for quotes, because fuck me.
-      let end_pos = searchpos(open)
-    else
-      let end_pos = searchpairpos(open, '', close)
-    endif
-
-    let end_l = end_pos[0]
-    let end_c = end_pos[1]
-
-    call setpos('.', start_pos)
-
-    if start_l == end_l && start_c == (end_c - 1)
-      " We're in an empty set of delimiters.  We'll append an "x"
-      " character and select that so most Vim commands will do something
-      " sane.  v is gonna be weird, and so is y.  Oh well.
-      execute "normal! ax\<esc>\<left>"
-      execute "normal! vi" . c
-    elseif start_l == end_l && start_c == (end_c - 2)
-      " We're on a set of delimiters that contain a single, non-newline
-      " character.  We can just select that and we're done.
-      execute "normal! vi" . c
-    else
-      " Otherwise these delimiters contain something.  But we're still not
-      " sure Vim's gonna work, because if they contain nothing but
-      " newlines Vim still does the wrong thing.  So we'll manually select
-      " the guts ourselves.
-      let whichwrap = &whichwrap
-      set whichwrap+=h,l
-
-      execute "normal! va" . c . "hol"
-
-      let &whichwrap = whichwrap
-    endif
-  endif
-endfunction
-
-" }}}
-" Numbers {{{
-
-" Motion for numbers.  Great for CSS.  Lets you do things like this:
-"
-" mrgin-top: 200px; -> daN -> margin-top: px;
-"              ^                          ^
-" TODO: Handle floats.
-
-onoremap N :<c-u>call <SID>NumberTextObject(0)<cr>
-xnoremap N :<c-u>call <SID>NumberTextObject(0)<cr>
-onoremap aN :<c-u>call <SID>NumberTextObject(1)<cr>
-xnoremap aN :<c-u>call <SID>NumberTextObject(1)<cr>
-onoremap iN :<c-u>call <SID>NumberTextObject(1)<cr>
-xnoremap iN :<c-u>call <SID>NumberTextObject(1)<cr>
-
-function! s:NumberTextObject(whole)
-  normal! v
-
-  while getline('.')[col('.')] =~# '\v[0-9]'
-    normal! l
-  endwhile
-
-  if a:whole
-    normal! o
-
-    while col('.') > 1 && getline('.')[col('.') - 2] =~# '\v[0-9]'
-      normal! h
-    endwhile
-  endif
-endfunction
-
-" }}}
-" }}}
-
 
