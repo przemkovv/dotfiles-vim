@@ -1,1 +1,1 @@
-/home/przemkovv/.vimrc
+vimrc
