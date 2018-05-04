@@ -3,9 +3,16 @@
 
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
+if !has("nvim")
+  let &t_ut=''
+endif
 syntax enable
 
-let s:editor_root=expand("~/.vim")
+if has("nvim")
+  let s:editor_root=expand("~/.config/nvim")
+else
+  let s:editor_root=expand("~/.vim")
+endif
 
 " Plugins -------------------------------------------------------------------- {{{
 
@@ -16,23 +23,23 @@ if empty(glob(s:editor_root . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall
 endif
 
-call plug#begin('~/.vim/plugged/')
+call plug#begin(s:editor_root . '/plugged/')
 " }}}
 
 " Colorschemes {{{
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
-Plug 'rakr/vim-two-firewatch'
-Plug 'lifepillar/vim-solarized8'
-Plug 'rakr/vim-one'
-Plug 'iCyMind/NeoSolarized'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'lsdr/monokai'
-Plug 'tomasr/molokai'
-Plug 'whatyouhide/vim-gotham'
-Plug 'sjl/badwolf'
-Plug 'flazz/vim-colorschemes'
-Plug 'felixhummel/setcolors.vim'
+" Plug 'rakr/vim-two-firewatch'
+" Plug 'lifepillar/vim-solarized8'
+" Plug 'rakr/vim-one'
+" Plug 'iCyMind/NeoSolarized'
+" Plug 'NLKNguyen/papercolor-theme'
+" Plug 'lsdr/monokai'
+" Plug 'tomasr/molokai'
+" Plug 'whatyouhide/vim-gotham'
+" Plug 'sjl/badwolf'
+" Plug 'flazz/vim-colorschemes'
+" Plug 'felixhummel/setcolors.vim'
 Plug 'chriskempson/base16-vim'
 " }}}
 
@@ -164,7 +171,8 @@ filetype plugin indent on
 syntax on
 
 set termguicolors
-set background=dark
+set background=light
+" set background=dark
 
 augroup UserColors
   autocmd!
@@ -174,36 +182,7 @@ augroup UserColors
   autocmd ColorScheme * highlight SpellBad term=reverse ctermbg=1
 augroup END
 
-let g:gruvbox_contrast_dark='hard'
-let g:gruvbox_contrast_light='soft'
-let g:gruvbox_italic=1
-"colorscheme gruvbox
-" colorscheme apprentice
-" colorscheme Tomorrow-Night-Bright
 colorscheme base16-chalk
-
-let g:monokai_term_italic = 1
-let g:monokai_gui_italic = 1
-" colorscheme monokai
-" colorscheme twilight
-
-
-let g:solarized_term_italics =1
-"let g:solarized_termtrans= 1
-"colorscheme solarized8_dark_flat
-" colorscheme PaperColor
-
-let g:neosolarized_contrast = "high"
-let g:neosolarized_visibility = "low"
-"let g:neosolarized_termtrans= 1
-
-" If you wish to enable/disable NeoSolarized from displaying bold, underlined or italicized
-" typefaces, simply assign 1 or 0 to the appropriate variable. Default values:
-let g:neosolarized_bold = 1
-let g:neosolarized_underline = 1
-let g:neosolarized_italic = 1
-" colorscheme NeoSolarized
-" colorscheme gotham
 
 " }}}
 
@@ -312,10 +291,14 @@ if s:running_windows
   set backupdir=~/vimfiles/backup " where to put backup files
   set undodir=~/vimfiles/undo " where to put undo files
   set directory=~/vimfiles/temp " directory to place swap files in
+elif has("nvim")
+set backupdir=$XDG_DATA_HOME/nvim/backup " where to put backup files
+set undodir=$XDG_DATA_HOME/nvim/undo " where to put undo files
+set directory=$XDG_DATA_HOME/nvim/swap " directory to place swap files in
 else
   set backupdir=~/.vim/backup " where to put backup files
   set undodir=~/.vim/undo " where to put undo files
-  set directory=~/.vim/temp " directory to place swap files in
+  set directory=~/.vim/swap " directory to place swap files in
 endif
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
@@ -402,7 +385,6 @@ nnoremap <Leader>sv :source $MYVIMRC<CR>
 nnoremap <Leader>ev :e  $MYVIMRC<CR>
 nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
-" nnoremap <C-J> i<CR><Esc>k$
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:sign unplace *<cr><c-l>
 
 " reindent
@@ -704,10 +686,10 @@ let g:signify_mapping_next_hunk = ']c'
 let g:signify_mapping_prev_hunk = '[c'
 nmap <nop> <plug>(signify-toggle-highlight)
 nmap <nop> <plug>(signify-toggle)
-omap ic <plug>(signify-motion-inner-pending)
-xmap ic <plug>(signify-motion-inner-visual)
-omap ac <plug>(signify-motion-outer-pending)
-xmap ac <plug>(signify-motion-outer-visual)
+omap <nop> <plug>(signify-motion-inner-pending)
+xmap <nop> <plug>(signify-motion-inner-visual)
+omap <nop> <plug>(signify-motion-outer-pending)
+xmap <nop> <plug>(signify-motion-outer-visual)
 " }}}
 " Local VIM RC {{{
 let g:localvimrc_name = ".localvimrc"
@@ -715,7 +697,6 @@ let g:localvimrc_sandbox = 0
 let g:localvimrc_persistent = 1
 " }}}
 " UltiSnips {{{
-
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
@@ -732,21 +713,25 @@ nnoremap <leader>gl :Glog<Cr>
 "
 " [Buffers] Jump to the existing window if possible
 let g:fzf_buffers_jump = 0
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 let g:fzf_launcher = 'termite --geometry 120x30 -e "sh -c %s"'
 nnoremap <leader>r :Ag<CR>
 nnoremap <leader>R :Ag <C-r>=expand('<cword>')<CR><CR>
 
+command! -bang -nargs=? -complete=dir Files
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 nnoremap <leader>? :Helptags<cr>
 nnoremap <leader>f :Files<cr>
+nnoremap <leader>F :GFiles?<cr>
 nnoremap <leader>mr :History<cr>
-nnoremap <leader>ma :Maps<cr>
+nnoremap <leader>mn :<c-u>call fzf#vim#maps('n', 0)<cr>
+nnoremap <leader>mv :<c-u>call fzf#vim#maps('x', 0)<cr>
+nnoremap <leader>mi :<c-u>call fzf#vim#maps('i', 0)<cr>
+nnoremap <leader>mo :<c-u>call fzf#vim#maps('o', 0)<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>t :BTags<cr>
 nnoremap <leader>T :Tags<cr>
-nnoremap <leader>ag :Ag <C-R><C-W><cr>
-nnoremap <leader>AG :Ag <C-R><C-A><cr>
 
 let g:fzf_files_options=' --bind alt-a:select-all,alt-d:deselect-all '
 imap <c-x><c-f> <plug>(fzf-complete-path)
@@ -812,7 +797,7 @@ let g:LanguageClient_rootMarkers = {
       \ 'cpp': ['compile_commands.json', 'build'],
       \ }
 " let g:LanguageClient_loggingLevel='DEBUG'
-let g:LanguageClient_settingsPath = '/home/przemkovv/.config/nvim/settings.json'
+let g:LanguageClient_settingsPath = s:editor_root .'/settings.json'
 augroup lsp_client
   autocmd!
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
