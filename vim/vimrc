@@ -135,6 +135,8 @@ Plug 'vim-scripts/dbext.vim' " 2.00  Provides database access to many DBMS (Orac
 " Dev Tools {{{
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
 Plug 'benekastah/neomake'
@@ -862,8 +864,14 @@ let g:startify_lists = [
 
 let g:startify_bookmarks = [ '~/projects/phd/mutosim', '~/projects/phd/publications']
 let g:startify_session_persistence = 1
-    let g:startify_change_to_vcs_root = 1
-    let g:startify_fortune_use_unicode = 1
+let g:startify_change_to_vcs_root = 1
+let g:startify_fortune_use_unicode = 1
+" }}}
+" Gist {{{
+let g:gist_post_private = 1
+let g:gist_show_privates = 1
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
 " }}}
 
 " }}}
