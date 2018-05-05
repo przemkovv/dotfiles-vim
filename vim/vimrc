@@ -324,7 +324,7 @@ endif
 
 
 let mapleader = "\<Space>"
-let maplocalleader = ","
+let maplocalleader = "\\"
 set colorcolumn=81
 
 set nocp
@@ -390,16 +390,16 @@ set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column\ --vimgrep\ --igno
 
 " Mappings ---------------------------------------------------------------- {{{
 
-nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
-nnoremap <Leader>sv :source $MYVIMRC<CR>
-nnoremap <Leader>ev :e  $MYVIMRC<CR>
-nnoremap <Leader>eev :vsplit  $MYVIMRC<CR>
-nnoremap <Leader>l :s/\.\ /\.\r/g<CR>:nohl<CR>
+nnoremap <Space>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <Space>sv :source $MYVIMRC<CR>
+nnoremap <Space>ev :e  $MYVIMRC<CR>
+nnoremap <Space>eev :vsplit  $MYVIMRC<CR>
+nnoremap <Space>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:sign unplace *<cr><c-l>
 
 " reindent
-nnoremap <Leader>= :keepjumps normal mzgg=Gg`zzz<CR>
-nnoremap <Leader>sf :FSHere<CR>
+nnoremap <Space>= :keepjumps normal mzgg=Gg`zzz<CR>
+nnoremap <Space>sf :FSHere<CR>
 
 " Window nagiating {{{
 nnoremap    <M-k>       <C-W>k
@@ -420,7 +420,7 @@ cnoremap <c-e> <end>
 cnoremap <c-h> <s-left>
 cnoremap <c-l> <s-right>
 
-" Ctrl-Space: Show history
+" Ctrl-space: Show history
 cnoremap <c-@> <c-f>
 
 cnoremap <c-j> <down>
@@ -431,17 +431,17 @@ cnoremap <c-g> <right>
 cnoremap w!! w !sudo tee % >/dev/null
 " }}}
 
-noremap <silent><leader><bs> :bprevious\|bdelete #<CR>
-noremap <leader><leader><bs> :bdelete!<CR>
-noremap <leader>3 :TagbarToggle<CR>
-nnoremap <leader>4 :<C-u>NERDTreeToggle<CR>
-nnoremap <leader>7 :UndotreeToggle<CR>
+noremap <silent><Space><bs> :bprevious\|bdelete #<CR>
+noremap <Space><Space><bs> :bdelete!<CR>
+noremap <Space>3 :TagbarToggle<CR>
+nnoremap <Space>4 :<C-u>NERDTreeToggle<CR>
+nnoremap <Space>7 :UndotreeToggle<CR>
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F12>
 
-nnoremap <leader>z zMzvzz
-nnoremap <leader>ss O//<esc>70A-<esc>
+nnoremap <Space>z zMzvzz
+nnoremap <Space>ss O//<esc>70A-<esc>
 
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
@@ -455,17 +455,17 @@ xnoremap < <gv
 xnoremap > >gv
 
 " saving file {{{
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>W :wa<CR>
+nnoremap <Space>w :w<CR>
+nnoremap <Space>W :wa<CR>
 " }}}
 
 " copy & paste {{{
-vmap <Leader>y "+y
-"vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
+vmap <Space>y "+y
+"vmap <Space>d "+d
+nmap <Space>p "+p
+nmap <Space>P "+P
+vmap <Space>p "+p
+vmap <Space>P "+P
 " }}}
 
 "===============================================================================
@@ -485,7 +485,7 @@ inoremap <c-u> <c-g>u<c-u>
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-nnoremap <leader>q :cclose<bar>lclose<cr>
+nnoremap <Space>q :cclose<bar>lclose<cr>
 
 " Todo {{{
 function! s:todo() abort
@@ -589,6 +589,12 @@ let g:undotree_SplitWidth = 33
 " }}}
 " nerdcommenter {{{
 let g:NERDSpaceDelims = 1
+let g:NERDCreateDefaultMappings = 0
+
+vmap <Space>cc  <Plug>NERDCommenterComment
+vmap <Space>cu  <Plug>NERDCommenterUncomment
+nmap <Space>cc  <Plug>NERDCommenterComment
+nmap <Space>cu  <Plug>NERDCommenterUncomment
 " }}}
 " netrw {{{
 let g:loaded_netrwPlugin = 1
@@ -713,11 +719,11 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-tab>"
 " }}}
 " Fugitive {{{
-nnoremap <leader>gs :Gstatus<Cr>
-nnoremap <leader>gc :Gcommit<Cr>
-nnoremap <leader>gl :Glog<Cr>
-" nnoremap <leader>gw :Gwrite<Cr>
-" nnoremap <leader>gd :Gvdiff<Cr>
+nnoremap <Space>gs :Gstatus<Cr>
+nnoremap <Space>gc :Gcommit<Cr>
+nnoremap <Space>gl :Glog<Cr>
+" nnoremap <Space>gw :Gwrite<Cr>
+" nnoremap <Space>gd :Gvdiff<Cr>
 " }}}
 " fzf {{{
 "
@@ -726,22 +732,23 @@ let g:fzf_buffers_jump = 0
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 let g:fzf_launcher = 'termite --geometry 120x30 -e "sh -c %s"'
-nnoremap <leader>r :Ag<CR>
-nnoremap <leader>R :Ag <C-r>=expand('<cword>')<CR><CR>
+nnoremap <Space>r :Ag<CR>
+nnoremap <Space>R :Ag <C-r>=expand('<cword>')<CR><CR>
 
 command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-nnoremap <leader>? :Helptags<cr>
-nnoremap <leader>f :Files<cr>
-nnoremap <leader>F :GFiles?<cr>
-nnoremap <leader>mr :History<cr>
-nnoremap <leader>mn :<c-u>call fzf#vim#maps('n', 0)<cr>
-nnoremap <leader>mv :<c-u>call fzf#vim#maps('x', 0)<cr>
-nnoremap <leader>mi :<c-u>call fzf#vim#maps('i', 0)<cr>
-nnoremap <leader>mo :<c-u>call fzf#vim#maps('o', 0)<cr>
-nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>t :BTags<cr>
-nnoremap <leader>T :Tags<cr>
+nnoremap <Space>? :Helptags<cr>
+nnoremap <Space>f :Files<cr>
+nnoremap <Space>F :GFiles?<cr>
+nnoremap <Space>mr :History<cr>
+nnoremap <Space>mn :<c-u>call fzf#vim#maps('n', 0)<cr>
+nnoremap <Space>mv :<c-u>call fzf#vim#maps('x', 0)<cr>
+nnoremap <Space>mi :<c-u>call fzf#vim#maps('i', 0)<cr>
+nnoremap <Space>mo :<c-u>call fzf#vim#maps('o', 0)<cr>
+nnoremap <Space>b :Buffers<cr>
+nnoremap <Space>t :BTags<cr>
+nnoremap <Space>T :Tags<cr>
+nnoremap \c :Colors<cr>
 
 let g:fzf_files_options=' --bind alt-a:select-all,alt-d:deselect-all '
 imap <c-x><c-f> <plug>(fzf-complete-path)
@@ -775,8 +782,8 @@ let g:tagbar_compact = 1
 " }}}
 " Neomake {{{
 
-nnoremap <Leader>h :Neomake!<CR>
-nnoremap <Leader>H :Neomake<CR>
+nnoremap <Space>h :Neomake!<CR>
+nnoremap <Space>H :Neomake<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
@@ -813,7 +820,7 @@ augroup lsp_client
   autocmd!
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>zz
-  autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <leader>d :call LanguageClient_textDocument_references()<CR>
+  autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <Space>d :call LanguageClient_textDocument_references()<CR>
   autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 augroup END
 
