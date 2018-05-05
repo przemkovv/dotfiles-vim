@@ -75,6 +75,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
 Plug 'sbdchd/neoformat'
+Plug 'mhinz/vim-startify'
 
 " }}}
 
@@ -794,6 +795,7 @@ augroup END
 " }}}
 " LanguageClient-neovim {{{
 let g:LanguageClient_diagnosticsList = "Location"
+let g:LanguageClient_hasSnippetSupport = 0
 let g:LanguageClient_serverCommands = {
       \ 'python': ['pyls'],
       \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],
@@ -847,6 +849,21 @@ let g:notes_directories = ['~/Documents/notes']
 " }}}
 " CSV {{{
 let g:csv_autocmd_arrange = 1
+" }}}
+" startify {{{
+let g:startify_session_dir = s:editor_root . '/session'
+
+let g:startify_lists = [
+      \ { 'type': 'bookmarks', 'header': [   'Bookmarks']      },
+      \ { 'type': 'files',     'header': [   'MRU']            },
+      \ { 'type': 'sessions',  'header': [   'Sessions']       },
+      \ { 'type': 'commands',  'header': [   'Commands']       },
+      \ ]
+
+let g:startify_bookmarks = [ '~/projects/phd/mutosim', '~/projects/phd/publications']
+let g:startify_session_persistence = 1
+    let g:startify_change_to_vcs_root = 1
+    let g:startify_fortune_use_unicode = 1
 " }}}
 
 " }}}
