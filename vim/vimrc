@@ -14,6 +14,8 @@ set termguicolors
 
 syntax enable
 
+if s:running_windows
+  let s:editor_root=expand("~/AppData/Local/nvim")
 if has("nvim")
   let s:editor_root=expand("~/.config/nvim")
 else
