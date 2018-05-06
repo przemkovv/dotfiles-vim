@@ -3,7 +3,6 @@
 *.pyc
 # vim/bundle
 bundle/*
-autoload/plug.vim
 autoload/plug.vim.old
 shada/*
 plugged/*
