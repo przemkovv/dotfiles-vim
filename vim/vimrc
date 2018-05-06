@@ -16,7 +16,7 @@ syntax enable
 
 if s:running_windows
   let s:editor_root=expand("~/AppData/Local/nvim")
-if has("nvim")
+elseif has("nvim")
   let s:editor_root=expand("~/.config/nvim")
 else
   let s:editor_root=expand("~/.vim")
@@ -88,7 +88,11 @@ Plug 'majutsushi/tagbar'
 " }}}
 
 " Completion {{{
-Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh'}
+if s:running_windows 
+  Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  'powershell -File install.ps1' }
+else
+  Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  './install.sh'}
+endif
 Plug 'Shougo/deoplete.nvim',  { 'do': function('myfunctions#utils#UpdateRPlugins') }
 Plug 'roxma/nvim-yarp', myfunctions#utils#Cond(!has('nvim'))
 Plug 'roxma/vim-hug-neovim-rpc', myfunctions#utils#Cond(!has('nvim'))
@@ -160,7 +164,8 @@ augroup UserColors
   autocmd ColorScheme * highlight User1 cterm=bold ctermfg=14 guifg=#e1a3ee ctermbg=1 guibg=#202020 " Identifier
 augroup END
 
-colorscheme base16-chalk
+silent! colorscheme evening
+silent! colorscheme base16-chalk
 
 " }}}
 
@@ -317,8 +322,10 @@ augroup MakeDirectoryOnSave
 augroup END
 " }}}
 
-if $DISPLAY =~ '^localhost:' || $DISPLAY == ''
-  set clipboard=autoselect,exclude:.*
+if !s:running_windows
+  if $DISPLAY =~ '^localhost:' || $DISPLAY == ''
+    set clipboard=autoselect,exclude:.*
+  endif
 endif
 
 set switchbuf=useopen ",usetab,newtab
