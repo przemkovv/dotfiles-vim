@@ -12,8 +12,7 @@ let g:cpp_experimental_template_highlight = 1
 let g:cpp_member_variable_highight = 1
 let g:cpp_concepts_highlights = 1
 " }}}
-"
-"
+
 function! FormatFile()
   let l:lines="all"
   pyf /usr/share/clang/clang-format.py
@@ -24,3 +23,8 @@ endfunction
 
 nnoremap <buffer> <Leader>= :call FormatFile()<CR>
 vnoremap <buffer> <Leader>= :call FormatSelection()<CR>
+
+augroup ft_cpp_include
+  autocmd!
+  autocmd BufRead,BufNewFile /usr/include/c++/* set syntax=cpp
+augroup END

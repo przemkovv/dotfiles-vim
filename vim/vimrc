@@ -4,14 +4,13 @@
 let s:running_windows = has("win16") || has("win32") || has("win64")
 
 if !has("nvim")
-  " let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-  " let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
   " set Vim-specific sequences for RGB colors
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " let &t_ut=''
   set t_Co=256
-  set termguicolors
 endif
+
+set termguicolors
 
 syntax enable
 
@@ -34,26 +33,13 @@ call plug#begin(s:editor_root . '/plugged/')
 " }}}
 
 " Colorschemes {{{
-" Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
-" Plug 'rakr/vim-two-firewatch'
-" Plug 'lifepillar/vim-solarized8'
-" Plug 'rakr/vim-one'
-" Plug 'iCyMind/NeoSolarized'
-" Plug 'NLKNguyen/papercolor-theme'
-" Plug 'lsdr/monokai'
-" Plug 'tomasr/molokai'
-" Plug 'whatyouhide/vim-gotham'
-" Plug 'sjl/badwolf'
-" Plug 'flazz/vim-colorschemes'
-" Plug 'felixhummel/setcolors.vim'
 Plug 'chriskempson/base16-vim'
 " }}}
 
 " File navigation {{{
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'vim-scripts/FSwitch'
 " }}}
 
@@ -75,7 +61,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
 Plug 'sbdchd/neoformat'
-Plug 'mhinz/vim-startify'
 
 " }}}
 
@@ -102,28 +87,18 @@ Plug 'majutsushi/tagbar'
 
 " Completion {{{
 Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': './install.sh'}
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'Shougo/deoplete.nvim',  { 'do': function('myfunctions#utils#UpdateRPlugins') }
+Plug 'roxma/nvim-yarp', myfunctions#utils#Cond(!has('nvim'))
+Plug 'roxma/vim-hug-neovim-rpc', myfunctions#utils#Cond(!has('nvim'))
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/context_filetype.vim'
 Plug 'mhartington/deoplete-typescript', { 'for': 'typescript' }
 Plug 'eagletmt/neco-ghc'
 
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
 " }}}
 
 " Snippets {{{
-" " Set up ultisnips - need to symlink vim scripts to be run when files are opened
 Plug 'SirVer/ultisnips'
-" Plug 'dawikur/algorithm-mnemonics.vim'
-" Plug 'Shougo/neosnippet'
-" Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 " }}}
 
@@ -140,12 +115,10 @@ Plug 'mattn/webapi-vim'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
 Plug 'benekastah/neomake'
-
 Plug 'vim-scripts/DoxygenToolkit.vim'
 " }}}
 
 " Filetype specific {{{
-
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp'}
 Plug 'vim-jp/vim-cpp', { 'for': 'cpp'}
 Plug 'IN3D/vim-raml' " RAML plugin for VIM
@@ -180,16 +153,9 @@ filetype plugin indent on
 " Colors {{{
 syntax on
 
-set termguicolors
-set background=light
-" set background=dark
-
 augroup UserColors
   autocmd!
-  autocmd ColorScheme * highlight User5 cterm=italic ctermfg=245 gui=italic guifg=#928374 " Comment
-  autocmd ColorScheme * highlight User1 cterm=bold ctermfg=14 guifg=#40ffff " Identifier
-  autocmd ColorScheme * highlight PmenuSel ctermfg=black ctermbg=lightgray
-  autocmd ColorScheme * highlight SpellBad term=reverse ctermbg=1
+  autocmd ColorScheme * highlight User1 cterm=bold ctermfg=14 guifg=#e1a3ee ctermbg=1 guibg=#202020 " Identifier
 augroup END
 
 colorscheme base16-chalk
@@ -204,32 +170,11 @@ augroup GoToLastPosition
 augroup END
 " http://vim.wikia.com/wiki/Avoid_scrolling_when_switch_buffers {{{
 
-" Save current view settings on a per-window, per-buffer basis.
-function! AutoSaveWinView()
-  if !exists("w:SavedBufView")
-    let w:SavedBufView = {}
-  endif
-  let w:SavedBufView[bufnr("%")] = winsaveview()
-endfunction
-
-" Restore current view settings.
-function! AutoRestoreWinView()
-  let buf = bufnr("%")
-  if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
-    let v = winsaveview()
-    let atStartOfFile = v.lnum == 1 && v.col == 0
-    if atStartOfFile && !&diff
-      call winrestview(w:SavedBufView[buf])
-    endif
-    unlet w:SavedBufView[buf]
-  endif
-endfunction
-
 " When switching buffers, preserve window view.
 augroup SaveWindowView
   autocmd!
-  autocmd BufLeave * call AutoSaveWinView()
-  autocmd BufEnter * call AutoRestoreWinView()
+  autocmd BufLeave * call myfunctions#viewsettings#AutoSaveWinView()
+  autocmd BufEnter * call myfunctions#viewsettings#AutoRestoreWinView()
 augroup END
 " }}}
 
@@ -271,7 +216,6 @@ set sidescrolloff=5 " Keep 5 lines at the size
 set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 set report=0
 
-set completeopt+=longest
 
 set list listchars=trail:•,tab:»·
 
@@ -298,18 +242,19 @@ set nostartofline
 
 " Vim directories settings {{{
 if s:running_windows
-  set backupdir=~/vimfiles/backup " where to put backup files
-  set undodir=~/vimfiles/undo " where to put undo files
-  set directory=~/vimfiles/temp " directory to place swap files in
-elif has("nvim")
-set backupdir=$XDG_DATA_HOME/nvim/backup " where to put backup files
-set undodir=$XDG_DATA_HOME/nvim/undo " where to put undo files
-set directory=$XDG_DATA_HOME/nvim/swap " directory to place swap files in
+  set backupdir=~/AppData/Local/nvim-data/backup " where to put backup files
+  set undodir=~/AppData/Local/nvim-data/undo " where to put undo files
+  set directory=~/AppData/Local/nvim-data/temp " directory to place swap files in
+elseif has("nvim")
+  set backupdir=~/.local/share/nvim/backup " where to put backup files
+  set undodir=~/.local/share/nvim/undo " where to put undo files
+  set directory=~/.local/share/nvim/swap " directory to place swap files in
 else
-  set backupdir=~/.vim/backup " where to put backup files
-  set undodir=~/.vim/undo " where to put undo files
-  set directory=~/.vim/swap " directory to place swap files in
+  set backupdir=~/.local/share/vim/backup " where to put backup files
+  set undodir=~/.local/share/vim/undo" where to put undo files
+  set directory=~/.local/share/vim/swap " directory to place swap files in
 endif
+
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
   call mkdir(expand(&undodir), "p")
@@ -363,17 +308,10 @@ augroup NumberLines
 augroup END
 " }}}
 
-" Automatically create directories on save {{{
-fun! <SID>AutoMakeDirectory()
-  let s:directory = expand("<afile>:p:h")
-  if !isdirectory(s:directory)
-    call mkdir(s:directory, "p")
-  endif
-endfun
 
 augroup MakeDirectoryOnSave
   autocmd!
-  autocmd BufWritePre,FileWritePre * :call <SID>AutoMakeDirectory()
+  autocmd BufWritePre,FileWritePre * :call myfunctions#utils#AutoMakeDirectory()
 augroup END
 " }}}
 
@@ -434,8 +372,7 @@ cnoremap w!! w !sudo tee % >/dev/null
 noremap <silent><Space><bs> :bprevious\|bdelete #<CR>
 noremap <Space><Space><bs> :bdelete!<CR>
 noremap <Space>3 :TagbarToggle<CR>
-nnoremap <Space>4 :<C-u>NERDTreeToggle<CR>
-nnoremap <Space>7 :UndotreeToggle<CR>
+nnoremap <Space>2 :UndotreeToggle<CR>
 nnoremap <F12> :set invpaste paste?<CR>
 inoremap <F12> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F12>
@@ -456,12 +393,10 @@ xnoremap > >gv
 
 " saving file {{{
 nnoremap <Space>w :w<CR>
-nnoremap <Space>W :wa<CR>
 " }}}
 
 " copy & paste {{{
 vmap <Space>y "+y
-"vmap <Space>d "+d
 nmap <Space>p "+p
 nmap <Space>P "+P
 vmap <Space>p "+p
@@ -487,27 +422,15 @@ nnoremap N Nzzzv
 
 nnoremap <Space>q :cclose<bar>lclose<cr>
 
-" Todo {{{
-function! s:todo() abort
-  let entries = []
-  for cmd in ['git grep -n -e "TODO(" -e "FIXME(" -e "BUG(" -e "XXX(" 2> /dev/null',
-        \ 'grep -rn -e TODO -e FIXME -e BUG -e XXX * 2> /dev/null']
-    let lines = split(system(cmd), '\n')
-    if v:shell_error != 0 | continue | endif
-    for line in lines
-      let [fname, lno, text] = matchlist(line, '^\([^:]*\):\([^:]*\):\(.*\)')[1:3]
-      call add(entries, { 'filename': fname, 'lnum': lno, 'text': text })
-    endfor
-    break
-  endfor
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-  if !empty(entries)
-    call setqflist(entries)
-    copen
-  endif
-endfunction
-command! Todo call s:todo()
-" }}}
+inoremap <expr><C-d> pumvisible() ? "<PageDown>" : "<C-d>"
+inoremap <expr><C-u> pumvisible() ? "<PageUp>" : "<C-g>u<C-u>"
+
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+      \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <C-p> pumvisible() ? '<C-p>' :
+      \ '<C-p><C-r>=pumvisible() ? "\<lt>Up>" : ""<CR>'
 
 
 " }}}
@@ -517,34 +440,7 @@ set foldlevelstart=99
 " Make zO recursively open whatever top level fold we're in, no matter where the
 " cursor happens to be.
 nnoremap zO zCzO
-
-" "Focus" the current line.  Basically:
-"
-" 1. Close all folds.
-" 2. Open just the folds containing the current line.
-" 3. Move the line to a little bit (15 lines) above the center of the screen.
-" 4. Pulse the cursor line.  My eyes are bad.
-"
-" This mapping wipes out the z mark, which I never use.
-"
-" I use :sus for the rare times I want to actually background Vim.
-function! MyFoldText() " {{{
-  let line = getline(v:foldstart)
-
-  let nucolwidth = &fdc + &number * &numberwidth
-  let windowwidth = winwidth(0) - nucolwidth - 3
-  let foldedlinecount = v:foldend - v:foldstart
-
-  " expand tabs into spaces
-  let onetab = strpart('          ', 0, &tabstop)
-  let line = substitute(line, '\t', onetab, 'g')
-
-  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction
-set foldtext=MyFoldText()
-" }}}
+set foldtext=myfunctions#fold#MyFoldText()
 
 " }}}
 " Filetype-specific ------------------------------------------------------- {{{
@@ -556,27 +452,22 @@ augroup ft_quickfix
   autocmd FileType qf wincmd J
   autocmd Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
 augroup END
-
 " }}}
 " Vim {{{
-
 augroup ft_vim
   autocmd!
   autocmd FileType vim setlocal foldmethod=marker
   autocmd FileType help setlocal textwidth=78
   autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
-
-augroup ft_cpp_include
-  autocmd!
-  autocmd BufRead,BufNewFile /usr/include/c++/* set syntax=cpp
-augroup END
-
 " }}}
 
 " }}}
 
 " Plugin settings --------------------------------------------------------- {{{
+" Todo {{{
+command! Todo call myfunctions#todo#todo()
+" }}}
 
 " Doxygen {{{
 let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
@@ -597,11 +488,10 @@ nmap <Space>cc  <Plug>NERDCommenterComment
 nmap <Space>cu  <Plug>NERDCommenterUncomment
 " }}}
 " netrw {{{
-let g:loaded_netrwPlugin = 1
 let g:netrw_winsize = -40
+let g:netrw_liststyle = 3
 " }}}
 " airline {{{
-
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#show_buffers = 0
@@ -639,21 +529,10 @@ let g:airline_mode_map = {
       \ }
 
 
-function! AirlineInit()
-  call airline#parts#define_raw('file2', "%#User1#%t %m")
-  call airline#parts#define_raw('path2', "%{expand('%:h')}/")
-  let g:airline_section_c = airline#section#create(['%<','path2', 'file2',  'readonly'])
-
-  let g:airline_section_x = airline#section#create_right(['tagbar'])
-  let g:airline_section_y = airline#section#create_right(['filetype'])
-  " let g:airline_section_y = airline#section#create(['%{airline#util#wrap(airline#parts#filetype(),0)}'])
-  " let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L [%{winnr()}]'])
-  let g:airline_section_z = airline#section#create(['%3p%%',  ' %c:%l/%L'])
-endfunction
 
 augroup Airline
   autocmd!
-  autocmd User AirlineAfterInit call AirlineInit()
+  autocmd User AirlineAfterInit call myfunctions#airline#AirlineInit()
 augroup END
 
 let g:airline#extensions#whitespace#trailing_format = 'tr[%s]'
@@ -716,14 +595,12 @@ let g:localvimrc_persistent = 1
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " }}}
 " Fugitive {{{
 nnoremap <Space>gs :Gstatus<Cr>
 nnoremap <Space>gc :Gcommit<Cr>
 nnoremap <Space>gl :Glog<Cr>
-" nnoremap <Space>gw :Gwrite<Cr>
-" nnoremap <Space>gd :Gvdiff<Cr>
 " }}}
 " fzf {{{
 "
@@ -755,21 +632,9 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-" An action can be a reference to a function that processes selected lines
-function! s:build_quickfix_list(lines)
-  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-  copen
-  cc
-endfunction
-
-function! s:build_location_list(lines)
-  call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
-  lopen
-  ll
-endfunction
 
 let g:fzf_action = {
-      \ 'ctrl-q': function('s:build_location_list'),
+      \ 'ctrl-q': function('myfunctions#fzf#build_location_list'),
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
@@ -791,14 +656,9 @@ let g:neomake_verbose = 0
 let g:neomake_ft_maker_remove_invalid_entries = 1
 
 
-function! MyOnNeomakeJobFinished() abort
-  let context = g:neomake_hook_context
-  echom printf('The job for maker %s exited non-zero: %s',
-        \ context.jobinfo.maker.name, context.jobinfo.exit_code)
-endfunction
 augroup my_neomake_hooks
   au!
-  autocmd User NeomakeJobFinished call MyOnNeomakeJobFinished()
+  autocmd User NeomakeJobFinished call myfunctions#neomake#MyOnNeomakeJobFinished()
 augroup END
 
 " }}}
@@ -845,12 +705,11 @@ let g:echodoc_enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 500000
 " let g:deoplete#auto_refresh_delay = 150
 
-inoremap <expr><C-l>     deoplete#refresh()
-
-" Use head matcher instead of fuzzy matcher
-call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-call deoplete#custom#option('ignore_sources', {'_': ['arround']})
-
+if has('g:loaded_deoplete')
+  " Use head matcher instead of fuzzy matcher
+  call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+  call deoplete#custom#option('ignore_sources', {'_': ['arround']})
+endif
 
 " }}}
 " Vim-notes {{{
@@ -858,21 +717,6 @@ let g:notes_directories = ['~/Documents/notes']
 " }}}
 " CSV {{{
 let g:csv_autocmd_arrange = 1
-" }}}
-" startify {{{
-let g:startify_session_dir = s:editor_root . '/session'
-
-let g:startify_lists = [
-      \ { 'type': 'bookmarks', 'header': [   'Bookmarks']      },
-      \ { 'type': 'files',     'header': [   'MRU']            },
-      \ { 'type': 'sessions',  'header': [   'Sessions']       },
-      \ { 'type': 'commands',  'header': [   'Commands']       },
-      \ ]
-
-let g:startify_bookmarks = [ '~/projects/phd/mutosim', '~/projects/phd/publications']
-let g:startify_session_persistence = 1
-let g:startify_change_to_vcs_root = 1
-let g:startify_fortune_use_unicode = 1
 " }}}
 " Gist {{{
 let g:gist_post_private = 1
@@ -882,4 +726,5 @@ let g:gist_open_browser_after_post = 1
 " }}}
 
 " }}}
+
 
