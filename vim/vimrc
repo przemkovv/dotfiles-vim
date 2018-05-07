@@ -322,7 +322,7 @@ augroup MakeDirectoryOnSave
 augroup END
 " }}}
 
-if !s:running_windows
+if !s:running_windows && !has('nvim')
   if $DISPLAY =~ '^localhost:' || $DISPLAY == ''
     set clipboard=autoselect,exclude:.*
   endif
