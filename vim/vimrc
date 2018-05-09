@@ -389,6 +389,8 @@ set pastetoggle=<F12>
 nnoremap <Space>z zMzvzz
 nnoremap <Space>ss O//<esc>70A-<esc>
 
+nnoremap <space>8 :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
