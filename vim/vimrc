@@ -120,7 +120,7 @@ Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
-Plug 'benekastah/neomake'
+" Plug 'benekastah/neomake'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 " }}}
 
@@ -185,8 +185,6 @@ augroup SaveWindowView
 augroup END
 " }}}
 
-" The following are commented out as they cause vim to behave a lot
-" differently from regular Vi. They are highly recommended though.
 set showcmd		" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
 set ignorecase		" Do case insensitive matching
@@ -235,16 +233,10 @@ set breakindentopt+=sbr
 set tags=tags,./tags,~/.vimtags
 set completeopt+=longest
 
-" Set the command window height to 2 lines, to avoid many cases of having to
-" press <Enter> to continue
 set cmdheight=2
 
-" Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
 
-" Stop certain movements from always going to the first character of a line.
-" While this behaviour deviates from that of Vi, it does what most users
-" coming from other editors would expect.
 set nostartofline
 
 " Vim directories settings {{{
@@ -274,12 +266,10 @@ if !isdirectory(expand(&directory))
 endif
 " }}}
 
-
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 set colorcolumn=81
 
-set nocp
 filetype plugin on
 
 " Highlight VCS conflict markers
@@ -299,7 +289,8 @@ endif
 set number
 set numberwidth=5
 set relativenumber
-set cursorline
+set nocursorline
+
 
 " Number line settings {{{
 " --------------------------------------------------------------------------------
@@ -376,7 +367,6 @@ cnoremap <c-f> <left>
 cnoremap <c-g> <right>
 
 cnoremap w!! w !sudo tee % >/dev/null
-" }}}
 
 noremap <silent><Space><bs> :bprevious\|bdelete #<CR>
 noremap <Space><Space><bs> :bdelete!<CR>
@@ -452,7 +442,6 @@ set foldlevelstart=99
 " cursor happens to be.
 nnoremap zO zCzO
 set foldtext=myfunctions#fold#MyFoldText()
-
 " }}}
 " Filetype-specific ------------------------------------------------------- {{{
 
@@ -479,7 +468,6 @@ augroup END
 " Todo {{{
 command! Todo call myfunctions#todo#todo()
 " }}}
-
 " Doxygen {{{
 let g:DoxygenToolkit_authorName="Przemysław Walkowiak <przemkovv@gmail.com>"
 let g:DoxygenToolkit_briefTag_funcName="yes"
@@ -512,6 +500,7 @@ let g:airline#extensions#vimtex#enabled = 1
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#hunks#enabled = 0
+let g:airline#extensions#branch#enabled = 0
 let g:airline_inactive_collapse = 1
 let g:airline_detect_modified=0
 
@@ -658,8 +647,8 @@ let g:tagbar_compact = 1
 " }}}
 " Neomake {{{
 
-nnoremap <Space>h :Neomake!<CR>
-nnoremap <Space>H :Neomake<CR>
+" nnoremap <Space>h :Neomake!<CR>
+" nnoremap <Space>H :Neomake<CR>
 "let g:neomake_verbose=1
 let g:neomake_open_list = 2
 let g:neomake_place_signs = 1
@@ -667,10 +656,10 @@ let g:neomake_verbose = 0
 let g:neomake_ft_maker_remove_invalid_entries = 1
 
 
-augroup my_neomake_hooks
-  au!
-  autocmd User NeomakeJobFinished call myfunctions#neomake#MyOnNeomakeJobFinished()
-augroup END
+" augroup my_neomake_hooks
+  " au!
+  " autocmd User NeomakeJobFinished call myfunctions#neomake#MyOnNeomakeJobFinished()
+" augroup END
 
 " }}}
 " LanguageClient-neovim {{{
@@ -706,7 +695,6 @@ augroup LanguageClient_config
 augroup END
 
 " }}}
-"
 " deoplete {{{
 let g:deoplete#enable_at_startup =1
 let g:deoplete#disable_auto_complete = 1
