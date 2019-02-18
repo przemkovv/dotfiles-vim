@@ -130,6 +130,7 @@ Plug 'vim-jp/vim-cpp', { 'for': 'cpp'}
 Plug 'IN3D/vim-raml' " RAML plugin for VIM
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': 'markdown' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
+Plug   'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 Plug 'wannesm/wmgraphviz.vim'
 Plug 'chrisbra/csv.vim', { 'for': 'csv'}  " A Filetype plugin for csv files
 
@@ -682,22 +683,33 @@ let g:LanguageClient_diagnosticsList = "Location"
 let g:LanguageClient_hasSnippetSupport = 0
 let g:LanguageClient_serverCommands = {
       \ 'python': ['pyls'],
-      \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],
-      \ 'c': ['cquery','--language-server', '--log-file=/tmp/cq.log']
+      \ 'cpp': ['ccls', '--log-file=/tmp/ccls.log'],
+      \ 'c': ['ccls', '--log-file=/tmp/ccls.log']
       \ }
+" \ 'cpp': ['clangd'],
+" \ 'c': ['clangd']
+" \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],
+" \ 'c': ['cquery','--language-server', '--log-file=/tmp/cq.log']
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_rootMarkers = {
       \ 'cpp': ['compile_commands.json', 'build'],
       \ }
-" let g:LanguageClient_loggingLevel='DEBUG'
+let g:LanguageClient_loggingLevel='WARN'
+let g:LanguageClient_loggingFile='/tmp/lc.log'
 let g:LanguageClient_settingsPath = s:editor_root .'/settings.json'
-augroup lsp_client
-  autocmd!
-  autocmd FileType python,cpp,c  nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType python,cpp,c  nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>zz
-  autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <Space>d :call LanguageClient_textDocument_references()<CR>
-  autocmd FileType python,cpp,c  nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-augroup END
+" let g:LanguageClient_completionPreferTextEdit = 1
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <buffer> <silent> <space>gd :call LanguageClient#textDocument_definition()<CR>zz
+    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>zz
+    nnoremap <buffer> <silent> <space>gt :call LanguageClient#textDocument_typeDefinition()<CR>zz
+    nnoremap <buffer> <silent> <space>gm :call LanguageClient_contextMenu()<CR>
+    nnoremap <buffer> <silent> <space>gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<CR>
+    nnoremap <buffer> <silent> <space>gn :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+autocmd FileType * call LC_maps()
 
 augroup LanguageClient_config
   autocmd!
@@ -706,7 +718,7 @@ augroup LanguageClient_config
   autocmd User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
   autocmd User LanguageClientStopped setl signcolumn=auto
   autocmd User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
-  " autocmd CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient_textDocument_hover() | endif
+  autocmd CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient#textDocument_documentHighlight() | endif
 augroup END
 
 " }}}
@@ -715,7 +727,8 @@ let g:deoplete#enable_at_startup =1
 let g:deoplete#disable_auto_complete = 1
 let g:deoplete#enable_smart_case =1
 
-let g:echodoc_enable_at_startup = 1
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
 let g:deoplete#tag#cache_limit_size = 500000
 " let g:deoplete#auto_refresh_delay = 150
 
