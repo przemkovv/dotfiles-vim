@@ -64,6 +64,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
 Plug 'sbdchd/neoformat'
 
+" Plug 'ncm2/float-preview.nvim'
+
 " }}}
 
 " Status bar {{{
@@ -210,10 +212,13 @@ set wildignore+=*.bbl,*.synctex.gz,*.blg,*.aux
 set wildignore+=*\\vendor\\**
 set wildignore+=*/vendor/**
 set wildignorecase
-set wildmode=list:longest,full
+set wildmode=longest,full
+" set wildmode=list:longest,full
 set title
 set undofile
 set showmode
+set wildoptions+=pum
+set pumblend=10
 set wildmenu
 set laststatus=2
 set scrolloff=5 " Keep 5 lines (top/bottom)
@@ -698,7 +703,7 @@ let g:LanguageClient_loggingLevel='WARN'
 let g:LanguageClient_loggingFile='/tmp/lc.log'
 let g:LanguageClient_settingsPath = s:editor_root .'/settings.json'
 " let g:LanguageClient_completionPreferTextEdit = 1
-function LC_maps()
+function! LC_maps()
   if has_key(g:LanguageClient_serverCommands, &filetype)
     nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
     nnoremap <buffer> <silent> <space>gd :call LanguageClient#textDocument_definition()<CR>zz
