@@ -1,8 +1,17 @@
 {
   "initializationOptions": {
-    "cacheDirectory": "/tmp/cquery",
-    "enableComments": 2,
-    "cacheFormat": "json",
-    "extraClangArguments": ["-std=c++17"]
+    "cache": {
+      "directory": "$HOME/.cache/ccls",
+      "format": "binary"
+    },
+    "index": {
+      "comments": 2
+    },
+    "completion": {
+      "filterAndSort": true
+    },
+    "clang": {
+      "extraArgs": ["-std=c++17"]
+    }
   }
 }

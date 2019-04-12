@@ -341,6 +341,7 @@ nnoremap <Space>ev :e  $MYVIMRC<CR>
 nnoremap <Space>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Space>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:sign unplace *<cr><c-l>
+nnoremap <silent> mc :Make "%:p^"<CR>
 
 " reindent
 nnoremap <Space>= :keepjumps normal mzgg=Gg`zzz<CR>
@@ -457,6 +458,7 @@ set foldtext=myfunctions#fold#MyFoldText()
 augroup ft_quickfix
   autocmd!
   autocmd FileType qf wincmd J
+  autocmd FileType qf resize 10
   autocmd Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
 augroup END
 " }}}
@@ -646,6 +648,7 @@ nnoremap <Space>mi :<c-u>call fzf#vim#maps('i', 0)<cr>
 nnoremap <Space>mo :<c-u>call fzf#vim#maps('o', 0)<cr>
 nnoremap <Space>b :Buffers<cr>
 nnoremap <Space>t :Tags<cr>
+nnoremap <Space>T :BTags<cr>
 nnoremap \c :Colors<cr>
 
 let g:fzf_files_options=' --bind alt-a:select-all,alt-d:deselect-all '
@@ -685,17 +688,23 @@ let g:neomake_ft_maker_remove_invalid_entries = 1
 " }}}
 " LanguageClient-neovim {{{
 let g:LanguageClient_diagnosticsList = "Location"
-let g:LanguageClient_hasSnippetSupport = 0
+let g:LanguageClient_hasSnippetSupport = 1
 let g:LanguageClient_serverCommands = {
       \ 'python': ['pyls'],
-      \ 'cpp': ['ccls', '--log-file=/tmp/ccls.log'],
-      \ 'c': ['ccls', '--log-file=/tmp/ccls.log']
+      \ 'c': ['/bin/ccls',
+	  \    '--log-file=/tmp/ccls.log',
+	  \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
+      \ 'cpp': ['/bin/ccls',
+	  \    '--log-file=/tmp/ccls.log',
+	  \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
       \ }
 " \ 'cpp': ['clangd'],
 " \ 'c': ['clangd']
 " \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],
 " \ 'c': ['cquery','--language-server', '--log-file=/tmp/cq.log']
 let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_changeThrottle = 0.5
+let g:LanguageClient_completionPreferTextEdit = 1
 let g:LanguageClient_rootMarkers = {
       \ 'cpp': ['compile_commands.json', 'build'],
       \ }
@@ -706,6 +715,7 @@ let g:LanguageClient_settingsPath = s:editor_root .'/settings.json'
 function! LC_maps()
   if has_key(g:LanguageClient_serverCommands, &filetype)
     nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <buffer> <silent> <space>k :call LanguageClient#textDocument_signatureHelp()<CR>
     nnoremap <buffer> <silent> <space>gd :call LanguageClient#textDocument_definition()<CR>zz
     nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>zz
     nnoremap <buffer> <silent> <space>gt :call LanguageClient#textDocument_typeDefinition()<CR>zz
@@ -718,12 +728,15 @@ autocmd FileType * call LC_maps()
 
 augroup LanguageClient_config
   autocmd!
-  autocmd BufEnter * let b:Plugin_LanguageClient_started = 0
-  autocmd User LanguageClientStarted setl signcolumn=yes
-  autocmd User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
-  autocmd User LanguageClientStopped setl signcolumn=auto
-  autocmd User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
-  autocmd CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient#textDocument_documentHighlight() | endif
+  autocmd CursorMoved * call myfunctions#languageclient#GetHoverInfo()
+  autocmd CursorMovedI * call LanguageClient_clearDocumentHighlight()
+
+  " autocmd BufEnter * let b:Plugin_LanguageClient_started = 0
+  " autocmd User LanguageClientStarted setl signcolumn=yes
+  " autocmd User LanguageClientStarted let b:Plugin_LanguageClient_started = 1
+  " autocmd User LanguageClientStopped setl signcolumn=auto
+  " autocmd User LanguageClientStopped let b:Plugin_LanguageClient_stopped = 0
+  " autocmd CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient#textDocument_documentHighlight() | endif
 augroup END
 
 " }}}
