@@ -83,6 +83,7 @@ Plug 'tpope/vim-repeat'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-function' " af, if, aF, iF
 Plug 'kana/vim-textobj-fold' " az, iz
+Plug 'jeetsukumaran/vim-pythonsense', {'for': 'python'}
 " }}}
 
 " Tags {{{
@@ -143,7 +144,7 @@ Plug 'othree/html5.vim', { 'for': 'html'}
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 " }}}
 " Python {{{
-Plug 'klen/python-mode', { 'branch': 'develop', 'for': 'python'}
+" Plug 'klen/python-mode', { 'branch': 'develop', 'for': 'python'}
 " Plug 'davidhalter/jedi-vim', { 'for': 'python'}
 " }}}
 " Haskell {{{
@@ -342,6 +343,7 @@ nnoremap <Space>eev :vsplit  $MYVIMRC<CR>
 nnoremap <Space>l :s/\.\ /\.\r/g<CR>:nohl<CR>
 nnoremap <silent> <C-L> :nohlsearch<cr>:diffupdate<cr>:syntax sync fromstart<cr>:sign unplace *<cr><c-l>
 nnoremap <silent> mc :Make "%:p^"<CR>
+nnoremap <silent> mt :Make check<CR>
 
 " reindent
 nnoremap <Space>= :keepjumps normal mzgg=Gg`zzz<CR>
@@ -690,14 +692,15 @@ let g:neomake_ft_maker_remove_invalid_entries = 1
 let g:LanguageClient_diagnosticsList = "Location"
 let g:LanguageClient_hasSnippetSupport = 1
 let g:LanguageClient_serverCommands = {
-      \ 'python': ['pyls'],
+      \ 'python': ['python', '-m', 'pyls', '--log-file', '/tmp/pyls.log', '--verbose'],
       \ 'c': ['/bin/ccls',
-	  \    '--log-file=/tmp/ccls.log',
-	  \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
+      \    '--log-file=/tmp/ccls.log',
+      \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
       \ 'cpp': ['/bin/ccls',
-	  \    '--log-file=/tmp/ccls.log',
-	  \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
+      \    '--log-file=/tmp/ccls.log',
+      \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
       \ }
+      " \ 'python': ['pyls', '--log-file=/tmp/pyls.log'],
 " \ 'cpp': ['clangd'],
 " \ 'c': ['clangd']
 " \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],

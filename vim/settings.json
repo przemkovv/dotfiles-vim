@@ -13,5 +13,6 @@
     "clang": {
       "extraArgs": ["-std=c++17"]
     }
-  }
+  },
+  "pyls.plugins.pydocstyle.enabled": true
 }

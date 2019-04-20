@@ -6,6 +6,7 @@ setlocal keywordprg=:term\ cppman
 setlocal equalprg=clang-format\ -assume-filename=%
 setlocal formatexpr=LanguageClient#textDocument_rangeFormatting()
 setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
+setlocal colorcolumn=81
 
 setlocal mps+=<:>
 
