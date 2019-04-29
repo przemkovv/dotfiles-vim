@@ -37,8 +37,8 @@ let g:jedi#documentation_command = ''
 " pymode {{{
 let g:pymode_breakpoint = 0
 " let g:pymode_lint_checkers = ['pylint']
-let g:pymode_lint_checkers = [ 'pyflakes', 'pep8', 'mccabe']
-" let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
+" let g:pymode_lint_checkers = [ 'pyflakes', 'pep8', 'mccabe']
+let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 " }}}
