@@ -52,6 +52,7 @@ Plug 'mbbill/undotree'
 Plug 'tpope/vim-dispatch' " dispatch.vim: asynchronous build and test dispatcher
 Plug 'radenling/vim-dispatch-neovim'
 
+let g:nremap = {'<p': '', '>p': '', '<P': '', '>P':''}
 Plug 'tpope/vim-unimpaired'
 
 Plug 'ciaranm/securemodelines'
@@ -399,8 +400,8 @@ nnoremap <expr> k v:count ? 'k' : 'gk'
 nnoremap Y y$
 
 " better indentation
-xnoremap < <gv
-xnoremap > >gv
+" xnoremap < <gv
+" xnoremap > >gv
 
 " saving file {{{
 nnoremap <Space>w :w<CR>
