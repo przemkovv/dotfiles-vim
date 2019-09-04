@@ -219,8 +219,10 @@ set wildmode=longest,full
 set title
 set undofile
 set showmode
-set wildoptions+=pum
-set pumblend=10
+if has("nvim")
+  set wildoptions+=pum
+  set pumblend=10
+endif
 set wildmenu
 set laststatus=2
 set scrolloff=5 " Keep 5 lines (top/bottom)
@@ -701,7 +703,7 @@ let g:LanguageClient_serverCommands = {
       \    '--log-file=/tmp/ccls.log',
       \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
       \ }
-      " \ 'python': ['pyls', '--log-file=/tmp/pyls.log'],
+" \ 'python': ['pyls', '--log-file=/tmp/pyls.log'],
 " \ 'cpp': ['clangd'],
 " \ 'c': ['clangd']
 " \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],

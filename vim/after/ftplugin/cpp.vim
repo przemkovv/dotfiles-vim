@@ -19,10 +19,10 @@ let g:cpp_concepts_highlights = 1
 
 function! FormatFile()
   let l:lines="all"
-  pyf /usr/share/clang/clang-format.py
+  py3f /usr/share/clang/clang-format.py
 endfunction
 function! FormatSelection()
-  pyf /usr/share/clang/clang-format.py
+  py3f /usr/share/clang/clang-format.py
 endfunction
 
 nnoremap <buffer> <Leader>= :call FormatFile()<CR>
