@@ -92,11 +92,12 @@ Plug 'majutsushi/tagbar'
 " }}}
 
 " Completion {{{
-if s:running_windows 
-  Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  'powershell -File install.ps1' }
-else
-  Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  './install.sh'}
-endif
+" if s:running_windows 
+" Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  'powershell -File install.ps1' }
+" else
+" Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  './install.sh'}
+" endif
+Plug 'neovim/nvim-lsp'
 Plug 'Shougo/deoplete.nvim',  { 'do': function('myfunctions#utils#UpdateRPlugins') }
 Plug 'roxma/nvim-yarp', myfunctions#utils#Cond(!has('nvim'))
 Plug 'roxma/vim-hug-neovim-rpc', myfunctions#utils#Cond(!has('nvim'))
@@ -126,6 +127,7 @@ Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
 " Plug 'benekastah/neomake'
 Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'norcalli/nvim-colorizer.lua'
 " }}}
 
 " Filetype specific {{{
@@ -628,7 +630,59 @@ nnoremap <Space>gl :Glog<Cr>
 let g:fzf_buffers_jump = 0
 " let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --no-ignore --follow --glob "!.git/*" '
-let $FZF_DEFAULT_OPTS .= ' --inline-info'
+let $FZF_DEFAULT_OPTS='--layout=reverse  --margin=1,2'
+
+if has('nvim') || has('gui_running')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
+let g:fzf_colors =
+      \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
+
+" Terminal buffer options for fzf
+autocmd! FileType fzf
+autocmd  FileType fzf set noshowmode noruler nonu
+
+if has('nvim') && exists('&winblend') && &termguicolors
+  set winblend=5
+
+  hi NormalFloat guibg=None
+  if exists('g:fzf_colors.bg')
+    call remove(g:fzf_colors, 'bg')
+  endif
+
+  if stridx($FZF_DEFAULT_OPTS, '--border') == -1
+    let $FZF_DEFAULT_OPTS .= ' --border'
+  endif
+
+  function! FloatingFZF()
+    let width = float2nr(&columns * 0.8)
+    let height = float2nr(&lines * 0.8)
+    let opts = { 'relative': 'editor',
+          \ 'row': (&lines - height) / 2,
+          \ 'col': (&columns - width) / 2,
+          \ 'width': width,
+          \ 'height': height,
+          \ 'style': 'minimal'
+          \ }
+
+    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+  endfunction
+
+  let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+endif
 
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
@@ -694,6 +748,7 @@ let g:neomake_ft_maker_remove_invalid_entries = 1
 " LanguageClient-neovim {{{
 let g:LanguageClient_diagnosticsList = "Location"
 let g:LanguageClient_hasSnippetSupport = 1
+let g:LanguageClient_serverStderr = '/tmp/clangd.stderr'
 let g:LanguageClient_serverCommands = {
       \ 'python': ['python', '-m', 'pyls', '--log-file', '/tmp/pyls.log', '--verbose'],
       \ 'c': ['/bin/ccls',
@@ -703,6 +758,8 @@ let g:LanguageClient_serverCommands = {
       \    '--log-file=/tmp/ccls.log',
       \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
       \ }
+" \ 'cpp': ['/bin/clangd',
+" \    '-log=verbose'],
 " \ 'python': ['pyls', '--log-file=/tmp/pyls.log'],
 " \ 'cpp': ['clangd'],
 " \ 'c': ['clangd']
@@ -720,22 +777,22 @@ let g:LanguageClient_settingsPath = s:editor_root .'/settings.json'
 " let g:LanguageClient_completionPreferTextEdit = 1
 function! LC_maps()
   if has_key(g:LanguageClient_serverCommands, &filetype)
-    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <buffer> <silent> <space>k :call LanguageClient#textDocument_signatureHelp()<CR>
-    nnoremap <buffer> <silent> <space>gd :call LanguageClient#textDocument_definition()<CR>zz
-    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>zz
-    nnoremap <buffer> <silent> <space>gt :call LanguageClient#textDocument_typeDefinition()<CR>zz
-    nnoremap <buffer> <silent> <space>gm :call LanguageClient_contextMenu()<CR>
-    nnoremap <buffer> <silent> <space>gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<CR>
-    nnoremap <buffer> <silent> <space>gn :call LanguageClient#textDocument_rename()<CR>
+    " nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
+    " nnoremap <buffer> <silent> <space>k :call LanguageClient#textDocument_signatureHelp()<CR>
+    " nnoremap <buffer> <silent> <space>gd :call LanguageClient#textDocument_definition()<CR>zz
+    " nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>zz
+    " nnoremap <buffer> <silent> <space>gt :call LanguageClient#textDocument_typeDefinition()<CR>zz
+    " nnoremap <buffer> <silent> <space>gm :call LanguageClient_contextMenu()<CR>
+    " nnoremap <buffer> <silent> <space>gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<CR>
+    " nnoremap <buffer> <silent> <space>gn :call LanguageClient#textDocument_rename()<CR>
   endif
 endfunction
-autocmd FileType * call LC_maps()
+" autocmd FileType * call LC_maps()
 
 augroup LanguageClient_config
   autocmd!
-  autocmd CursorMoved * call myfunctions#languageclient#GetHoverInfo()
-  autocmd CursorMovedI * call LanguageClient_clearDocumentHighlight()
+  " autocmd CursorMoved * call myfunctions#languageclient#GetHoverInfo()
+  " autocmd CursorMovedI * call LanguageClient_clearDocumentHighlight()
 
   " autocmd BufEnter * let b:Plugin_LanguageClient_started = 0
   " autocmd User LanguageClientStarted setl signcolumn=yes
@@ -745,6 +802,80 @@ augroup LanguageClient_config
   " autocmd CursorMoved * if b:Plugin_LanguageClient_started | call LanguageClient#textDocument_documentHighlight() | endif
 augroup END
 
+" }}}
+" nvim-lsp {{{
+
+" This is optional, but you may find it useful
+autocmd CompleteDone * pclose
+" call lsp#add_filetype_config({
+" \ 'filetype': 'cpp',
+" \ 'name': 'clangd',
+" \ 'cmd': 'clangd -background-index'
+" \ })
+" call lsp#add_filetype_config({
+      " \ 'filetype': ['c','cpp'],
+      " \ 'name': 'ccls',
+      " \ 'cmd': ['/bin/ccls',
+      " \    '--log-file=/tmp/ccls.log',
+      " \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}']
+      " \ })
+
+    " name = "ccls";
+    " cmd = "/bin/ccls --log-file=/tmp/ccls.log --init={'cache': {'directory': '$HOME/.cache/ccls'}}";
+    " cmd = "clangd -background-index";
+" call lsp#set_log_level("debug")
+" call lsp#add_filetype_config({
+      " \ 'filetype': 'python',
+      " \ 'name': 'pyls',
+      " \ 'cmd': 'pyls'
+      " \ })
+:lua << EOF
+  local nvim_lsp = require 'nvim_lsp'
+  nvim_lsp.pyls.setup({
+    name = "pyls";
+    filetype = {"python"};
+    cmd = {"pyls"};
+  });
+  nvim_lsp.ccls.setup({
+    name = "ccls";
+    filetype = {"c", "cpp"};
+    cmd = {"ccls", "--log-file=/tmp/ccls.log", '--init={"cache": {"directory": "/home/przemkovv/.cache/ccls"}}'};
+    capabilities = {
+      offsetEncoding = {"utf-8", "utf-16"};
+    };
+    init_options = {
+      cache = {
+        format = "binary";
+        hierarchicalPath = true;
+      };
+      index = {
+        comments = 2;
+      };
+      completion = {
+        filterAndSort = true;
+      };
+      clang = {
+        extraArgs = {"-std=c++2a", "--gcc-toolchain=/usr"};
+        excludeArgs = {"-fconcepts", "-fno-fat-lto-objects", "-fmax-errors"};
+      };
+    };
+    on_init = vim.schedule_wrap(function(client, result)
+      if result.offsetEncoding then
+        client.offset_encoding = result.offsetEncoding
+      end
+    end)
+  });
+EOF
+" Example config
+autocmd Filetype rust,python,go,c,cpp setl omnifunc=v:lua.vim.lsp.omnifunc
+nnoremap <silent> <space>dc <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <space>gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <space>gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <space>k <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <space>gt <cmd>lua vim.lsp.buf.type_definition()<CR>
+"
 " }}}
 " deoplete {{{
 let g:deoplete#enable_at_startup =1
@@ -778,4 +909,4 @@ let g:gist_open_browser_after_post = 1
 
 " }}}
 
-
+lua require'colorizer'.setup()
