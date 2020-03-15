@@ -101,6 +101,7 @@ if !has("nvim")
 else
   Plug 'neovim/nvim-lsp'
 endif
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'Shougo/deoplete.nvim',  { 'do': function('myfunctions#utils#UpdateRPlugins') }
 Plug 'roxma/nvim-yarp', myfunctions#utils#Cond(!has('nvim'))
 Plug 'roxma/vim-hug-neovim-rpc', myfunctions#utils#Cond(!has('nvim'))
@@ -228,7 +229,7 @@ set undofile
 set showmode
 if has("nvim")
   set wildoptions+=pum
-  set pumblend=10
+  "set pumblend=10
 endif
 set wildmenu
 set laststatus=2
@@ -840,40 +841,44 @@ if has("nvim")
   :lua << EOF
   local nvim_lsp = require 'nvim_lsp'
   nvim_lsp.pyls.setup({
-  name = "pyls";
-  filetype = {"python"};
-  cmd = {"pyls"};
+    name = "pyls";
+    filetype = {"python"};
+    cmd = {"pyls"};
   });
   nvim_lsp.ccls.setup({
-  name = "ccls";
-  filetype = {"c", "cpp"};
-  cmd = {"ccls", "--log-file=/tmp/ccls.log", '--init={"cache": {"directory": "/home/przemkovv/.cache/ccls"}}'};
-  capabilities = {
-  offsetEncoding = {"utf-8", "utf-16"};
-  };
-  init_options = {
-  cache = {
-  format = "binary";
-  hierarchicalPath = true;
-  };
-  index = {
-  comments = 2;
-  };
-  completion = {
-  filterAndSort = true;
-  };
-  clang = {
-  extraArgs = {"-std=c++2a", "--gcc-toolchain=/usr"};
-  excludeArgs = {"-fconcepts", "-fno-fat-lto-objects", "-fmax-errors"};
-  };
-  };
-  on_init = vim.schedule_wrap(function(client, result)
-  if result.offsetEncoding then
-    client.offset_encoding = result.offsetEncoding
-  end
-end)
-});
+    name = "ccls";
+    filetype = {"c", "cpp"};
+    cmd = {"ccls", "--log-file=/tmp/ccls.log", '--init={"cache": {"directory": "/home/przemkovv/.cache/ccls"}}'};
+    capabilities = {
+      offsetEncoding = {"utf-8", "utf-16"};
+    };
+    init_options = {
+      cache = {
+        format = "binary";
+        hierarchicalPath = true;
+      };
+      index = {
+        comments = 2;
+      };
+      completion = {
+        filterAndSort = true;
+      };
+      highlight = {
+        lsRanges = true;
+      };
+      clang = {
+        extraArgs = {"-std=c++2a", "--gcc-toolchain=/usr"};
+        excludeArgs = {"-fconcepts", "-fno-fat-lto-objects", "-fmax-errors"};
+      };
+    };
+    on_init = vim.schedule_wrap(function(client, result)
+      if result.offsetEncoding then
+        client.offset_encoding = result.offsetEncoding
+      end
+    end)
+  });
 EOF
+
 " Example config
 autocmd Filetype rust,python,go,c,cpp setl omnifunc=v:lua.vim.lsp.omnifunc
 nnoremap <silent> <space>dc <cmd>lua vim.lsp.buf.declaration()<CR>
