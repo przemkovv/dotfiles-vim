@@ -161,6 +161,9 @@ Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
 Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 " }}}
+" Rust {{{
+Plug 'rust-lang/rust.vim'
+" }}}
 " }}}
 
 call plug#end()
@@ -492,7 +495,7 @@ let g:pymode_virtualenv = 1
 let g:pymode_python = 'python3'
 let g:pymode_lint = 1
 " let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-" }}
+" }}}
 " Todo {{{
 command! Todo call myfunctions#todo#todo()
 " }}}
@@ -697,7 +700,6 @@ command! -bang -nargs=* Rg
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
 
-let g:fzf_launcher = 'termite --geometry 120x30 -e "sh -c %s"'
 nnoremap <Space>r :Rg<CR>
 nnoremap <Space>R :Rg <C-r>=expand('<cword>')<CR><CR>
 
@@ -705,7 +707,8 @@ command! -bang -nargs=? -complete=dir Files
       \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 nnoremap <Space>? :Helptags<cr>
 nnoremap <Space>f :Files<cr>
-nnoremap <Space>F :GFiles?<cr>
+nnoremap <Space>F :GFiles<cr>
+nnoremap <Space><C-F> :GFiles?<cr>
 nnoremap <Space>mr :History<cr>
 nnoremap <Space>mn :<c-u>call fzf#vim#maps('n', 0)<cr>
 nnoremap <Space>mv :<c-u>call fzf#vim#maps('x', 0)<cr>
@@ -840,6 +843,7 @@ if has("nvim")
   " \ })
   :lua << EOF
   local nvim_lsp = require 'nvim_lsp'
+  nvim_lsp.rust_analyzer.setup({});
   nvim_lsp.pyls.setup({
     name = "pyls";
     filetype = {"python"};
