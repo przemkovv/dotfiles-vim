@@ -14,3 +14,5 @@ endfunction
 
 nnoremap <buffer> <Leader>= :call FormatFile()<CR>
 vnoremap <buffer> <Leader>= :call FormatSelection()<CR>
+
+

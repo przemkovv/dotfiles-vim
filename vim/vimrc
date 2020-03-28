@@ -20,6 +20,7 @@ elseif has("nvim")
   let s:editor_root=expand("~/.config/nvim")
 else
   let s:editor_root=expand("~/.vim")
+
 endif
 
 " Plugins -------------------------------------------------------------------- {{{
@@ -65,8 +66,6 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'chrisbra/unicode.vim'
 Plug 'sbdchd/neoformat'
 
-" Plug 'ncm2/float-preview.nvim'
-
 " }}}
 
 " Status bar {{{
@@ -93,7 +92,7 @@ Plug 'majutsushi/tagbar'
 
 " Completion {{{
 if !has("nvim")
-  if s:running_windows 
+  if s:running_windows
     Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  'powershell -File install.ps1' }
   else
     Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do':  './install.sh'}
@@ -103,6 +102,7 @@ else
 endif
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'Shougo/deoplete.nvim',  { 'do': function('myfunctions#utils#UpdateRPlugins') }
+Plug 'Shougo/deoplete-lsp'
 Plug 'roxma/nvim-yarp', myfunctions#utils#Cond(!has('nvim'))
 Plug 'roxma/vim-hug-neovim-rpc', myfunctions#utils#Cond(!has('nvim'))
 Plug 'Shougo/echodoc.vim'
@@ -113,8 +113,11 @@ Plug 'eagletmt/neco-ghc'
 " }}}
 
 " Snippets {{{
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+
+Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
 " }}}
 
 " Database {{{
@@ -129,7 +132,6 @@ Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'Shougo/vinarise.vim'
 Plug 'diepm/vim-rest-console' " A REST console for Vim.
-" Plug 'benekastah/neomake'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 if has("nvim")
   Plug 'norcalli/nvim-colorizer.lua'
@@ -252,7 +254,7 @@ set breakindent
 set breakindentopt+=sbr
 
 set tags=tags,./tags,~/.vimtags
-set completeopt+=longest
+set completeopt=menu,preview,noselect,menuone
 
 set cmdheight=2
 
@@ -452,10 +454,10 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr><C-d> pumvisible() ? "<PageDown>" : "<C-d>"
 inoremap <expr><C-u> pumvisible() ? "<PageUp>" : "<C-g>u<C-u>"
 
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-      \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap <expr> <C-p> pumvisible() ? '<C-p>' :
-      \ '<C-p><C-r>=pumvisible() ? "\<lt>Up>" : ""<CR>'
+" inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+" \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+" inoremap <expr> <C-p> pumvisible() ? '<C-p>' :
+" \ '<C-p><C-r>=pumvisible() ? "\<lt>Up>" : ""<CR>'
 
 
 " }}}
@@ -517,10 +519,6 @@ vmap <Space>cu  <Plug>NERDCommenterUncomment
 nmap <Space>cc  <Plug>NERDCommenterComment
 nmap <Space>cu  <Plug>NERDCommenterUncomment
 " }}}
-" netrw {{{
-let g:netrw_winsize = -40
-let g:netrw_liststyle = 3
-" }}}
 " airline {{{
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 0
@@ -558,8 +556,6 @@ let g:airline_mode_map = {
       \ 'S'  : 'S',
       \ '' : 'S',
       \ }
-
-
 
 augroup Airline
   autocmd!
@@ -624,9 +620,9 @@ let g:localvimrc_persistent = 1
 " }}}
 " UltiSnips {{{
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" let g:UltiSnipsExpandTrigger = "<tab>"
+" let g:UltiSnipsJumpForwardTrigger = "<tab>"
+" let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " }}}
 " Fugitive {{{
 nnoremap <Space>gs :Gstatus<Cr>
@@ -737,23 +733,6 @@ let g:tagbar_left = 1
 let g:tagbar_width = 33
 let g:tagbar_compact = 1
 " }}}
-" Neomake {{{
-
-" nnoremap <Space>h :Neomake!<CR>
-" nnoremap <Space>H :Neomake<CR>
-"let g:neomake_verbose=1
-let g:neomake_open_list = 2
-let g:neomake_place_signs = 1
-let g:neomake_verbose = 0
-let g:neomake_ft_maker_remove_invalid_entries = 1
-
-
-" augroup my_neomake_hooks
-" au!
-" autocmd User NeomakeJobFinished call myfunctions#neomake#MyOnNeomakeJobFinished()
-" augroup END
-
-" }}}
 " LanguageClient-neovim {{{
 if !has("nvim")
   let g:LanguageClient_diagnosticsList = "Location"
@@ -768,13 +747,6 @@ if !has("nvim")
         \    '--log-file=/tmp/ccls.log',
         \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}'],
         \ }
-  " \ 'cpp': ['/bin/clangd',
-  " \    '-log=verbose'],
-  " \ 'python': ['pyls', '--log-file=/tmp/pyls.log'],
-  " \ 'cpp': ['clangd'],
-  " \ 'c': ['clangd']
-  " \ 'cpp': ['cquery','--language-server', '--log-file=/tmp/cq.log'],
-  " \ 'c': ['cquery','--language-server', '--log-file=/tmp/cq.log']
   let g:LanguageClient_loadSettings = 1
   let g:LanguageClient_changeThrottle = 0.5
   let g:LanguageClient_completionPreferTextEdit = 1
@@ -819,113 +791,77 @@ endif
 if has("nvim")
   " This is optional, but you may find it useful
   autocmd CompleteDone * pclose
-  " call lsp#add_filetype_config({
-  " \ 'filetype': 'cpp',
-  " \ 'name': 'clangd',
-  " \ 'cmd': 'clangd -background-index'
-  " \ })
-  " call lsp#add_filetype_config({
-  " \ 'filetype': ['c','cpp'],
-  " \ 'name': 'ccls',
-  " \ 'cmd': ['/bin/ccls',
-  " \    '--log-file=/tmp/ccls.log',
-  " \    '--init={"cache": {"directory": "$HOME/.cache/ccls"}}']
-  " \ })
 
-  " name = "ccls";
-  " cmd = "/bin/ccls --log-file=/tmp/ccls.log --init={'cache': {'directory': '$HOME/.cache/ccls'}}";
-  " cmd = "clangd -background-index";
-  " call lsp#set_log_level("debug")
-  " call lsp#add_filetype_config({
-  " \ 'filetype': 'python',
-  " \ 'name': 'pyls',
-  " \ 'cmd': 'pyls'
-  " \ })
-  :lua << EOF
-  local nvim_lsp = require 'nvim_lsp'
-  nvim_lsp.rust_analyzer.setup({});
-  nvim_lsp.pyls.setup({
-    name = "pyls";
-    filetype = {"python"};
-    cmd = {"pyls"};
-  });
-  nvim_lsp.ccls.setup({
-    name = "ccls";
-    filetype = {"c", "cpp"};
-    cmd = {"ccls", "--log-file=/tmp/ccls.log", '--init={"cache": {"directory": "/home/przemkovv/.cache/ccls"}}'};
-    capabilities = {
-      offsetEncoding = {"utf-8", "utf-16"};
-    };
-    init_options = {
-      cache = {
-        format = "binary";
-        hierarchicalPath = true;
-      };
-      index = {
-        comments = 2;
-      };
-      completion = {
-        filterAndSort = true;
-      };
-      highlight = {
-        lsRanges = true;
-      };
-      clang = {
-        extraArgs = {"-std=c++2a", "--gcc-toolchain=/usr"};
-        excludeArgs = {"-fconcepts", "-fno-fat-lto-objects", "-fmax-errors"};
-      };
-    };
-    on_init = vim.schedule_wrap(function(client, result)
-      if result.offsetEncoding then
-        client.offset_encoding = result.offsetEncoding
-      end
-    end)
-  });
-EOF
+  lua require('lsp_settings').cpp()
+  lua require('lsp_settings').rust()
+  lua require('lsp_settings').python()
+  lua require('lsp_settings').viml()
 
-" Example config
-autocmd Filetype rust,python,go,c,cpp setl omnifunc=v:lua.vim.lsp.omnifunc
-nnoremap <silent> <space>dc <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> <space>gd <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> <space>gi <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <space>k <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> <space>gt <cmd>lua vim.lsp.buf.type_definition()<CR>
-  endif
-  "
-  " }}}
-  " deoplete {{{
-  let g:deoplete#enable_at_startup =1
-  let g:deoplete#disable_auto_complete = 1
-  let g:deoplete#enable_smart_case =1
+  nnoremap <silent> <space>dc    <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap <silent> <space>gd    <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> gd           <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> K            <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap <silent> <space>gi    <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <silent> <space>k     <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <silent> <space>gt    <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <silent> <space>gr    <cmd>lua vim.lsp.buf.references()<CR>
+  nnoremap <silent> <space>g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+endif
 
-  let g:echodoc#enable_at_startup = 1
-  let g:echodoc#type = 'signature'
-  let g:deoplete#tag#cache_limit_size = 500000
-  " let g:deoplete#auto_refresh_delay = 150
+"
+" }}}
+" deoplete {{{
+let g:deoplete#enable_at_startup =1
+let g:deoplete#disable_auto_complete = 0
+let g:deoplete#smart_case = 1
+let g:deoplete#tag#cache_limit_size = 500000
 
-  if has('g:loaded_deoplete')
-    " Use head matcher instead of fuzzy matcher
-    call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-    call deoplete#custom#option('ignore_sources', {'_': ['arround']})
-  endif
+if has('g:loaded_deoplete')
+  " Use head matcher instead of fuzzy matcher
+  call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+  call deoplete#custom#option('ignore_sources', {'_': ['arround']})
+endif
 
-  " }}}
-  " Vim-notes {{{
-  let g:notes_directories = ['~/Documents/notes']
-  " }}}
-  " CSV {{{
-  let g:csv_autocmd_arrange = 1
-  " }}}
-  " Gist {{{
-  let g:gist_post_private = 1
-  let g:gist_show_privates = 1
-  let g:gist_detect_filetype = 1
-  let g:gist_open_browser_after_post = 1
-  " }}}
+let g:neosnippet#enable_complete_done = 1
+let g:neosnippet#enable_completed_snippet = 1
+" let g:neosnippet#enable_auto_clear_markers = 1
+" let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#disable_runtime_snippets = { '_' : 1, }
 
-  " }}}
+imap <expr><TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ neosnippet#expandable_or_jumpable() ?
+      \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+
+let g:echodoc#enable_at_startup = 1
+if has('nvim')
+  let g:echodoc#type = 'virtual'
+  highlight link EchoDocFloat Pmenu
+else
+  let g:echodoc#type = 'popup'
+  highlight link EchoDocPopup Pmenu
+endif
+" let g:deoplete#auto_refresh_delay = 150
+
+
+" }}}
+" Vim-notes {{{
+let g:notes_directories = ['~/Documents/notes']
+" }}}
+" CSV {{{
+let g:csv_autocmd_arrange = 1
+" }}}
+" Gist {{{
+let g:gist_post_private = 1
+let g:gist_show_privates = 1
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+" }}}
+
+" }}}
 
 if has("nvim")
   lua require'colorizer'.setup()
